@@ -1,0 +1,167 @@
+import React, { useState } from "react";
+import styles from "./login.module.css";
+import { loginUser } from "../../services/authService.js";
+import { useNavigate } from "react-router-dom";
+import logo from "../../assets/image.png";
+
+export default function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+
+  const navigate = useNavigate(); // ✅ correct hook usage
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await loginUser({ username, password });
+
+      if (response.data.success) {
+        setMessage(response.data.message || "Login successful!");
+        localStorage.setItem("token", response.data.token); // ✅ optional: store token
+        navigate("/category"); // ✅ navigate after success
+      } else {
+        setMessage("Invalid credentials!");
+      }
+    } catch (error) {
+      setMessage(error.response?.data?.message || "Invalid credentials!");
+    }
+  };
+
+  return (
+    <div className={styles.loginContainer}>
+      <div className={styles.loginBox}>
+         <div className={styles.logoContainer}>
+                  <img src={logo} alt="Logo" className={styles.logo} />
+                </div>
+        
+        <h2 className={styles.loginTitle}>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Log In</button>
+        </form>
+        {message && <p className="message">{message}</p>}
+        <a href="#">Forgot password?</a>
+      </div>
+    </div>
+  );
+}
+
+
+
+login.module.css
+body {
+  background-color: #f4f7f6;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #e1f5fe 0%, #ffffff 100%);
+}
+
+.loginBox {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 50px 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 360px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.loginBox:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.logoContainer {
+  margin-bottom: 25px;
+}
+
+.logo {
+  width: 70;
+  height: 10vh;
+  object-fit: contain;
+}
+
+.loginTitle {
+  color: #2c3e50;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+input {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 12px 0;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: border 0.3s ease;
+}
+
+input:focus {
+  border-color: #5dade2;
+  outline: none;
+  box-shadow: 0 0 5px rgba(93, 173, 226, 0.4);
+}
+
+button {
+  width: 100%;
+  padding: 12px 0;
+  margin-top: 15px;
+  background-color: #5dade2;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #3498db;
+  transform: translateY(-2px);
+}
+
+a {
+  display: block;
+  margin-top: 15px;
+  color: #5dade2;
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #3498db;
+  text-decoration: underline;
+}
+
+.message {
+  margin-top: 15px;
+  color: #e74c3c;
+  font-size: 14px;
+  font-weight: 500;
+}

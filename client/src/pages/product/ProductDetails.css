@@ -1,0 +1,198 @@
+.product-detail {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  margin-top: 20vh;
+}
+
+.breadcrumb {
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.breadcrumb a {
+  color: #666;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: #f7a600;
+}
+
+.product-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.product-image {
+  flex: 1 1 400px;
+  text-align: center;
+}
+
+.product-image img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.product-info {
+  flex: 1 1 400px;
+}
+
+.category {
+  color: #007bff;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.product-info h2 {
+  margin: 10px 0;
+  font-size: 28px;
+  color: #111;
+}
+
+.rating {
+  margin-bottom: 10px;
+  color: #ff9900;
+  font-weight: 500;
+}
+
+.price {
+  margin: 15px 0;
+}
+
+.price .current {
+  font-size: 28px;
+  font-weight: bold;
+  color: #111;
+}
+
+.price .old {
+  font-size: 18px;
+  color: #777;
+  text-decoration: line-through;
+  margin-left: 10px;
+}
+
+.desc {
+  margin: 15px 0;
+  color: #555;
+  line-height: 1.6;
+}
+
+.stock {
+  margin: 10px 0;
+  font-weight: 600;
+}
+
+.stock.in {
+  color: green;
+}
+
+.stock.out {
+  color: red;
+}
+
+.quantity {
+  margin: 20px 0;
+}
+
+.quantity label {
+  margin-right: 10px;
+  font-weight: 500;
+}
+
+.quantity select {
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.btn-cart {
+  background-color: #f7a600;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-cart:hover {
+  background-color: #e59500;
+}
+
+.btn-wishlist {
+  background-color: white;
+  color: #555;
+  border: 1px solid #ccc;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-wishlist.active {
+  background-color: #ff4d4f;
+  color: white;
+  border-color: #ff4d4f;
+}
+
+.btn-wishlist:hover {
+  border-color: #ff4d4f;
+  color: #ff4d4f;
+}
+
+.related-section {
+  margin-top: 50px;
+}
+
+.related-section h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.related-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.related-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.related-card img {
+  width: 100%;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.related-card h4 {
+  font-size: 16px;
+  color: #333;
+}
+
+.related-card p {
+  color: #f7a600;
+  font-weight: bold;
+}

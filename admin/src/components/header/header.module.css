@@ -1,0 +1,152 @@
+.header {
+  width: 100%;
+  height: 15vh;
+  background-color: #f5e2b1;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 3000;
+}
+
+/* Hamburger */
+.menu {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Logo + brand title */
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  height: 15vh;
+  width: 100%;
+  object-fit: cover;
+}
+
+.brandTitle {
+  font-family: "Georgia", serif;
+  font-size: 1.5rem;
+  color: #b58800;
+  letter-spacing: 1px;
+}
+
+/* Profile section */
+.profileContainer {
+  position: relative;
+}
+
+.profileIcon {
+  font-size: 1.8rem;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.profileIcon:hover {
+  color: #007bff;
+}
+
+/* Dropdown */
+.dropdownMenu {
+  position: absolute;
+  right: 0;
+  top: 110%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  z-index: 3500;
+}
+
+.dropdownItem {
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 0.95rem;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.dropdownItem:hover {
+  background-color: #f5e2b1;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .brandTitle {
+    font-size: 1.1rem;
+  }
+
+  .header {
+    padding: 0 15px;
+  }
+}
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 4000;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal h3 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.modal input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.modalActions button {
+  background-color: #f5e2b1;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.modalActions button:hover {
+  background-color: #e0c678;
+}

@@ -1,0 +1,104 @@
+/* ===== Wrapper ===== */
+.otp-wrapper {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10vh;
+}
+
+/* ===== Card ===== */
+.otp-card {
+  background: #fff;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* ===== Header ===== */
+.otp-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.otp-header h2 {
+  font-size: 1.8rem;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.otp-header p {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* ===== Form ===== */
+.otp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ===== OTP Boxes ===== */
+.otp-inputs {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.otp-inputs input {
+  width: 2.8rem;
+  height: 2.8rem;
+  text-align: center;
+  font-size: 1.2rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.otp-inputs input:focus {
+  border-color: #eab308;
+  box-shadow: 0 0 0 2px rgba(234, 179, 8, 0.2);
+}
+
+/* ===== Verify Button ===== */
+.otp-btn {
+  width: 100%;
+  background: #eab308;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.otp-btn:hover {
+  background: #ca8a04;
+}
+
+/* ===== Footer ===== */
+.otp-footer {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-top: 1rem;
+}
+
+.resend-btn {
+  background: none;
+  border: none;
+  color: #eab308;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.resend-btn:hover {
+  text-decoration: underline;
+}

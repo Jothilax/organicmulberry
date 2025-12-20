@@ -1,0 +1,319 @@
+/* /* ===========================
+   Linen and More - About Page
+   =========================== */
+
+.about-page {
+  position: relative;
+  overflow: hidden;
+  background-color: #fffaf4;
+  color: #3a2e2e;
+  font-family: "Poppins", sans-serif;
+  margin-top: 10vh;
+}
+
+/* -------------------------
+   Background Circles (Soft)
+   ------------------------- */
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 0;
+  filter: blur(100px);
+  opacity: 0.3;
+}
+
+.bg-yellow-light {
+  width: 400px;
+  height: 400px;
+  background: #e4c690;
+  top: -150px;
+  right: -150px;
+}
+
+.bg-yellow-lighter {
+  width: 300px;
+  height: 300px;
+  background: #f5e6c3;
+  bottom: -100px;
+  left: -100px;
+}
+
+/* -------------------------
+   Container and Sections
+   ------------------------- */
+.about-container {
+  position: relative;
+  z-index: 1;
+  padding: 80px 10%;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+/* -------------------------
+   Header Section
+   ------------------------- */
+.about-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-header h1 {
+  font-size: 2.8rem;
+  color: #2a1e1e;
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+
+.about-header p {
+  font-size: 1.1rem;
+  color: #5c4a4a;
+  line-height: 1.6;
+}
+
+/* -------------------------
+   Heritage Section
+   ------------------------- */
+.about-heritage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 40px;
+}
+
+.heritage-image {
+  flex: 1 1 40%;
+}
+
+.heritage-image img {
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.5s ease;
+}
+
+.heritage-image img:hover {
+  transform: scale(1.03);
+}
+
+.heritage-content {
+  flex: 1 1 55%;
+}
+
+.heritage-content h2 {
+  font-size: 2rem;
+  color: #2a1e1e;
+  margin-bottom: 20px;
+}
+
+.heritage-content p {
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 15px;
+  color: #534848;
+}
+
+.btn-yellow {
+  display: inline-block;
+  background: #c8a951;
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-yellow:hover {
+  background: #b49240;
+  transform: translateY(-3px);
+}
+
+/* -------------------------
+   Values Section
+   ------------------------- */
+.about-values {
+  text-align: center;
+}
+
+.about-values h2 {
+  font-size: 2rem;
+  color: #2a1e1e;
+  margin-bottom: 40px;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+}
+
+.value-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px 25px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.value-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.value-icon {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #c8a951;
+}
+
+.value-card h3 {
+  font-size: 1.3rem;
+  color: #3a2e2e;
+  margin-bottom: 10px;
+}
+
+.value-card p {
+  font-size: 0.95rem;
+  color: #5b5050;
+  line-height: 1.6;
+}
+
+/* -------------------------
+   Collections Section
+   ------------------------- */
+.about-collections {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.about-collections h2 {
+  font-size: 2rem;
+  color: #2a1e1e;
+  margin-bottom: 20px;
+}
+
+.about-collections p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #534848;
+  margin-bottom: 15px;
+}
+
+/* -------------------------
+   Mission Section
+   ------------------------- */
+.about-mission {
+  background: #fdf8ed;
+  border-radius: 20px;
+  padding: 50px 40px;
+  text-align: center;
+}
+
+.about-mission h2 {
+  font-size: 2rem;
+  color: #2a1e1e;
+  margin-bottom: 15px;
+}
+
+.about-mission p {
+  font-size: 1rem;
+  color: #4f4343;
+  line-height: 1.7;
+}
+
+/* -------------------------
+   Visit / Contact Section
+   ------------------------- */
+.about-visit {
+  text-align: center;
+}
+
+.about-visit h2 {
+  font-size: 2rem;
+  color: #2a1e1e;
+  margin-bottom: 30px;
+}
+
+.visit-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 40px;
+  text-align: left;
+}
+
+.visit-info,
+.visit-why {
+  flex: 1 1 300px;
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.visit-info h3,
+.visit-why h3 {
+  color: #3a2e2e;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+}
+
+.visit-info p {
+  color: #5c4a4a;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+
+.visit-why ul {
+  list-style: none;
+  padding: 0;
+}
+
+.visit-why li {
+  padding-left: 25px;
+  position: relative;
+  margin-bottom: 10px;
+  color: #5b5050;
+  line-height: 1.5;
+}
+
+.visit-why li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #c8a951;
+  font-weight: bold;
+}
+
+.visit-button {
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .about-container {
+    padding: 60px 5%;
+  }
+
+  .heritage-content h2,
+  .about-values h2,
+  .about-collections h2,
+  .about-mission h2,
+  .about-visit h2 {
+    font-size: 1.7rem;
+  }
+
+  .about-header h1 {
+    font-size: 2.2rem;
+  }
+
+  .heritage-image,
+  .heritage-content {
+    flex: 1 1 100%;
+  }
+}

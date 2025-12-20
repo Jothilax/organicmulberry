@@ -1,0 +1,1521 @@
+// // models/Product.js
+// import { DataTypes } from "sequelize";
+// import sequelize from "../config/db.js"; // adjust path to your db config
+
+// const Product = sequelize.define("Product", {
+//   id: {
+//     type: DataTypes.UUID,
+//     defaultValue: DataTypes.UUIDV4,
+//     primaryKey: true,
+//   },
+
+//   // Main product fields
+//   name: {
+//     type: DataTypes.STRING,
+//     allowNull: false,
+//   },
+//   description: {
+//     type: DataTypes.TEXT,
+//     allowNull: true,
+//   },
+//   price: {
+//     type: DataTypes.DECIMAL(10, 2),
+//     allowNull: false,
+//   },
+//   stock: {
+//     type: DataTypes.INTEGER,
+//     allowNull: false,
+//     defaultValue: 0,
+//   },
+//   category: {
+//     type: DataTypes.STRING,
+//     allowNull: true,
+//   },
+//   brand: {
+//     type: DataTypes.STRING,
+//     allowNull: true,
+//   },
+//   image_url: {
+//     type: DataTypes.STRING,
+//     allowNull: true,
+//   },
+
+//   // SEO fields
+//   seo_title: {
+//     type: DataTypes.STRING,
+//     allowNull: true,
+//   },
+//   seo_description: {
+//     type: DataTypes.TEXT,
+//     allowNull: true,
+//   },
+//   seo_keywords: {
+//     type: DataTypes.STRING,
+//     allowNull: true,
+//   },
+//   slug: {
+//     type: DataTypes.STRING,
+//     allowNull: false,
+//     unique: true,
+//   },
+
+//   // Extra fields
+//   is_active: {
+//     type: DataTypes.BOOLEAN,
+//     defaultValue: true,
+//   }
+// }, {
+//   timestamps: true,  // adds createdAt and updatedAt
+//   tableName: "products"
+// });
+
+// export default Product;
+
+
+// modules/product/product.model.js
+import { DataTypes } from "sequelize";
+import sequelize from "../../config/db.js";
+
+const Product = sequelize.define("Product", {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
+  },
+  name: { type: DataTypes.STRING, allowNull: false },
+  description: { type: DataTypes.TEXT, allowNull: false },
+  price: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+  stock: { type: DataTypes.INTEGER, defaultValue: 0 },
+  category: { type: DataTypes.UUID, 
+    allowNull: false, 
+    references: { model: 'categories', key: 'id' }
+   },
+  brand:{
+     type: DataTypes.STRING,allowNull: false
+  } ,
+  color_id : {
+    type: DataTypes.UUID, 
+    allowNull: false, 
+    references: { model: 'colour', key: 'color_id' }
+  },
+  seo_title: DataTypes.STRING,
+  seo_description: DataTypes.TEXT,
+  seo_keywords: DataTypes.STRING,
+  slug: { type: DataTypes.STRING, allowNull: false, unique: true },
+  is_active: { type: DataTypes.BOOLEAN, defaultValue: true },
+  created_by: { type: DataTypes.UUID, allowNull: true },
+  updated_by: { type: DataTypes.UUID, allowNull: true },
+}, {
+  tableName: "products",
+  timestamps: true,
+  paranoid : true
+});
+
+export default Product;
+
+
+// ✅ Delete Product
+// export const deleteProduct = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const product = await Product.findByPk(id);
+//     if (!product) return res.status(404).json({ message: "Product not found" });
+
+//     await product.destroy();
+//     return res.status(200).json({ message: "Product deleted successfully" });
+//   } catch (error) {
+//     return res.status(500).json({ message: "Failed to delete product", error: error.message });
+//   }
+// };
+
+
+// ✅ Create or Update Images
+// export const addOrUpdateProductImages = async (req, res) => {
+//   const transaction = await Product.sequelize.transaction();
+//   try {
+//     const { id } = req.params; // product_id
+//     const userId = req.user?.id || req.user?.username || "system";
+
+//     // ✅ Ensure product exists
+//     const product = await Product.findByPk(id);
+//     if (!product) return res.status(404).json({ message: "Product not found" });
+
+//     // ✅ If there are compressed images
+//     if (req.compressedImages && req.compressedImages.length > 0) {
+//       const imageData = req.compressedImages.map((filename, index) => ({
+//         product_id: id,
+//         filename,
+//         alt_text: req.body?.alt_texts?.[index] || "",
+//         is_primary: index === 0, // first one as primary by default
+//         is_active: true,
+//         created_by: userId,
+//         updated_by: userId,
+//       }));
+
+//       // ✅ Save images (bulk create)
+//       await ProductImage.bulkCreate(imageData, { transaction });
+//     }
+
+//     await transaction.commit();
+//     return res.status(200).json({ message: "Images uploaded successfully" });
+//   } catch (error) {
+//     await transaction.rollback();
+//     console.error("Error uploading images:", error);
+//     return res.status(500).json({ message: "Failed to upload images", error: error.message });
+//   }
+// };
+
+
+
+
+// // ✅ Get All Products (with Images)
+// export const getAllProducts = async (req, res) => {
+//   try {
+//     const products = await Product.findAll({
+//       include: [
+//         {
+//           model: ProductImage,
+//           as: "images",
+//           attributes: ["id", "filename", "alt_text", "is_primary", "is_active"],
+//         },
+//       ],
+//       order: [["createdAt", "DESC"]],
+//     });
+
+//     // ✅ Append full image URLs
+//     const response = products.map((product) => ({
+//       ...product.toJSON(),
+//       images: product.images.map((img) => ({
+//         ...img,
+//         url: `${req.protocol}://${req.get("host")}/uploads/products/${img.filename}`,
+//       })),
+//     }));
+
+//     return res.status(200).json(response);
+//   } catch (error) {
+//     return res.status(500).json({ message: "Failed to fetch products", error: error.message });
+//   }
+// };
+
+
+// // ✅ Get All Products (with Images)
+// export const getAllProducts = async (req, res) => {
+//   try {
+//       // inside getAllProducts
+// const products = await Product.findAll({
+//   include: [
+//     {
+//       model: ProductImage,
+//       as: "images",
+//       attributes: ["id", "filename", "alt_text", "is_primary", "is_active"],
+//     },
+//     {
+//       model: Category,
+//       as: "category",
+//       attributes: ["id", "category_name"],
+//     },
+//   ],
+//   order: [["createdAt", "DESC"]],
+// });
+
+
+//     // ✅ Format the response
+//     const formattedProducts = products.map((product) => {
+//       const productData = product.toJSON();
+
+//       const images = productData.images.map((img) => ({
+//         id: img.id,
+//         filename: img.filename,
+//         alt_text: img.alt_text,
+//         is_primary: img.is_primary,
+//         is_active: img.is_active,
+//         imageUrl: `${req.protocol}://${req.get("host")}/uploads/products/${img.filename}`,
+//       }));
+//       const category = productData.images.map((img) => ({
+//         id: img.id,
+//         filename: img.filename,
+//         alt_text: img.alt_text,
+//         is_primary: img.is_primary,
+//         is_active: img.is_active,
+//         imageUrl: `${req.protocol}://${req.get("host")}/uploads/products/${img.filename}`,
+//       }));
+//       return {
+//         id: productData.id,
+//         category_id : productData.category_id, 
+//         brand: productData.brand,
+//         name: productData.name,
+//         color: productData.color,
+//         pattern: productData.pattern,
+//         style: productData.style,
+//         material: productData.material,
+//         threadCount: productData.threadCount,
+//         size: productData.size,
+//         dimensions: productData.dimensions,
+//         pocketDepth: productData.pocketDepth,
+//         weight: productData.weight,
+//         countryOfOrigin: productData.countryOfOrigin,
+//         price: productData.price,
+//         mrp: productData.mrp,
+//         discountPercent: productData.discountPercent,
+//         description: productData.description,
+//         includedComponents: productData.includedComponents,
+//         rating: productData.rating,
+//         reviewsCount: productData.reviewsCount,
+//         link: productData.link,
+//         stock: productData.stock,
+//         is_active: productData.is_active,
+//         created_by: productData.created_by,
+//         updated_by: productData.updated_by,
+//         createdAt: productData.createdAt,
+//         updatedAt: productData.updatedAt,
+//         deletedAt: productData.deletedAt,
+//         images,
+//       };
+//     });
+
+//     return res.status(200).json(formattedProducts);
+//   } catch (error) {
+//     console.error("Error fetching products:", error);
+//     return res
+//       .status(500)
+//       .json({ message: "Failed to fetch products", error: error.message });
+//   }
+// };
+
+// // ✅ Get Product by ID (with Images)
+// export const getProductById = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const product = await Product.findByPk(id, {
+//       include: [
+//         {
+//           model: ProductImage,
+//           as: "images",
+//           attributes: ["id", "filename", "alt_text", "is_primary", "is_active"],
+//         },
+//       ],
+//     });
+
+//     if (!product) {
+//       return res.status(404).json({ message: "Product not found" });
+//     }
+
+//     // ✅ Clean, formatted response
+//     const response = {
+//       ...product.toJSON(),
+//       images: product.images.map((img) => ({
+//         id: img.id,
+//         filename: img.filename,
+//         alt_text: img.alt_text,
+//         is_primary: img.is_primary,
+//         is_active: img.is_active,
+//         imageUrl: `${req.protocol}://${req.get("host")}/uploads/products/${img.filename}`,
+//       })),
+//     };
+
+//     return res.status(200).json(response);
+//   } catch (error) {
+//     console.error("Error fetching product:", error);
+//     return res.status(500).json({
+//       message: "Failed to fetch product",
+//       error: error.message,
+//     });
+//   }
+// };
+
+// // ✅ Delete Product (and Images)
+// export const deleteProduct = async (req, res) => {
+//   const transaction = await Product.sequelize.transaction();
+//   try {
+//     const { id } = req.params;
+
+//     const product = await Product.findByPk(id, {
+//       include: [{ model: ProductImage, as: "images" }],
+//     });
+
+//     if (!product) return res.status(404).json({ message: "Product not found" });
+
+//     // ✅ Delete image files from server
+//     if (product.images && product.images.length > 0) {
+//       for (const img of product.images) {
+//         const filePath = path.join("uploads", "products", img.filename);
+//         if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+//       }
+//     }
+
+//     await ProductImage.destroy({ where: { product_id: id }, transaction });
+//     await product.destroy({ transaction });
+
+//     await transaction.commit();
+//     return res.status(200).json({ message: "Product and images deleted successfully" });
+//   } catch (error) {
+//     await transaction.rollback();
+//     return res.status(500).json({ message: "Failed to delete product", error: error.message });
+//   }
+// };
+
+
+-------------
+
+// import Product from "./product.model.js";
+// import ProductImage from "./productImg.model.js";
+// import Category from '../catregory/category.model.js'
+// import Size from "../size/size.model.js";
+// import path from "path";
+// import fs from "fs";
+
+
+// export const createProduct = async (req, res) => {
+//   try {
+//     const userId = req.user?.id || req.user?.username || "system";
+//     const data = { ...req.body, created_by: userId, updated_by: userId };
+
+//     // ✅ Validate category existence if needed (optional)
+//     const categoryExists = await Category.findByPk(data.category_id);
+//     if (!categoryExists) return res.status(400).json({ message: "Invalid category_id" });
+
+//     if (data.size) {
+//     const sizeExists = await Size.findByPk(data.size);
+//     if (!sizeExists) return res.status(400).json({ message: "Invalid size ID" });
+//     }
+
+
+//     const product = await Product.create(data);
+//     return res.status(201).json({ message: "Product created successfully", product });
+//   } catch (error) {
+//     console.error("Error creating product:", error);
+//     return res.status(500).json({ message: "Failed to create product", error: error.message });
+//   }
+// };
+
+
+// // ✅ Update Product
+// export const updateProduct = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const userId = req.user?.id || req.user?.username || "system";
+
+//     const product = await Product.findByPk(id);
+//     if (!product) return res.status(404).json({ message: "Product not found" });
+
+//     await product.update({ ...req.body, updated_by: userId });
+//     return res.status(200).json({ message: "Product updated successfully", product });
+//   } catch (error) {
+//     return res.status(500).json({ message: "Failed to update product", error: error.message });
+//   }
+// };
+
+
+// export const addOrUpdateProductImages = async (req, res) => {
+//   const transaction = await Product.sequelize.transaction();
+
+//   try {
+//     const { id } = req.params; // product_id
+//     const userId = req.user?.id || req.user?.username || "system";
+
+//     // ✅ Ensure product exists
+//     const product = await Product.findByPk(id);
+//     if (!product)
+//       return res.status(404).json({ message: "Product not found" });
+
+//     // ✅ Check for uploaded/compressed images
+//     if (req.compressedImages && req.compressedImages.length > 0) {
+//       const uploadDir = path.join("uploads", "products");
+
+//       // ✅ Ensure upload directory exists
+//       if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+
+//       const imageData = [];
+
+//       for (const [index, oldFilename] of req.compressedImages.entries()) {
+//         const oldPath = path.join(uploadDir, oldFilename);
+
+//         // 🔹 Generate random filename like IMG93828188233.jpg
+//         const ext = path.extname(oldFilename);
+//         const randomName = `IMG${Date.now()}${Math.floor(Math.random() * 100000)}${ext}`;
+//         const newPath = path.join(uploadDir, randomName);
+
+//         // ✅ Rename the file in filesystem
+//         fs.renameSync(oldPath, newPath);
+
+//         imageData.push({
+//           product_id: id,
+//           filename: randomName,
+//           alt_text: req.body?.alt_texts?.[index] || "",
+//           is_primary: index === 0, // first one as primary by default
+//           is_active: true,
+//           created_by: userId,
+//           updated_by: userId,
+//         });
+//       }
+
+//       // ✅ Bulk insert renamed image records
+//       await ProductImage.bulkCreate(imageData, { transaction });
+//     }
+
+//     await transaction.commit();
+//     return res.status(200).json({ message: "Images uploaded successfully" });
+//   } catch (error) {
+//     await transaction.rollback();
+//     console.error("Error uploading images:", error);
+//     return res.status(500).json({
+//       message: "Failed to upload images",
+//       error: error.message,
+//     });
+//   }
+// };
+
+// export const getAllProducts = async (req, res) => {
+//   try {
+//     const products = await Product.findAll({
+//       include: [
+//         {
+//           model: ProductImage,
+//           as: "images",
+//           attributes: ["id", "filename", "alt_text", "is_primary", "is_active"],
+//         },
+//         {
+//           model: Category,
+//           as: "category",
+//           attributes: ["id", "category_name"],
+//         },        
+//         { model: Size, as: "size", attributes: ["id", "size_name"] },
+ 
+//       ],
+//       order: [["createdAt", "DESC"]],
+//     });
+
+//     const formattedProducts = products.map((product) => {
+//       const p = product.toJSON();
+
+//       const images = p.images.map((img) => ({
+//         id: img.id,
+//         filename: img.filename,
+//         alt_text: img.alt_text,
+//         is_primary: img.is_primary,
+//         is_active: img.is_active,
+//         imageUrl: `${req.protocol}://${req.get("host")}/uploads/products/${img.filename}`,
+//       }));
+
+//       return {
+//         id: p.id,
+//         category_id: p.category_id,
+//         category_name: p.category ? p.category.category_name : null,
+//         brand: p.brand,
+//         name: p.name,
+//         color: p.color,
+//         pattern: p.pattern,
+//         style: p.style,
+//         material: p.material,
+//         threadCount: p.threadCount,
+//         size: p.size,
+//         dimensions: p.dimensions,
+//         pocketDepth: p.pocketDepth,
+//         weight: p.weight,
+//         countryOfOrigin: p.countryOfOrigin,
+//         price: p.price,
+//         mrp: p.mrp,
+//         discountPercent: p.discountPercent,
+//         description: p.description,
+//         includedComponents: p.includedComponents,
+//         rating: p.rating,
+//         reviewsCount: p.reviewsCount,
+//         link: p.link,
+//         stock: p.stock,
+//         is_active: p.is_active,
+//         created_by: p.created_by,
+//         updated_by: p.updated_by,
+//         createdAt: p.createdAt,
+//         updatedAt: p.updatedAt,
+//         deletedAt: p.deletedAt,
+//         images,
+//       };
+//     });
+
+//     return res.status(200).json(formattedProducts);
+//   } catch (error) {
+//     console.error("Error fetching products:", error);
+//     return res.status(500).json({
+//       message: "Failed to fetch products",
+//       error: error.message,
+//     });
+//   }
+// };
+
+
+// export const getProductById = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const product = await Product.findByPk(id, {
+//       include: [
+//         {
+//           model: ProductImage,
+//           as: "images",
+//           attributes: ["id", "filename", "alt_text", "is_primary", "is_active"],
+//         },
+//         {
+//           model: Category,
+//           as: "category",
+//           attributes: ["id", "category_name"],
+//         },
+//       ],
+//     });
+
+//     if (!product) {
+//       return res.status(404).json({ message: "Product not found" });
+//     }
+
+//     const p = product.toJSON();
+
+//     const images = p.images.map((img) => ({
+//       id: img.id,
+//       filename: img.filename,
+//       alt_text: img.alt_text,
+//       is_primary: img.is_primary,
+//       is_active: img.is_active,
+//       imageUrl: `${req.protocol}://${req.get("host")}/uploads/products/${img.filename}`,
+//     }));
+
+//     const response = {
+//       id: p.id,
+//       category_id: p.category_id,
+//       category_name: p.category ? p.category.category_name : null,
+//       brand: p.brand,
+//       name: p.name,
+//       color: p.color,
+//       pattern: p.pattern,
+//       style: p.style,
+//       material: p.material,
+//       threadCount: p.threadCount,
+//       size: p.size,
+//       dimensions: p.dimensions,
+//       pocketDepth: p.pocketDepth,
+//       weight: p.weight,
+//       countryOfOrigin: p.countryOfOrigin,
+//       price: p.price,
+//       mrp: p.mrp,
+//       discountPercent: p.discountPercent,
+//       description: p.description,
+//       includedComponents: p.includedComponents,
+//       rating: p.rating,
+//       reviewsCount: p.reviewsCount,
+//       link: p.link,
+//       stock: p.stock,
+//       is_active: p.is_active,
+//       created_by: p.created_by,
+//       updated_by: p.updated_by,
+//       createdAt: p.createdAt,
+//       updatedAt: p.updatedAt,
+//       deletedAt: p.deletedAt,
+//       images,
+//     };
+
+//     return res.status(200).json(response);
+//   } catch (error) {
+//     console.error("Error fetching product:", error);
+//     return res.status(500).json({
+//       message: "Failed to fetch product",
+//       error: error.message,
+//     });
+//   }
+// };
+
+
+
+// export const deleteProduct = async (req, res) => {
+//   const transaction = await Product.sequelize.transaction();
+//   try {
+//     const { id } = req.params;
+
+//     const product = await Product.findByPk(id, {
+//       include: [{ model: ProductImage, as: "images" }],
+//     });
+
+//     if (!product) return res.status(404).json({ message: "Product not found" });
+
+//     // ✅ Delete image files from server
+//     if (product.images && product.images.length > 0) {
+//       for (const img of product.images) {
+//         const filePath = path.join("uploads", "products", img.filename);
+//         if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+//       }
+//     }
+
+//     await ProductImage.destroy({ where: { product_id: id }, transaction });
+//     await product.destroy({ transaction });
+
+//     await transaction.commit();
+//     return res.status(200).json({ message: "Product and images deleted successfully" });
+//   } catch (error) {
+//     await transaction.rollback();
+//     return res.status(500).json({ message: "Failed to delete product", error: error.message });
+//   }
+// };
+
+
+// // ✅ Delete a single product image
+// export const deleteProductImage = async (req, res) => {
+//   try {
+//     const { id } = req.params; // image ID
+
+//     // 🔍 Find the image record
+//     const image = await ProductImage.findByPk(id);
+//     if (!image) {
+//       return res.status(404).json({ message: "Product image not found" });
+//     }
+
+//     // 🗑️ Delete image file from /uploads/products
+//     const filePath = path.join("uploads", "products", image.filename);
+//     if (fs.existsSync(filePath)) {
+//       fs.unlinkSync(filePath);
+//     }
+
+//     // 💾 Delete the DB record (soft delete if paranoid:true)
+//     await image.destroy();
+
+//     return res.status(200).json({
+//       message: "Product image deleted successfully",
+//       deletedImage: {
+//         id: image.id,
+//         filename: image.filename,
+//       },
+//     });
+//   } catch (error) {
+//     console.error("Error deleting product image:", error);
+//     return res.status(500).json({
+//       message: "Failed to delete product image",
+//       error: error.message,
+//     });
+//   }
+// };
+
+======================================
+
+// // models/Product.js
+// import { DataTypes } from "sequelize";
+// import sequelize from "../../config/db.js";
+
+// const Product = sequelize.define("Product", {
+//   id: {
+//     type: DataTypes.UUID,
+//     defaultValue: DataTypes.UUIDV4,
+//     primaryKey: true,
+//   },
+//   brand: {
+//     type: DataTypes.STRING,
+//     allowNull: false,
+//   },
+//   name: {
+//     type: DataTypes.STRING,
+//     allowNull: false,
+//   },
+//   color: {
+//     type: DataTypes.STRING,
+//     allowNull: true,
+//   },
+//   pattern: {
+//     type: DataTypes.STRING,
+//     allowNull: true,
+//   },
+//   style: {
+//     type: DataTypes.STRING,
+//     allowNull: true,
+//   },
+//   material: {
+//     type: DataTypes.STRING,
+//     allowNull: true,
+//   },
+//   threadCount: {
+//     type: DataTypes.INTEGER,
+//     allowNull: true,
+//   },
+//   size: {
+//     type: DataTypes.STRING,
+//     allowNull: true,
+//   },
+//   dimensions: {
+//     type: DataTypes.STRING,
+//     allowNull: true,
+//   },
+//   pocketDepth: {
+//     type: DataTypes.STRING,
+//     allowNull: true,
+//   },
+//   weight: {
+//     type: DataTypes.STRING,
+//     allowNull: true,
+//   },
+//   countryOfOrigin: {
+//     type: DataTypes.STRING,
+//     allowNull: true,
+//   },
+//   price: {
+//     type: DataTypes.FLOAT,
+//     allowNull: true,
+//   },
+//   mrp: {
+//     type: DataTypes.FLOAT,
+//     allowNull: true,
+//   },
+//   discountPercent: {
+//     type: DataTypes.FLOAT,
+//     allowNull: true,
+//   },
+//   description: {
+//     type: DataTypes.TEXT,
+//     allowNull: true,
+//   },
+//   includedComponents: {
+//     type: DataTypes.STRING,
+//     allowNull: true,
+//   },
+//   // imageUrl: {
+//   //   type: DataTypes.STRING,
+//   //   allowNull: true,
+//   // },
+//   rating: {
+//     type: DataTypes.FLOAT,
+//     allowNull: true,
+//   },
+//   reviewsCount: {
+//     type: DataTypes.INTEGER,
+//     allowNull: true,
+//   },
+//   link: {
+//     type: DataTypes.STRING,
+//     allowNull: true,
+//   },
+//   stock: {
+//     type: DataTypes.INTEGER,
+//     allowNull: true,
+//     defaultValue: 0,
+//   },
+//  is_active: {
+//       type: DataTypes.BOOLEAN,
+//       defaultValue: true,
+//     },
+//     created_by: {
+//       type: DataTypes.UUID,
+//       allowNull: false,
+//     },
+//     updated_by: {
+//       type: DataTypes.UUID,
+//       allowNull: false,
+//     },
+
+// },{
+// tableName: "products",   // 👈 table name override
+//     timestamps: true,      // adds createdAt & updatedAt
+//     paranoid: true,        // enables soft delete (adds deletedAt));
+
+// });
+ 
+// export default Product;
+================================
+
+
+// import { z } from "zod";
+
+// // ✅ Create Product Schema
+// export const createProductSchema = z.object({
+//   body: z.object({
+//     brand: z.string().min(1, "Brand is required"),
+//     name: z.string().min(1, "Name is required"),
+//     color: z.string().optional(),
+//     pattern: z.string().optional(),
+//     style: z.string().optional(),
+//     material: z.string().optional(),
+//     threadCount: z.number().optional(),
+//     size: z.string().optional(),
+//     dimensions: z.string().optional(),
+//     pocketDepth: z.string().optional(),
+//     weight: z.string().optional(),
+//     countryOfOrigin: z.string().optional(),
+//     price: z.number().optional(),
+//     mrp: z.number().optional(),
+//     discountPercent: z.number().optional(),
+//     description: z.string().optional(),
+//     includedComponents: z.string().optional(),
+//     imageUrl: z.string().url().optional(),
+//     rating: z.number().optional(),
+//     reviewsCount: z.number().optional(),
+//     link: z.string().url().optional(),
+//     stock: z.number().optional(),
+//   }),
+// });
+
+// // ✅ Update Product Schema
+// export const updateProductSchema = z.object({
+//   params: z.object({
+//     id: z.string().uuid(),
+//   }),
+//   body: z.object({
+//     brand: z.string().optional(),
+//     name: z.string().optional(),
+//     color: z.string().optional(),
+//     pattern: z.string().optional(),
+//     style: z.string().optional(),
+//     material: z.string().optional(),
+//     threadCount: z.number().optional(),
+//     size: z.string().optional(),
+//     dimensions: z.string().optional(),
+//     pocketDepth: z.string().optional(),
+//     weight: z.string().optional(),
+//     countryOfOrigin: z.string().optional(),
+//     price: z.number().optional(),
+//     mrp: z.number().optional(),
+//     discountPercent: z.number().optional(),
+//     description: z.string().optional(),
+//     includedComponents: z.string().optional(),
+//     imageUrl: z.string().url().optional(),
+//     rating: z.number().optional(),
+//     reviewsCount: z.number().optional(),
+//     link: z.string().url().optional(),
+//     stock: z.number().optional(),
+//   }),
+// });
+
+// // ✅ Get / Delete by ID Schema
+// export const productIdSchema = z.object({
+//   params: z.object({
+//     id: z.string().uuid(),
+//   }),
+// });
+ ==============================
+
+ ols controller
+
+ // import Product from "./product.model.js";
+import ProductImage from "./productImg.model.js";
+// import Category from "../catregory/category.model.js";
+// import Size from "../size/size.model.js";
+import path from "path";
+import fs from "fs";
+// import Order from "../order/order.model.js";
+// import OrderItem from "../order/oderItem.model.js";
+import { Customer, Order, OrderItem, Product , Category, Size} from '../associations/index.js'
+
+// ======================================================
+// ✅ CREATE PRODUCT
+// ======================================================
+export const createProduct = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized: Missing user token" });
+    }
+
+    // remove any manually passed created_by / updated_by
+    const { created_by, updated_by, ...bodyData } = req.body;
+
+    const data = {
+      ...bodyData,
+      created_by: userId,
+      updated_by: userId,
+    };
+
+    // ✅ Validate category existence
+    const categoryExists = await Category.findByPk(data.category_id);
+    if (!categoryExists) {
+      return res.status(400).json({ message: "Invalid category_id" });
+    }
+
+    // ✅ Validate size existence (optional)
+    if (data.size) {
+      const sizeExists = await Size.findByPk(data.size);
+      if (!sizeExists) {
+        return res.status(400).json({ message: "Invalid size ID" });
+      }
+    }
+
+    // ✅ Create product
+    const product = await Product.create(data);
+    return res.status(201).json({ message: "Product created successfully", product });
+  } catch (error) {
+    console.error("Error creating product:", error);
+    return res.status(500).json({ message: "Failed to create product", error: error.message });
+  }
+};
+
+// ======================================================
+// ✅ UPDATE PRODUCT
+// ======================================================
+export const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized: Missing user token" });
+    }
+
+    const product = await Product.findByPk(id);
+    if (!product) return res.status(404).json({ message: "Product not found" });
+
+    const { created_by, updated_by, ...bodyData } = req.body;
+
+    await product.update({ ...bodyData, updated_by: userId });
+    return res.status(200).json({ message: "Product updated successfully", product });
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to update product", error: error.message });
+  }
+};
+
+// ======================================================
+// ✅ ADD OR UPDATE PRODUCT IMAGES
+// ======================================================
+export const addOrUpdateProductImages = async (req, res) => {
+  const transaction = await Product.sequelize.transaction();
+
+  try {
+    const { id } = req.params; // product_id
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized: Missing user token" });
+    }
+
+    // ✅ Ensure product exists
+    const product = await Product.findByPk(id);
+    if (!product)
+      return res.status(404).json({ message: "Product not found" });
+
+    if (req.compressedImages && req.compressedImages.length > 0) {
+      const uploadDir = path.join("uploads", "products");
+      if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+
+      const imageData = [];
+
+      for (const [index, oldFilename] of req.compressedImages.entries()) {
+        const oldPath = path.join(uploadDir, oldFilename);
+        const ext = path.extname(oldFilename);
+        const randomName = `IMG${Date.now()}${Math.floor(Math.random() * 100000)}${ext}`;
+        const newPath = path.join(uploadDir, randomName);
+
+        fs.renameSync(oldPath, newPath);
+
+        imageData.push({
+          product_id: id,
+          filename: randomName,
+          alt_text: req.body?.alt_texts?.[index] || "",
+          is_primary: index === 0,
+          is_active: true,
+          created_by: userId,
+          updated_by: userId,
+        });
+      }
+
+      await ProductImage.bulkCreate(imageData, { transaction });
+    }
+
+    await transaction.commit();
+    return res.status(200).json({ message: "Images uploaded successfully" });
+  } catch (error) {
+    await transaction.rollback();
+    console.error("Error uploading images:", error);
+    return res.status(500).json({
+      message: "Failed to upload images",
+      error: error.message,
+    });
+  }
+};
+
+// ======================================================
+// ✅ GET ALL PRODUCTS
+// ======================================================
+export const getAllProducts = async (req, res) => {
+  try {
+    const products = await Product.findAll({
+      include: [
+        {
+          model: ProductImage,
+          as: "images",
+          attributes: ["id", "filename", "alt_text", "is_primary", "is_active"],
+        },
+        {
+          model: Category,
+          as: "category",
+          attributes: ["id", "category_name"],
+        },
+        {
+          model: Size,
+          as: "sizeData", // ✅ fixed alias to match Product model
+          attributes: ["id", "size_name"],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    });
+
+    const formattedProducts = products.map((product) => {
+      const p = product.toJSON();
+      const images = p.images.map((img) => ({
+        id: img.id,
+        filename: img.filename,
+        alt_text: img.alt_text,
+        is_primary: img.is_primary,
+        is_active: img.is_active,
+        imageUrl: `${req.protocol}://${req.get("host")}/uploads/products/${img.filename}`,
+      }));
+
+      return { ...p, images };
+    });
+
+    return res.status(200).json(formattedProducts);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return res.status(500).json({
+      message: "Failed to fetch products",
+      error: error.message,
+    });
+  }
+};
+
+// ======================================================
+// ✅ GET PRODUCT BY ID
+// ======================================================
+export const getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const product = await Product.findByPk(id, {
+      include: [
+        {
+          model: ProductImage,
+          as: "images",
+          attributes: ["id", "filename", "alt_text", "is_primary", "is_active"],
+        },
+        {
+          model: Category,
+          as: "category",
+          attributes: ["id", "category_name"],
+        },
+        {
+          model: Size,
+          as: "sizeData",
+          attributes: ["id", "size_name"],
+        },
+      ],
+    });
+
+    if (!product) return res.status(404).json({ message: "Product not found" });
+
+    const p = product.toJSON();
+    const images = p.images.map((img) => ({
+      id: img.id,
+      filename: img.filename,
+      alt_text: img.alt_text,
+      is_primary: img.is_primary,
+      is_active: img.is_active,
+      imageUrl: `${req.protocol}://${req.get("host")}/uploads/products/${img.filename}`,
+    }));
+
+    return res.status(200).json({ ...p, images });
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    return res.status(500).json({
+      message: "Failed to fetch product",
+      error: error.message,
+    });
+  }
+};
+
+// ======================================================
+// ✅ DELETE PRODUCT
+// ======================================================
+export const deleteProduct = async (req, res) => {
+  const transaction = await Product.sequelize.transaction();
+  try {
+    const { id } = req.params;
+
+    const product = await Product.findByPk(id, {
+      include: [{ model: ProductImage, as: "images" }],
+    });
+
+    if (!product) return res.status(404).json({ message: "Product not found" });
+
+    if (product.images && product.images.length > 0) {
+      for (const img of product.images) {
+        const filePath = path.join("uploads", "products", img.filename);
+        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+      }
+    }
+
+    await ProductImage.destroy({ where: { product_id: id }, transaction });
+    await product.destroy({ transaction });
+
+    await transaction.commit();
+    return res.status(200).json({ message: "Product and images deleted successfully" });
+  } catch (error) {
+    await transaction.rollback();
+    return res.status(500).json({ message: "Failed to delete product", error: error.message });
+  }
+};
+
+=============================================================================================================
+
+// import express from "express";
+// import { uploadMultiple, compressImages } from "../../middleware/upload.js";
+// import {
+//   createProduct,
+//   getAllProducts,
+//   getProductById,
+//   updateProduct,
+//   deleteProduct,
+//   deleteProductImage,
+//   getCustomerOrders,
+//   getOrderItems,
+// } from "./product.controller.js";
+
+// import {
+//   createProductSchema,
+//   updateProductSchema,
+//   productIdSchema,
+// } from "./product.zod.js";
+
+// import { validate } from "../../middleware/validate.js";
+// import { verifyToken } from "../../middleware/userAuth.js";
+
+// const router = express.Router();
+
+// /**
+//  * ======================================================
+//  * 🧩 ADMIN ROUTES (Require Auth)
+//  * ======================================================
+//  */
+
+// // ✅ Create Product (with images)
+// router.post(
+//   "/createProduct",
+//   verifyToken,
+//  uploadMultiple,      // 👈 must come before compression
+//   compressImages,      // 👈 compress after upload
+//   validate(createProductSchema),
+//   createProduct
+// );
+
+// // ✅ Get All Products (admin view)
+// router.get("/getAllProducts", verifyToken, getAllProducts);
+
+// // ✅ Get Product by ID
+// router.get(
+//   "/getProductById/:id",
+//   verifyToken,
+//   validate(productIdSchema),
+//   getProductById
+// );
+
+// // ✅ Update Product (with optional new images)
+// router.put(
+//   "/updateProduct/:id",
+//   verifyToken,
+//  uploadMultiple,      // 👈 must come before compression
+//   compressImages,      // 👈 compress after upload
+//   validate(updateProductSchema),
+//   updateProduct
+// );
+
+// // ✅ Delete Product + Images
+// router.delete(
+//   "/deleteProduct/:id",
+//   verifyToken,
+//   validate(productIdSchema),
+//   deleteProduct
+// );
+
+// // ✅ Delete Product Image (single)
+// router.delete(
+//   "/deleteProductImage/:id",
+//   verifyToken,
+//   deleteProductImage
+// );
+
+// /**
+//  * ======================================================
+//  * 🛍️ CUSTOMER ROUTES (Public)
+//  * ======================================================
+//  */
+
+// // ✅ Get All Active Products
+// router.get("/getAllProductsforCust", getAllProducts);
+
+// // ✅ Get Product Details by ID
+// router.get(
+//   "/getProductByIdforCust/:id",
+//   validate(productIdSchema),
+//   getProductById
+// );
+
+// // ✅ Get Orders of a Customer
+// router.get("/getCustomerOrders/:customerId", getCustomerOrders);
+
+// // ✅ Get Items of a Specific Order
+// router.get("/getOrderItems/:orderId", getOrderItems);
+
+// export default router;
+
+=============================================================================================================
+
+// import fs from "fs";
+// import path from "path";
+// import { Op } from "sequelize";
+// import Product from "./product.model.js";
+// import ProductImage from "./productImg.model.js";
+// import { Category, Size , Color } from "../associations/index.js";
+
+// /**
+//  * ======================================================
+//  * ✅ CREATE PRODUCT WITH IMAGES
+//  * ======================================================
+//  */
+// export const createProduct = async (req, res) => {
+//   const transaction = await Product.sequelize.transaction();
+//   try {
+//     const userId = req.user?.id;
+//     if (!userId) {
+//       return res.status(401).json({ message: "Unauthorized: Missing user token" });
+//     }
+
+//     const { created_by, updated_by, ...bodyData } = req.body;
+
+//     // ✅ Validate category
+//     const category = await Category.findByPk(bodyData.category_id);
+//     if (!category) return res.status(400).json({ message: "Invalid category_id" });
+
+//     // ✅ Validate size
+//     if (bodyData.size) {
+//       const size = await Size.findByPk(bodyData.size);
+//       if (!size) return res.status(400).json({ message: "Invalid size_id" });
+//     }
+
+//     // ✅ Validate color
+//     if (bodyData.color) {
+//       const color = await Color.findByPk(bodyData.color);
+//       if (!color) return res.status(400).json({ message: "Invalid color_id" });
+//     }
+
+//     // ✅ Create products
+//     const product = await Product.create(
+//       { ...bodyData, created_by: userId, updated_by: userId },
+//       { transaction }
+//     );
+
+//     // ✅ Handle product images (if uploaded)
+//     if (req.files && req.files.length > 0) {
+//       const uploadDir = path.join("uploads", "products");
+//       if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+
+//       const imageData = req.files.map((file, index) => ({
+//         product_id: product.id,
+//         images: file.filename,
+//         alt_text: req.body.alt_texts?.[index] || "",
+//         is_primary: index === 0,
+//         is_active: true,
+//         created_by: userId,
+//         updated_by: userId,
+//       }));
+
+//       await ProductImage.bulkCreate(imageData, { transaction });
+//     }
+
+//     await transaction.commit();
+//     return res.status(201).json({ message: "Product created successfully", product });
+//   } catch (error) {
+//     await transaction.rollback();
+//     console.error("Error creating product:", error);
+//     return res.status(500).json({ message: "Failed to create product", error: error.message });
+//   }
+// };
+
+// /**
+//  * ======================================================
+//  * ✅ UPDATE PRODUCT + IMAGES
+//  * ======================================================
+//  */
+// export const updateProduct = async (req, res) => {
+//   const transaction = await Product.sequelize.transaction();
+//   try {
+//     const { id } = req.params;
+//     const userId = req.user?.id;
+
+//     const product = await Product.findByPk(id, { include: [{ model: ProductImage, as: "images" }] });
+//     if (!product) return res.status(404).json({ message: "Product not found" });
+
+//     const { created_by, updated_by, ...bodyData } = req.body;
+
+//     // ✅ Update product details
+//     await product.update({ ...bodyData, updated_by: userId }, { transaction });
+
+//     // ✅ If new images uploaded, delete old & insert new
+//     if (req.files && req.files.length > 0) {
+//       const uploadDir = path.join("uploads", "products");
+
+//       // Delete old image files
+//       for (const img of product.images) {
+//         const filePath = path.join(uploadDir, img.filename);
+//         if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+//       }
+
+//       await ProductImage.destroy({ where: { product_id: id }, transaction });
+
+//       // Add new images
+//       const imageData = req.files.map((file, index) => ({
+//         product_id: id,
+//          images: file.filename,
+//         alt_text: req.body.alt_texts?.[index] || "",
+//         is_primary: index === 0,
+//         is_active: true,
+//         created_by: userId,
+//         updated_by: userId,
+//       }));
+
+//       await ProductImage.bulkCreate(imageData, { transaction });
+//     }
+
+//     await transaction.commit();
+//     return res.status(200).json({ message: "Product updated successfully", product });
+//   } catch (error) {
+//     await transaction.rollback();
+//     console.error("Error updating product:", error);
+//     return res.status(500).json({ message: "Failed to update product", error: error.message });
+//   }
+// };
+
+// /**
+//  * ======================================================
+//  * ✅ GET ALL PRODUCTS
+//  * ======================================================
+//  */
+// export const getAllProducts = async (req, res) => {
+//   try {
+//     const { search = "" } = req.query;
+
+//     const products = await Product.findAll({
+//       where: {
+//         [Op.or]: [
+//           { name: { [Op.like]: `%${search}%` } },
+//           { brand: { [Op.like]: `%${search}%` } },
+//         ],
+//       },
+//       include: [
+//         { model: ProductImage, as: "images", attributes: ["id", "filename", "alt_text", "is_primary", "is_active"] },
+//         { model: Category, as: "category", attributes: ["id", "category_name"] },
+//         { model: Size, as: "sizeData", attributes: ["id", "size_name"] },
+//         { model: Color, as: "colorData", attributes: ["color_id", "color_name", "hex_code"] },
+//       ],
+//       order: [["createdAt", "DESC"]],
+//     });
+
+//     const formatted = products.map((p) => {
+//       const json = p.toJSON();
+//       json.images = json.images.map((img) => ({
+//         ...img,
+//         imageUrl: `${req.protocol}://${req.get("host")}/uploads/products/${img.filename}`,
+//       }));
+//       return json;
+//     });
+
+//     return res.status(200).json({ message: "Products fetched successfully", data: formatted });
+//   } catch (error) {
+//     console.error("Error fetching products:", error);
+//     return res.status(500).json({ message: "Failed to fetch products", error: error.message });
+//   }
+// };
+
+// /**
+//  * ======================================================
+//  * ✅ GET PRODUCT BY ID
+//  * ======================================================
+//  */
+// export const getProductById = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const product = await Product.findByPk(id, {
+//       include: [
+//         { model: ProductImage, as: "images", attributes: ["id", "filename", "alt_text", "is_primary", "is_active"] },
+//         { model: Category, as: "category", attributes: ["id", "category_name"] },
+//         { model: Size, as: "sizeData", attributes: ["id", "size_name"] },
+//         { model: Color, as: "colorData", attributes: ["color_id", "color_name", "hex_code"] },
+//       ],
+//     });
+
+//     if (!product) return res.status(404).json({ message: "Product not found" });
+
+//     const json = product.toJSON();
+//     json.images = json.images.map((img) => ({
+//       ...img,
+//       imageUrl: `${req.protocol}://${req.get("host")}/uploads/products/${img.filename}`,
+//     }));
+
+//     return res.status(200).json({ message: "Product fetched successfully", data: json });
+//   } catch (error) {
+//     console.error("Error fetching product by id:", error);
+//     return res.status(500).json({ message: "Failed to fetch product", error: error.message });
+//   }
+// };
+
+// /**
+//  * ======================================================
+//  * ✅ DELETE PRODUCT + IMAGES
+//  * ======================================================
+//  */
+// export const deleteProduct = async (req, res) => {
+//   const transaction = await Product.sequelize.transaction();
+//   try {
+//     const { id } = req.params;
+
+//     const product = await Product.findByPk(id, { include: [{ model: ProductImage, as: "images" }] });
+//     if (!product) return res.status(404).json({ message: "Product not found" });
+
+//     const uploadDir = path.join("uploads", "products");
+
+//     // Delete image files
+//     for (const img of product.images) {
+//       const filePath = path.join(uploadDir, img.filename);
+//       if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+//     }
+
+//     // Delete records
+//     await ProductImage.destroy({ where: { product_id: id }, transaction });
+//     await product.destroy({ transaction });
+
+//     await transaction.commit();
+//     return res.status(200).json({ message: "Product and images deleted successfully" });
+//   } catch (error) {
+//     await transaction.rollback();
+//     console.error("Error deleting product:", error);
+//     return res.status(500).json({ message: "Failed to delete product", error: error.message });
+//   }
+// };
+
+// // ======================================================
+// // ✅ DELETE SINGLE PRODUCT IMAGE
+// // ======================================================
+// export const deleteProductImage = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const image = await ProductImage.findByPk(id);
+//     if (!image) return res.status(404).json({ message: "Product image not found" });
+
+//     const filePath = path.join("uploads", "products", image.filename);
+//     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+
+//     await image.destroy();
+
+//     return res.status(200).json({
+//       message: "Product image deleted successfully",
+//       deletedImage: { id: image.id, filename: image.filename },
+//     });
+//   } catch (error) {
+//     console.error("Error deleting product image:", error);
+//     return res.status(500).json({
+//       message: "Failed to delete product image",
+//       error: error.message,
+//     });
+//   }
+// };
+====================================================================================================================

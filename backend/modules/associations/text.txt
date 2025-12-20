@@ -1,0 +1,150 @@
+// // // import Customer from "../customer/customer.model.js";
+// // // import Order from "../order/order.model.js";
+// // // import OrderItem from "../order/oderItem.model.js";
+// // // import Product from "../products/product.model.js";
+// // // import Category from "../catregory/category.model.js";
+// // // import Size from "../size/size.model.js";
+// // // import User from "../user/user.model.js"; // 👈 Add your User model
+// // // import Role from "../role/role.model.js";  // 👈 Add your Role model
+
+// // // // ============================
+// // // // DEFINE ALL ASSOCIATIONS HERE
+// // // // ============================
+
+// // // // 🧍 Customer ↔ Orders
+// // // Customer.hasMany(Order, { foreignKey: "user_id", as: "orders" });
+// // // Order.belongsTo(Customer, { foreignKey: "user_id", as: "customer" });
+
+// // // // 📦 Order ↔ OrderItem
+// // // Order.hasMany(OrderItem, { foreignKey: "order_id", as: "items" });
+// // // OrderItem.belongsTo(Order, { foreignKey: "order_id", as: "order" });
+
+// // // // 🛍️ Product ↔ OrderItem
+// // // Product.hasMany(OrderItem, { foreignKey: "product_id", as: "orderItems" });
+// // // OrderItem.belongsTo(Product, { foreignKey: "product_id", as: "product" });
+
+// // // // 🗂️ Product ↔ Category
+// // // Category.hasMany(Product, { foreignKey: "category_id", as: "products" });
+// // // Product.belongsTo(Category, { foreignKey: "category_id", as: "category" });
+
+// // // // 📏 Product ↔ Size
+// // // Size.hasMany(Product, { foreignKey: "size", as: "products" });
+// // // Product.belongsTo(Size, { foreignKey: "size", as: "sizeData" });
+
+// // // // 🧑 User ↔ Role
+// // // Role.hasMany(User, { foreignKey: "user_role", as: "users" });
+// // // User.belongsTo(Role, { foreignKey: "user_role", as: "roleData" }); // 👈 Important!
+
+// // // export {
+// // //   Customer,
+// // //   Order,
+// // //   OrderItem,
+// // //   Product,
+// // //   Category,
+// // //   Size,
+// // //   User,
+// // //   Role,
+// // // };
+
+
+// // import Customer from "../customer/customer.model.js";
+// // import Order from "../order/order.model.js";
+// // import OrderItem from "../order/oderItem.model.js";
+// // import Product from "../products/product.model.js";
+// // import Category from "../catregory/category.model.js";
+// // import Size from "../size/size.model.js";
+// // import Users from "../user/user.model.js";
+// // import Role from "../role/role.model.js";
+
+// // // ============================
+// // // DEFINE ALL ASSOCIATIONS HERE
+// // // ============================
+
+// // // 🧑‍💼 User ↔ Role (Many Users can have one Role)
+// // Role.hasMany(Users, { foreignKey: "user_role", as: "users" });
+// // Users.belongsTo(Role, { foreignKey: "user_role", as: "roleData" });
+
+// // // 🧍 Customer ↔ Orders (If customers are separate from admin users)
+// // Customer.hasMany(Order, { foreignKey: "customer_id", as: "orders" });
+// // Order.belongsTo(Customer, { foreignKey: "customer_id", as: "customer" });
+
+// // // // 🧑‍💻 User ↔ Orders (Admin/staff placing/managing orders)
+// // // Users.hasMany(Order, { foreignKey: "user_id", as: "createdOrders" });
+// // // Order.belongsTo(Users, { foreignKey: "user_id", as: "createdByUser" });
+
+// // // 📦 Order ↔ OrderItem
+// // Order.hasMany(OrderItem, { foreignKey: "order_id", as: "items" });
+// // OrderItem.belongsTo(Order, { foreignKey: "order_id", as: "order" });
+
+// // // 🛍️ Product ↔ OrderItem
+// // Product.hasMany(OrderItem, { foreignKey: "product_id", as: "orderItems" });
+// // OrderItem.belongsTo(Product, { foreignKey: "product_id", as: "product" });
+
+// // // 🗂️ Product ↔ Category
+// // Category.hasMany(Product, { foreignKey: "category_id", as: "products" });
+// // Product.belongsTo(Category, { foreignKey: "category_id", as: "category" });
+
+// // // 📏 Product ↔ Size
+// // Size.hasMany(Product, { foreignKey: "size", as: "products" });
+// // Product.belongsTo(Size, { foreignKey: "size", as: "sizeData" });
+
+// // export {
+// //   Customer,
+// //   Order,
+// //   OrderItem,
+// //   Product,
+// //   Category,
+// //   Size,
+// //   Users,
+// //   Role,
+// // };
+
+
+// import Customer from "../customer/customer.model.js";
+// import Order from "../order/order.model.js";
+// import OrderItem from "../order/oderItem.model.js";
+// import Product from "../products/product.model.js";
+// import Category from "../catregory/category.model.js";
+// import Size from "../size/size.model.js";
+// import Users from "../user/user.model.js";
+// import Role from "../role/role.model.js";
+
+// // ============================
+// // DEFINE ALL ASSOCIATIONS HERE
+// // ============================
+
+// // 🧑‍💼 User ↔ Role (Admin/Staff role relation)
+// Role.hasMany(Users, { foreignKey: "user_role", as: "users" });
+// Users.belongsTo(Role, { foreignKey: "user_role", as: "roleData" });
+
+// // 🧍 Customer ↔ Orders
+// Customer.hasMany(Order, { foreignKey: "customer_id", as: "orders" });
+// Order.belongsTo(Customer, { foreignKey: "customer_id", as: "customer" });
+
+// // 📦 Order ↔ OrderItem
+// Order.hasMany(OrderItem, { foreignKey: "order_id", as: "items" });
+// OrderItem.belongsTo(Order, { foreignKey: "order_id", as: "order" });
+
+// // 🛍️ Product ↔ OrderItem
+// Product.hasMany(OrderItem, { foreignKey: "product_id", as: "orderItems" });
+// OrderItem.belongsTo(Product, { foreignKey: "product_id", as: "product" });
+
+// // 🗂️ Product ↔ Category
+// Category.hasMany(Product, { foreignKey: "category_id", as: "products" });
+// Product.belongsTo(Category, { foreignKey: "category_id", as: "category" });
+
+// // 📏 Product ↔ Size
+// Size.hasMany(Product, { foreignKey: "size", as: "products" });
+// Product.belongsTo(Size, { foreignKey: "size", as: "sizeData" });
+
+// export {
+//   Customer,
+//   Order,
+//   OrderItem,
+//   Product,
+//   Category,
+//   Size,
+//   Users,
+//   Role,
+// };
+

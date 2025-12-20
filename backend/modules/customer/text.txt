@@ -1,0 +1,153 @@
+// import Customer from "../models/Customer.js";
+// import { generateOTP } from "../utils/generateOTP.js";
+// import { sendEmail } from "../utils/sendEmail.js";
+// import { sendSMS } from "../utils/sendSMS.js";
+// import bcrypt from "bcryptjs";
+
+// export const sendOTP = async (req, res) => {
+//   try {
+//     const { email, phone } = req.body;
+
+//     if (!email && !phone) {
+//       return res.status(400).json({ message: "Email or phone is required" });
+//     }
+
+//     const otp = generateOTP();
+//     const hashedOTP = await bcrypt.hash(otp, 10);
+//     const expiry = new Date(Date.now() + 5 * 60 * 1000);
+
+//     let customer = await Customer.findOne({ where: { email: email || null, phone: phone || null } });
+
+//     if (!customer) {
+//       customer = await Customer.create({ email, phone });
+//     }
+
+//     await customer.update({ otp: hashedOTP, otpExpiry: expiry });
+
+//     if (email) await sendEmail(email, otp);
+//     if (phone) await sendSMS(phone, otp);
+
+//     res.json({ message: "OTP sent successfully!" });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Failed to send OTP" });
+//   }
+// };
+
+// export const verifyOTP = async (req, res) => {
+//   try {
+//     const { email, phone, otp } = req.body;
+
+//     const customer = await Customer.findOne({ where: { email: email || null, phone: phone || null } });
+//     if (!customer) return res.status(404).json({ message: "User not found" });
+
+//     if (customer.otpExpiry < new Date()) return res.status(400).json({ message: "OTP expired" });
+
+//     const isValid = await bcrypt.compare(otp, customer.otp);
+//     if (!isValid) return res.status(400).json({ message: "Invalid OTP" });
+
+//     await customer.update({ isVerified: true, otp: null, otpExpiry: null });
+
+//     res.json({ message: "OTP verified successfully!" });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Verification failed" });
+//   }
+// };
+
+// Verify OTP
+// export const verifyOTP = async (req, res) => {
+//   try {
+//     const { email, phone, otp } = req.body;
+//     if (!otp || (!email && !phone)) return res.status(400).json({ message: "Invalid request" });
+
+//     const customer = await Customer.findOne({ where: { email: email || phone, phone: phone || email } });
+//     if (!customer) return res.status(404).json({ message: "Customer not found" });
+
+//     if (customer.otp !== otp) return res.status(400).json({ message: "Invalid OTP" });
+//     if (new Date() > customer.otp_expiry) return res.status(400).json({ message: "OTP expired" });
+
+//     await customer.update({ is_verified: true, otp: null, otp_expiry: null });
+
+//     const token = generateToken({ id: customer.id, email: customer.email });
+//     res.json({ message: "OTP verified successfully", token });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
+// Update Profile
+// export const updateProfile = async (req, res) => {
+//   try {
+//     const parsedData = updateProfileSchema.parse(req.body);
+//     const customer = req.customer;
+
+//     if (!customer.is_verified) return res.status(403).json({ message: "Customer not verified" });
+
+//     await customer.update(parsedData);
+//     res.json({ message: "Profile updated successfully", customer });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
+
+
+// export const verifyOTP = async (req, res) => {
+//   try {
+//     const { email, phone, otp } = req.body;
+//     if (!otp || (!email && !phone))
+//       return res.status(400).json({ message: "Invalid request" });
+
+//     // find customer by email or phone
+//     const customer = await Customer.findOne({
+//       where: { email: email || null, phone: phone || null },
+//     });
+//     if (!customer)
+//       return res.status(404).json({ message: "Customer not found" });
+
+//     // check OTP
+//     if (customer.otp !== otp)
+//       return res.status(400).json({ message: "Invalid OTP" });
+
+//     // check OTP expiry (fix field name)
+//     if (customer.otpExpiry && new Date() > customer.otpExpiry)
+//       return res.status(400).json({ message: "OTP expired" });
+
+//     // update verification status (fix field name)
+//     await customer.update({
+//       isVerified: true,
+//       otp: null,
+//       otpExpiry: null,
+//     });
+
+//     const token = generateToken({ id: customer.id, email: customer.email });
+//     res.json({ message: "OTP verified successfully", token });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
+
+// ✅ Get all customers (admin purpose)
+// export const getAllCustomers = async (req, res) => {
+//   try {
+//     const customers = await Customer.findAll({
+//       attributes: {
+//         exclude: ["password", "otp"], // don’t return sensitive info
+//       },
+//     });
+
+//     res.json({
+//       message: "All customers fetched successfully",
+//       total: customers.length,
+//       customers,
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };

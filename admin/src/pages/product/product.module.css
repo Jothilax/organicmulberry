@@ -1,0 +1,315 @@
+/* ================================
+   Container & Header
+================================ */
+.container {
+  padding: 30px;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  background: white;
+  padding: 20px 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.header h2 {
+  color: #2c3e50;
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header h2::before {
+  content: "📦";
+  font-size: 32px;
+}
+
+.hearderContainer {
+  padding: 10px;
+  text-align: center;
+}
+
+.headerBtn {
+  display: flex;
+  flex-direction: row;
+}
+
+/* Header Buttons */
+.toggleBtn,
+.addBtn {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: 0.3s ease;
+}
+
+.toggleBtn {
+  margin-left: 10px;
+  background: linear-gradient(135deg, #f5e2b1 0%, #e8d5a3 100%);
+  color: #2c3e50;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggleBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.addBtn {
+  background: linear-gradient(135deg, #eab308 0%, #f59e0b 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(234, 179, 8, 0.3);
+}
+
+.addBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(234, 179, 8, 0.4);
+}
+
+/* ================================
+   New Perfect Grid Card Layout
+================================ */
+.cardContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 25px;
+  padding: 10px 5px;
+}
+
+/* Modern Product Card */
+.productCard {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  transition: 0.2s ease;
+  border: 1px solid #eee;
+}
+
+.productCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+}
+
+/* Product Image Box */
+.productImageBox {
+  height: 200px;
+  background: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.productImageBox img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* No Image */
+.noImg {
+  color: #888;
+  font-size: 15px;
+}
+
+/* Product Content */
+.productContent {
+  padding: 12px 16px;
+  flex: 1;
+}
+
+.productTitle {
+  margin: 0 0 10px;
+  font-size: 18px;
+  color: #222;
+  font-weight: 600;
+}
+
+/* Actions At Bottom */
+.productActions {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.productActions svg {
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.productActions svg:first-child {
+  color: #2563eb;
+}
+
+.productActions svg:first-child:hover {
+  transform: scale(1.2);
+}
+
+.productActions svg:last-child {
+  color: #dc2626;
+}
+
+.productActions svg:last-child:hover {
+  transform: scale(1.2);
+}
+
+/* ================================
+   Table View
+================================ */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
+.table th {
+  background: linear-gradient(135deg, #f5e2b1 0%, #e8d5a3 100%);
+  color: #2c3e50;
+  padding: 15px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #d4a574;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #555;
+  font-size: 14px;
+}
+
+.table tbody tr:hover {
+  background-color: #fff9e6;
+  transform: scale(1.01);
+  box-shadow: 0 2px 4px rgba(234, 179, 8, 0.1);
+}
+
+.tableImg {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ================================
+   Form Styling
+================================ */
+.formContainer {
+  padding: 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+/* .form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+} */
+.form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 inputs per row */
+  gap: 20px;
+}
+
+.formGroup label {
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.form input,
+.form select,
+.form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.buttonGroup {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.saveBtn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
+
+.cancelBtn {
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+}
+
+/* ================================
+   Responsive Design
+================================ */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .headerBtn {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .toggleBtn,
+  .addBtn {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .cardContainer {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

@@ -1,0 +1,247 @@
+/* ---------------------------- */
+/* Add Product – Page Layout    */
+/* ---------------------------- */
+
+.container {
+  width: 100%;
+  padding: 30px 50px;
+  background: #f4f2ef;
+  min-height: 100vh;
+}
+
+/* Title Row */
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.titleRow h2 {
+  font-size: 28px;
+  color: #333;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* ---------------------------- */
+/* Form Grid Layout             */
+/* ---------------------------- */
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  gap: 25px;
+  margin-top: 20px;
+}
+
+/* Column span helpers */
+.col1 {
+  grid-column: span 1;
+}
+
+.col2 {
+  grid-column: span 2;
+}
+
+.col3 {
+  grid-column: span 3;
+}
+
+/* ---------------------------- */
+/* Labels & Inputs              */
+/* ---------------------------- */
+
+.form label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d0cfcf;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  transition: all 0.2s ease-in-out;
+}
+
+.form input:focus,
+.form select:focus,
+.form textarea:focus {
+  border-color: #f0b429;
+  outline: none;
+  box-shadow: 0 0 4px rgba(240, 180, 41, 0.4);
+}
+
+/* Textarea styling */
+.form textarea {
+  resize: none;
+  height: 110px;
+}
+
+/* ---------------------------- */
+/* Submit Button                */
+/* ---------------------------- */
+
+.submitBtn {
+  grid-column: span 3;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #eab308 0%, #f59e0b 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.submitBtn:hover {
+  background: linear-gradient(135deg, #d19a07 0%, #ec8f06 100%);
+}
+
+/* ---------------------------- */
+/* Responsive Breakpoints       */
+/* ---------------------------- */
+
+@media (max-width: 900px) {
+  .form {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .form {
+    grid-template-columns: 1fr;
+  }
+
+  .submitBtn {
+    grid-column: span 1;
+  }
+}
+.container {
+  padding: 30px 50px;
+  background: #f7f5f2;
+  min-height: 100vh;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.titleRow h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+/* Grid layout */
+.form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+/* Column spans */
+.col1 {
+  grid-column: span 1;
+}
+
+.col2 {
+  grid-column: span 2;
+}
+
+.col3 {
+  grid-column: span 3;
+}
+
+/* Input styling */
+label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: block;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: white;
+  font-size: 14px;
+}
+/* Button row */
+.buttonRow {
+  grid-column: span 1;          /* full row */
+  display: flex;
+  justify-content: flex-start; /* LEFT aligned */
+  margin-top: 20px;
+}
+
+/* Cute & Simple Button */
+.submitBtn {
+  padding: 8px 18px;
+  background: #d4a437;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  min-width: 130px;
+  transition: all 0.2s ease;
+}
+
+.submitBtn:hover {
+  background: #b7892d;
+  transform: translateY(-1px);
+}
+
+
+/* Image preview */
+.imagePreviewContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.imageBox {
+  width: 100px;
+  height: 100px;
+  position: relative;
+}
+
+.imageBox img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.imageBox button {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: red;
+  color: white;
+  border: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+}

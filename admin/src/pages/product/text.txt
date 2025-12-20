@@ -1,0 +1,2335 @@
+// // // src/pages/product/EditProduct.jsx
+// // import React, { useState, useEffect } from "react";
+// // import {
+// //   getProductById,
+// //   updateProduct,
+// //   uploadProductImages,
+// //   getAllCategories,
+// // } from "../../services/productService";
+// // import { useParams, useNavigate } from "react-router-dom";
+// // import styles from "./product.module.css";
+
+// // const EditProduct = () => {
+// //   const { id } = useParams();
+// //   const [form, setForm] = useState({});
+// //   const [images, setImages] = useState([]);
+// //   const [categories, setCategories] = useState([]);
+// //   const navigate = useNavigate();
+
+// //   useEffect(() => {
+// //     getAllCategories().then((res) => setCategories(res.data || []));
+// //     getProductById(id).then((res) => setForm(res.data));
+// //   }, [id]);
+
+// //   const handleChange = (e) => {
+// //     setForm({ ...form, [e.target.name]: e.target.value });
+// //   };
+
+// //   const handleSubmit = async (e) => {
+// //     e.preventDefault();
+// //     try {
+// //       await updateProduct(id, form);
+// //       if (images.length) await uploadProductImages(id, images);
+// //       alert("Product updated successfully!");
+// //       navigate("/products");
+// //     } catch (err) {
+// //       console.error(err);
+// //     }
+// //   };
+
+// //   return (
+// //     <div className={styles.formContainer}>
+// //       <h2>Edit Product</h2>
+// //       <form onSubmit={handleSubmit} className={styles.form}>
+// //         <input name="name" value={form.name || ""} onChange={handleChange} required />
+// //         <select name="categoryId" value={form.categoryId || ""} onChange={handleChange} required>
+// //           <option value="">Select Category</option>
+// //           {categories.map((c) => (
+// //             <option key={c.id} value={c.id}>{c.name}</option>
+// //           ))}
+// //         </select>
+// //         <input name="price" type="number" value={form.price || ""} onChange={handleChange} required />
+// //         <input name="discount" type="number" value={form.discount || ""} onChange={handleChange} />
+// //         <input name="stock" type="number" value={form.stock || ""} onChange={handleChange} />
+// //         <input name="rating" type="number" step="0.1" value={form.rating || ""} onChange={handleChange} />
+// //         <input type="file" multiple onChange={(e) => setImages(e.target.files)} />
+// //         <button type="submit">Update Product</button>
+// //       </form>
+// //     </div>
+// //   );
+// // };
+
+// // export default EditProduct;
+
+
+// import React, { useState, useEffect } from "react";
+// import { getProductById, updateProduct, uploadProductImages, getAllCategories } from "../../services/productService";
+// import { useParams, useNavigate } from "react-router-dom";
+// import styles from "./product.module.css";
+
+// const EditProduct = () => {
+//   const { id } = useParams();
+//   const [form, setForm] = useState({});
+//   const [images, setImages] = useState([]);
+//   const [categories, setCategories] = useState([]);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     loadData();
+//   }, [id]);
+
+//   const loadData = async () => {
+//     try {
+//       const [catRes, prodRes] = await Promise.all([getAllCategories(), getProductById(id)]);
+//       setCategories(catRes.data || catRes);
+//       setForm(prodRes.data || prodRes);
+//     } catch (err) {
+//       console.error("❌ Failed to load data:", err);
+//     }
+//   };
+
+//   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       await updateProduct(id, form);
+//       if (images.length) await uploadProductImages(id, images);
+//       alert("✅ Product updated successfully!");
+//       navigate("/products");
+//     } catch (err) {
+//       console.error("❌ Update failed:", err);
+//     }
+//   };
+
+//   return (
+//     <div className={styles.formContainer}>
+//       <h2>Edit Product</h2>
+//       <form onSubmit={handleSubmit} className={styles.form}>
+//         <input name="name" value={form.name || ""} onChange={handleChange} required />
+//         <select name="categoryId" value={form.categoryId || ""} onChange={handleChange} required>
+//           <option value="">Select Category</option>
+//           {categories.map((c) => (
+//             <option key={c.id} value={c.id}>{c.name}</option>
+//           ))}
+//         </select>
+//         <input name="price" type="number" value={form.price || ""} onChange={handleChange} required />
+//         <input name="discount" type="number" value={form.discount || ""} onChange={handleChange} />
+//         <input name="stock" type="number" value={form.stock || ""} onChange={handleChange} />
+//         <input name="rating" type="number" step="0.1" value={form.rating || ""} onChange={handleChange} />
+//         <input type="file" multiple onChange={(e) => setImages(e.target.files)} />
+//         <button type="submit">Update Product</button>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default EditProduct;
+// // // src/pages/product/AddProduct.jsx
+// // import React, { useState, useEffect } from "react";
+// // import { createProduct, uploadProductImages, getAllCategories } from "../../services/productService";
+// // import { useNavigate } from "react-router-dom";
+// // import styles from "./product.module.css";
+
+// // const AddProduct = () => {
+// //   const [form, setForm] = useState({
+// //     name: "",
+// //     categoryId: "",
+// //     price: "",
+// //     discount: "",
+// //     stock: "",
+// //     rating: "",
+// //   });
+// //   const [images, setImages] = useState([]);
+// //   const [categories, setCategories] = useState([]);
+// //   const navigate = useNavigate();
+
+// //   useEffect(() => {
+// //     getAllCategories().then((res) => setCategories(res.data || []));
+// //   }, []);
+
+// //   const handleChange = (e) => {
+// //     setForm({ ...form, [e.target.name]: e.target.value });
+// //   };
+
+// //   const handleSubmit = async (e) => {
+// //     e.preventDefault();
+// //     try {
+// //       const product = await createProduct(form);
+// //       if (images.length) await uploadProductImages(product.data.id, images);
+// //       alert("Product added successfully!");
+// //       navigate("/products");
+// //     } catch (err) {
+// //       console.error(err);
+// //       alert("Failed to add product");
+// //     }
+// //   };
+
+// //   return (
+// //     <div className={styles.formContainer}>
+// //       <h2>Add Product</h2>
+// //       <form onSubmit={handleSubmit} className={styles.form}>
+// //         <input name="name" placeholder="Product Name" onChange={handleChange} required />
+// //         <select name="categoryId" onChange={handleChange} required>
+// //           <option value="">Select Category</option>
+// //           {categories.map((c) => (
+// //             <option key={c.id} value={c.id}>{c.name}</option>
+// //           ))}
+// //         </select>
+// //         <input name="price" type="number" placeholder="Rate" onChange={handleChange} required />
+// //         <input name="discount" type="number" placeholder="Discount (%)" onChange={handleChange} />
+// //         <input name="stock" type="number" placeholder="Stock" onChange={handleChange} />
+// //         <input name="rating" type="number" step="0.1" placeholder="Rating" onChange={handleChange} />
+// //         <input type="file" multiple onChange={(e) => setImages(e.target.files)} />
+// //         <button type="submit">Save Product</button>
+// //       </form>
+// //     </div>
+// //   );
+// // };
+
+// // export default AddProduct;
+
+
+// import React, { useState, useEffect } from "react";
+// import { createProduct, uploadProductImages, getAllCategories } from "../../services/productService";
+// import { useNavigate } from "react-router-dom";
+// import styles from "./product.module.css";
+
+// const AddProduct = () => {
+//   const [form, setForm] = useState({
+//     name: "",
+//     categoryId: "",
+//     price: "",
+//     discount: "",
+//     stock: "",
+//     rating: "",
+//   });
+//   const [images, setImages] = useState([]);
+//   const [categories, setCategories] = useState([]);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     loadCategories();
+//   }, []);
+
+//   const loadCategories = async () => {
+//     try {
+//       const res = await getAllCategories();
+//       const cats = res.data || res;
+//       setCategories(cats);
+//     } catch (err) {
+//       console.error("❌ Failed to load categories:", err);
+//     }
+//   };
+
+//   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const res = await createProduct(form);
+//       const newProduct = res.data || res;
+//       if (images.length) await uploadProductImages(newProduct.id, images);
+//       alert("✅ Product added successfully!");
+//       navigate("/products");
+//     } catch (err) {
+//       console.error("❌ Failed to add product:", err);
+//       alert("Failed to add product");
+//     }
+//   };
+
+//   return (
+//     <div className={styles.formContainer}>
+//       <h2>Add Product</h2>
+//       <form onSubmit={handleSubmit} className={styles.form}>
+//         <input name="name" placeholder="Product Name" onChange={handleChange} required />
+//         <select name="categoryId" onChange={handleChange} required>
+//           <option value="">Select Category</option>
+//           {categories.map((c) => (
+//             <option key={c.id} value={c.id}>{c.name}</option>
+//           ))}
+//         </select>
+//         <input name="price" type="number" placeholder="Rate" onChange={handleChange} required />
+//         <input name="discount" type="number" placeholder="Discount (%)" onChange={handleChange} />
+//         <input name="stock" type="number" placeholder="Stock" onChange={handleChange} />
+//         <input name="rating" type="number" step="0.1" placeholder="Rating" onChange={handleChange} />
+//         <input type="file" multiple onChange={(e) => setImages(e.target.files)} />
+//         <button type="submit">Save Product</button>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default AddProduct;
+
+// // src/services/product.service.js
+// const API_BASE = "http://localhost:3000/api/products";
+// const API_CATBASE = "http://localhost:3000/api/categories";
+
+// function authHeaders() {
+//   const token = localStorage.getItem("token");
+//   return token ? { Authorization: `Bearer ${token}` } : {};
+// }
+
+// // Create product (details only)
+// export async function createProduct(data) {
+//   const res = await fetch(`${API_BASE}/createProduct`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       ...authHeaders(),
+//     },
+//     body: JSON.stringify(data),
+//   });
+//   if (!res.ok) throw new Error(`Create failed: ${res.status}`);
+//   return res.json();
+// }
+
+// // Upload images for product (multiple files)
+// export async function uploadProductImages(productId, files) {
+//   const fd = new FormData();
+//   Array.from(files).forEach((f) => fd.append("images", f)); // name 'images' - adapt if your backend expects different field
+//   const res = await fetch(`${API_BASE}/productImg/${productId}`, {
+//     method: "POST",
+//     headers: { ...authHeaders() },
+//     body: fd,
+//   });
+//   if (!res.ok) throw new Error(`Image upload failed: ${res.status}`);
+//   return res.json();
+// }
+
+// // Update product details
+// export async function updateProduct(productId, data) {
+//   const res = await fetch(`${API_BASE}/updateProduct/${productId}`, {
+//     method: "PUT",
+//     headers: {
+//       "Content-Type": "application/json",
+//       ...authHeaders(),
+//     },
+//     body: JSON.stringify(data),
+//   });
+//   if (!res.ok) throw new Error(`Update failed: ${res.status}`);
+//   return res.json();
+// }
+
+// // Get all products
+// export async function getAllProducts() {
+//   const res = await fetch(`${API_BASE}/getAllProducts`, {
+//     method: "GET",
+//     headers: { ...authHeaders() },
+//   });
+//   if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+//   return res.json();
+// }
+
+// // Get product by id
+// export async function getProductById(id) {
+//   const res = await fetch(`${API_BASE}/getProductById/${id}`, {
+//     method: "GET",
+//     headers: { ...authHeaders() },
+//   });
+//   if (!res.ok) throw new Error(`Fetch product failed: ${res.status}`);
+//   return res.json();
+// }
+
+// // Delete product
+// export async function deleteProduct(productId) {
+//   const res = await fetch(`${API_BASE}/deleteProduct/${productId}`, {
+//     method: "DELETE",
+//     headers: { ...authHeaders() },
+//   });
+//   if (!res.ok) throw new Error(`Delete failed: ${res.status}`);
+//   return res.json();
+// }
+
+// // Delete product image
+// export async function deleteProductImage(imageId) {
+//   const res = await fetch(`${API_BASE}/deleteProductImage/${imageId}`, {
+//     method: "DELETE",
+//     headers: { ...authHeaders() },
+//   });
+//   if (!res.ok) throw new Error(`Delete image failed: ${res.status}`);
+//   return res.json();
+// }
+
+
+// // http://localhost:3000/api/categories/getAllCategories
+
+// export async function getAllCategories() {
+//   const res = await fetch(`${API_CATBASE}/getAllCategories`, {
+//     method: "GET",
+//     headers: { ...authHeaders() },
+//   });
+//   if (!res.ok) throw new Error(`Fetch categories failed: ${res.status}`);
+//   return res.json();
+// }
+
+// // // ✅ Get all categories
+// // export const getAllCategories = async (token) => {
+// //   return await axios.get(`${API_CATBASE}/getAllCategories`, {
+// //     headers: { Authorization: `Bearer ${token}` },
+// //   });
+// // };
+
+
+======================
+
+// import React, { useState, useEffect } from "react";
+// import {
+//   createProduct,
+//   uploadProductImages,
+//   getAllCategories,
+// } from "../../services/productService";
+// import { useNavigate } from "react-router-dom";
+// import styles from "./product.module.css";
+
+// const AddProduct = () => {
+//   const [form, setForm] = useState({
+//     category_id: "",
+//     brand: "",
+//     name: "",
+//     color: "",
+//     pattern: "",
+//     style: "",
+//     material: "",
+//     threadCount: "",
+//     size: "",
+//     dimensions: "",
+//     pocketDepth: "",
+//     weight: "",
+//     countryOfOrigin: "",
+//     price: "",
+//     mrp: "",
+//     discountPercent: "",
+//     description: "",
+//     includedComponents: "",
+//     rating: "",
+//     reviewsCount: "",
+//     link: "",
+//     stock: "",
+//     is_active: true,
+//   });
+
+//   const [images, setImages] = useState([]);
+//   const [categories, setCategories] = useState([]);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     loadCategories();
+//   }, []);
+
+//   const loadCategories = async () => {
+//     try {
+//       const res = await getAllCategories();
+//       const cats = Array.isArray(res)
+//         ? res
+//         : Array.isArray(res.data)
+//         ? res.data
+//         : [];
+//       setCategories(cats);
+//     } catch (err) {
+//       console.error("❌ Failed to load categories:", err);
+//       setCategories([]);
+//     }
+//   };
+
+//   const handleChange = (e) => {
+//     const { name, value, type, checked } = e.target;
+//     setForm({
+//       ...form,
+//       [name]: type === "checkbox" ? checked : value,
+//     });
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const res = await createProduct(form);
+//       const newProduct = res.data || res;
+//       if (images.length) await uploadProductImages(newProduct.id, images);
+//       alert("✅ Product added successfully!");
+//       navigate("/products");
+//     } catch (err) {
+//       console.error("❌ Failed to add product:", err);
+//       alert("Failed to add product");
+//     }
+//   };
+
+//   const handleCancel = () => {
+//     navigate("/products");
+//   };
+
+//   return (
+//     <div className={styles.formContainer}>
+//       <h2>Add Product</h2>
+
+//       <form onSubmit={handleSubmit} className={styles.form}>
+//         {/* --- Category & Basic Info --- */}
+//         <select
+//           name="category_id"
+//           value={form.category_id}
+//           onChange={handleChange}
+//           required
+//         >
+//           <option value="">Select Category</option>
+//           {categories.map((c) => (
+//             <option key={c.id} value={c.id}>
+//               {c.name}
+//             </option>
+//           ))}
+//         </select>
+
+//         <input
+//           name="brand"
+//           value={form.brand}
+//           onChange={handleChange}
+//           placeholder="Brand"
+//           required
+//         />
+//         <input
+//           name="name"
+//           value={form.name}
+//           onChange={handleChange}
+//           placeholder="Product Name"
+//           required
+//         />
+
+//         {/* --- Appearance & Material --- */}
+//         <input
+//           name="color"
+//           value={form.color}
+//           onChange={handleChange}
+//           placeholder="Color"
+//         />
+//         <input
+//           name="pattern"
+//           value={form.pattern}
+//           onChange={handleChange}
+//           placeholder="Pattern"
+//         />
+//         <input
+//           name="style"
+//           value={form.style}
+//           onChange={handleChange}
+//           placeholder="Style"
+//         />
+//         <input
+//           name="material"
+//           value={form.material}
+//           onChange={handleChange}
+//           placeholder="Material"
+//         />
+//         <input
+//           name="threadCount"
+//           type="number"
+//           value={form.threadCount}
+//           onChange={handleChange}
+//           placeholder="Thread Count"
+//         />
+
+//         {/* --- Size & Dimensions --- */}
+//         <input
+//           name="size"
+//           value={form.size}
+//           onChange={handleChange}
+//           placeholder="Size (e.g. Queen)"
+//         />
+//         <input
+//           name="dimensions"
+//           value={form.dimensions}
+//           onChange={handleChange}
+//           placeholder="Dimensions"
+//         />
+//         <input
+//           name="pocketDepth"
+//           value={form.pocketDepth}
+//           onChange={handleChange}
+//           placeholder="Pocket Depth"
+//         />
+//         <input
+//           name="weight"
+//           value={form.weight}
+//           onChange={handleChange}
+//           placeholder="Weight"
+//         />
+
+//         {/* --- Price Details --- */}
+//         <input
+//           name="price"
+//           type="number"
+//           value={form.price}
+//           onChange={handleChange}
+//           placeholder="Price"
+//           required
+//         />
+//         <input
+//           name="mrp"
+//           type="number"
+//           value={form.mrp}
+//           onChange={handleChange}
+//           placeholder="MRP"
+//         />
+//         <input
+//           name="discountPercent"
+//           type="number"
+//           value={form.discountPercent}
+//           onChange={handleChange}
+//           placeholder="Discount (%)"
+//         />
+
+//         {/* --- Additional Info --- */}
+//         <input
+//           name="countryOfOrigin"
+//           value={form.countryOfOrigin}
+//           onChange={handleChange}
+//           placeholder="Country of Origin"
+//         />
+//         <input
+//           name="includedComponents"
+//           value={form.includedComponents}
+//           onChange={handleChange}
+//           placeholder="Included Components"
+//         />
+//         <input
+//           name="link"
+//           value={form.link}
+//           onChange={handleChange}
+//           placeholder="Product Link"
+//         />
+
+//         {/* --- Ratings & Stock --- */}
+//         <input
+//           name="rating"
+//           type="number"
+//           step="0.1"
+//           value={form.rating}
+//           onChange={handleChange}
+//           placeholder="Rating"
+//         />
+//         <input
+//           name="reviewsCount"
+//           type="number"
+//           value={form.reviewsCount}
+//           onChange={handleChange}
+//           placeholder="Reviews Count"
+//         />
+//         <input
+//           name="stock"
+//           type="number"
+//           value={form.stock}
+//           onChange={handleChange}
+//           placeholder="Stock"
+//         />
+
+//         {/* --- Active Checkbox --- */}
+//         <label className={styles.checkboxLabel}>
+//           <input
+//             type="checkbox"
+//             name="is_active"
+//             checked={form.is_active}
+//             onChange={handleChange}
+//           />
+//           Active
+//         </label>
+
+//         {/* --- Description --- */}
+//         <textarea
+//           name="description"
+//           value={form.description}
+//           onChange={handleChange}
+//           placeholder="Description"
+//           rows={3}
+//         />
+
+//         {/* --- Images --- */}
+//         <input
+//           type="file"
+//           multiple
+//           onChange={(e) => setImages(e.target.files)}
+//         />
+
+//         {/* --- Buttons --- */}
+//         <div className={styles.buttonGroup}>
+//           <button type="submit" className={styles.saveBtn}>
+//             Save Product
+//           </button>
+//           <button
+//             type="button"
+//             className={styles.cancelBtn}
+//             onClick={handleCancel}
+//           >
+//             Cancel
+//           </button>
+//         </div>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default AddProduct;
+
+
+import React, { useState, useEffect } from "react";
+import { createProduct, uploadProductImages, getAllCategories } from "../../services/productService";
+import { useNavigate } from "react-router-dom";
+import styles from "./product.module.css";
+
+const AddProduct = () => {
+  const [form, setForm] = useState({
+    category_id: "",
+    brand: "",
+    name: "",
+    color: "",
+    pattern: "",
+    style: "",
+    material: "",
+    threadCount: "",
+    size: "",
+    dimensions: "",
+    pocketDepth: "",
+    weight: "",
+    countryOfOrigin: "",
+    price: "",
+    mrp: "",
+    discountPercent: "",
+    description: "",
+    includedComponents: "",
+    rating: "",
+    reviewsCount: "",
+    link: "",
+    stock: "",
+    is_active: true,
+  });
+
+  const [images, setImages] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const loadCategories = async () => {
+    try {
+      const res = await getAllCategories();
+      const cats = Array.isArray(res)
+        ? res
+        : Array.isArray(res.categories)
+        ? res.categories
+        : [];
+      setCategories(cats);
+    } catch (err) {
+      console.error("❌ Failed to load categories:", err);
+      setCategories([]);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm({
+      ...form,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await createProduct(form);
+      const newProduct = res.data || res;
+      if (images.length) await uploadProductImages(newProduct.id, images);
+      alert("✅ Product added successfully!");
+      navigate("/products");
+    } catch (err) {
+      console.error("❌ Failed to add product:", err);
+      alert("Failed to add product");
+    }
+  };
+
+  const handleCancel = () => {
+    navigate("/products");
+  };
+
+  return (
+    <div className={styles.formContainer}>
+      <h2>Add Product</h2>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <select
+          name="category_id"
+          value={form.category_id}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select Category</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.category_name}
+            </option>
+          ))}
+        </select>
+
+        <input name="brand" value={form.brand} onChange={handleChange} placeholder="Brand" required />
+        <input name="name" value={form.name} onChange={handleChange} placeholder="Product Name" required />
+        <input name="color" value={form.color} onChange={handleChange} placeholder="Color" />
+        <input name="pattern" value={form.pattern} onChange={handleChange} placeholder="Pattern" />
+        <input name="style" value={form.style} onChange={handleChange} placeholder="Style" />
+        <input name="material" value={form.material} onChange={handleChange} placeholder="Material" />
+        <input name="threadCount" type="number" value={form.threadCount} onChange={handleChange} placeholder="Thread Count" />
+        <input name="size" value={form.size} onChange={handleChange} placeholder="Size" />
+        <input name="dimensions" value={form.dimensions} onChange={handleChange} placeholder="Dimensions" />
+        <input name="pocketDepth" value={form.pocketDepth} onChange={handleChange} placeholder="Pocket Depth" />
+        <input name="weight" value={form.weight} onChange={handleChange} placeholder="Weight" />
+        <input name="price" type="number" value={form.price} onChange={handleChange} placeholder="Price" required />
+        <input name="mrp" type="number" value={form.mrp} onChange={handleChange} placeholder="MRP" />
+        <input name="discountPercent" type="number" value={form.discountPercent} onChange={handleChange} placeholder="Discount (%)" />
+        <input name="countryOfOrigin" value={form.countryOfOrigin} onChange={handleChange} placeholder="Country of Origin" />
+        <input name="includedComponents" value={form.includedComponents} onChange={handleChange} placeholder="Included Components" />
+        <input name="link" value={form.link} onChange={handleChange} placeholder="Product Link" />
+        <input name="rating" type="number" step="0.1" value={form.rating} onChange={handleChange} placeholder="Rating" />
+        <input name="reviewsCount" type="number" value={form.reviewsCount} onChange={handleChange} placeholder="Reviews Count" />
+        <input name="stock" type="number" value={form.stock} onChange={handleChange} placeholder="Stock" />
+
+        {/* <label className={styles.checkboxLabel}>
+          <input type="checkbox" name="is_active" checked={form.is_active} onChange={handleChange} /> Active
+        </label> */}
+
+        <textarea name="description" value={form.description} onChange={handleChange} placeholder="Description" rows={3} />
+        <input type="file" multiple onChange={(e) => setImages(e.target.files)} />
+
+        <div className={styles.buttonGroup}>
+          <button type="submit" className={styles.saveBtn}>Save Product</button>
+          <button type="button" className={styles.cancelBtn} onClick={handleCancel}>Cancel</button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default AddProduct;
+-------------------------------------
+
+// import React, { useState, useEffect } from "react";
+// import {
+//   getProductById,
+//   updateProduct,
+//   uploadProductImages,
+//   getAllCategories,
+// } from "../../services/productService";
+// import { useParams, useNavigate } from "react-router-dom";
+// import styles from "./product.module.css";
+
+// const EditProduct = () => {
+//   const { id } = useParams();
+//   const [form, setForm] = useState({
+//     category_id: "",
+//     brand: "",
+//     name: "",
+//     color: "",
+//     pattern: "",
+//     style: "",
+//     material: "",
+//     threadCount: "",
+//     size: "",
+//     dimensions: "",
+//     pocketDepth: "",
+//     weight: "",
+//     countryOfOrigin: "",
+//     price: "",
+//     mrp: "",
+//     discountPercent: "",
+//     description: "",
+//     includedComponents: "",
+//     rating: "",
+//     reviewsCount: "",
+//     link: "",
+//     stock: "",
+//     is_active: true,
+//   });
+//   const [images, setImages] = useState([]);
+//   const [categories, setCategories] = useState([]);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     loadData();
+//   }, [id]);
+
+//   const loadData = async () => {
+//     try {
+//       const [catRes, prodRes] = await Promise.all([
+//         getAllCategories(),
+//         getProductById(id),
+//       ]);
+
+//       const cats = Array.isArray(catRes)
+//         ? catRes
+//         : Array.isArray(catRes.data)
+//         ? catRes.data
+//         : [];
+//       setCategories(cats);
+
+//       const product = prodRes.data || prodRes;
+//       setForm(product);
+//     } catch (err) {
+//       console.error("❌ Failed to load data:", err);
+//       setCategories([]);
+//     }
+//   };
+
+//   const handleChange = (e) => {
+//     const { name, value, type, checked } = e.target;
+//     setForm({
+//       ...form,
+//       [name]: type === "checkbox" ? checked : value,
+//     });
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       await updateProduct(id, form);
+//       if (images.length) await uploadProductImages(id, images);
+//       alert("✅ Product updated successfully!");
+//       navigate("/products");
+//     } catch (err) {
+//       console.error("❌ Update failed:", err);
+//       alert("Failed to update product");
+//     }
+//   };
+
+//   const handleCancel = () => navigate("/products");
+
+//   return (
+//     <div className={styles.formContainer}>
+//       <h2>Edit Product</h2>
+//       <form onSubmit={handleSubmit} className={styles.form}>
+//         {/* --- Category & Basic Info --- */}
+//         <select
+//           name="category_id"
+//           value={form.category_id || ""}
+//           onChange={handleChange}
+//           required
+//         >
+//           <option value="">Select Category</option>
+//           {categories.map((c) => (
+//             <option key={c.id} value={c.id}>
+//               {c.category_name || c.name}
+//             </option>
+//           ))}
+//         </select>
+
+//         <input
+//           name="brand"
+//           value={form.brand || ""}
+//           onChange={handleChange}
+//           placeholder="Brand"
+//         />
+//         <input
+//           name="name"
+//           value={form.name || ""}
+//           onChange={handleChange}
+//           placeholder="Product Name"
+//           required
+//         />
+
+//         {/* --- Appearance & Material --- */}
+//         <input
+//           name="color"
+//           value={form.color || ""}
+//           onChange={handleChange}
+//           placeholder="Color"
+//         />
+//         <input
+//           name="pattern"
+//           value={form.pattern || ""}
+//           onChange={handleChange}
+//           placeholder="Pattern"
+//         />
+//         <input
+//           name="style"
+//           value={form.style || ""}
+//           onChange={handleChange}
+//           placeholder="Style"
+//         />
+//         <input
+//           name="material"
+//           value={form.material || ""}
+//           onChange={handleChange}
+//           placeholder="Material"
+//         />
+//         <input
+//           name="threadCount"
+//           type="number"
+//           value={form.threadCount || ""}
+//           onChange={handleChange}
+//           placeholder="Thread Count"
+//         />
+
+//         {/* --- Size & Dimensions --- */}
+//         <input
+//           name="size"
+//           value={form.size || ""}
+//           onChange={handleChange}
+//           placeholder="Size"
+//         />
+//         <input
+//           name="dimensions"
+//           value={form.dimensions || ""}
+//           onChange={handleChange}
+//           placeholder="Dimensions"
+//         />
+//         <input
+//           name="pocketDepth"
+//           value={form.pocketDepth || ""}
+//           onChange={handleChange}
+//           placeholder="Pocket Depth"
+//         />
+//         <input
+//           name="weight"
+//           value={form.weight || ""}
+//           onChange={handleChange}
+//           placeholder="Weight"
+//         />
+
+//         {/* --- Price Details --- */}
+//         <input
+//           name="price"
+//           type="number"
+//           value={form.price || ""}
+//           onChange={handleChange}
+//           placeholder="Price"
+//         />
+//         <input
+//           name="mrp"
+//           type="number"
+//           value={form.mrp || ""}
+//           onChange={handleChange}
+//           placeholder="MRP"
+//         />
+//         <input
+//           name="discountPercent"
+//           type="number"
+//           value={form.discountPercent || ""}
+//           onChange={handleChange}
+//           placeholder="Discount (%)"
+//         />
+
+//         {/* --- Additional Info --- */}
+//         <input
+//           name="countryOfOrigin"
+//           value={form.countryOfOrigin || ""}
+//           onChange={handleChange}
+//           placeholder="Country of Origin"
+//         />
+//         <input
+//           name="includedComponents"
+//           value={form.includedComponents || ""}
+//           onChange={handleChange}
+//           placeholder="Included Components"
+//         />
+//         <input
+//           name="link"
+//           value={form.link || ""}
+//           onChange={handleChange}
+//           placeholder="Product Link"
+//         />
+
+//         {/* --- Ratings & Stock --- */}
+//         <input
+//           name="rating"
+//           type="number"
+//           step="0.1"
+//           value={form.rating || ""}
+//           onChange={handleChange}
+//           placeholder="Rating"
+//         />
+//         <input
+//           name="reviewsCount"
+//           type="number"
+//           value={form.reviewsCount || ""}
+//           onChange={handleChange}
+//           placeholder="Reviews Count"
+//         />
+//         <input
+//           name="stock"
+//           type="number"
+//           value={form.stock || ""}
+//           onChange={handleChange}
+//           placeholder="Stock"
+//         />
+
+//         {/* --- Active Checkbox --- */}
+//         <label className={styles.checkboxLabel}>
+//           <input
+//             type="checkbox"
+//             name="is_active"
+//             checked={form.is_active || false}
+//             onChange={handleChange}
+//           />
+//           Active
+//         </label>
+
+//         {/* --- Description --- */}
+//         <textarea
+//           name="description"
+//           value={form.description || ""}
+//           onChange={handleChange}
+//           placeholder="Description"
+//           rows={3}
+//         />
+
+//         {/* --- Images --- */}
+//         <input
+//           type="file"
+//           multiple
+//           onChange={(e) => setImages(e.target.files)}
+//         />
+
+//         {/* --- Buttons --- */}
+//         <div className={styles.buttonGroup}>
+//           <button type="submit" className={styles.saveBtn}>
+//             Update Product
+//           </button>
+//           <button
+//             type="button"
+//             className={styles.cancelBtn}
+//             onClick={handleCancel}
+//           >
+//             Cancel
+//           </button>
+//         </div>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default EditProduct;
+
+
+import React, { useState, useEffect } from "react";
+import { getProductById, updateProduct, uploadProductImages, getAllCategories } from "../../services/productService";
+import { useParams, useNavigate } from "react-router-dom";
+import styles from "./product.module.css";
+
+const EditProduct = () => {
+  const { id } = useParams();
+  const [form, setForm] = useState({});
+  const [images, setImages] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    loadData();
+  }, [id]);
+
+  const loadData = async () => {
+    try {
+      const [catRes, prodRes] = await Promise.all([getAllCategories(), getProductById(id)]);
+
+      const cats = Array.isArray(catRes)
+        ? catRes
+        : Array.isArray(catRes.categories)
+        ? catRes.categories
+        : [];
+      setCategories(cats);
+
+      const product = prodRes.data || prodRes;
+      setForm(product);
+    } catch (err) {
+      console.error("❌ Failed to load data:", err);
+      setCategories([]);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm({
+      ...form,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await updateProduct(id, form);
+      if (images.length) await uploadProductImages(id, images);
+      alert("✅ Product updated successfully!");
+      navigate("/products");
+    } catch (err) {
+      console.error("❌ Update failed:", err);
+      alert("Failed to update product");
+    }
+  };
+
+  const handleCancel = () => navigate("/products");
+
+  return (
+    <div className={styles.formContainer}>
+      <h2>Edit Product</h2>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <select name="category_id" value={form.category_id || ""} onChange={handleChange} required>
+          <option value="">Select Category</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>{c.category_name}</option>
+          ))}
+        </select>
+
+        <input name="brand" value={form.brand || ""} onChange={handleChange} placeholder="Brand" required />
+        <input name="name" value={form.name || ""} onChange={handleChange} placeholder="Product Name" required />
+        <input name="color" value={form.color || ""} onChange={handleChange} placeholder="Color" />
+        <input name="pattern" value={form.pattern || ""} onChange={handleChange} placeholder="Pattern" />
+        <input name="style" value={form.style || ""} onChange={handleChange} placeholder="Style" />
+        <input name="material" value={form.material || ""} onChange={handleChange} placeholder="Material" />
+        <input name="threadCount" type="number" value={form.threadCount || ""} onChange={handleChange} placeholder="Thread Count" />
+        <input name="size" value={form.size || ""} onChange={handleChange} placeholder="Size" />
+        <input name="dimensions" value={form.dimensions || ""} onChange={handleChange} placeholder="Dimensions" />
+        <input name="pocketDepth" value={form.pocketDepth || ""} onChange={handleChange} placeholder="Pocket Depth" />
+        <input name="weight" value={form.weight || ""} onChange={handleChange} placeholder="Weight" />
+        <input name="price" type="number" value={form.price || ""} onChange={handleChange} placeholder="Price" required />
+        <input name="mrp" type="number" value={form.mrp || ""} onChange={handleChange} placeholder="MRP" />
+        <input name="discountPercent" type="number" value={form.discountPercent || ""} onChange={handleChange} placeholder="Discount (%)" />
+        <input name="countryOfOrigin" value={form.countryOfOrigin || ""} onChange={handleChange} placeholder="Country of Origin" />
+        <input name="includedComponents" value={form.includedComponents || ""} onChange={handleChange} placeholder="Included Components" />
+        <input name="link" value={form.link || ""} onChange={handleChange} placeholder="Product Link" />
+        <input name="rating" type="number" step="0.1" value={form.rating || ""} onChange={handleChange} placeholder="Rating" />
+        <input name="reviewsCount" type="number" value={form.reviewsCount || ""} onChange={handleChange} placeholder="Reviews Count" />
+        <input name="stock" type="number" value={form.stock || ""} onChange={handleChange} placeholder="Stock" />
+
+        {/* <label className={styles.checkboxLabel}>
+          <input type="checkbox" name="is_active" checked={form.is_active || false} onChange={handleChange} /> Active
+        </label> */}
+
+        <textarea name="description" value={form.description || ""} onChange={handleChange} placeholder="Description" rows={3} />
+        <input type="file" multiple onChange={(e) => setImages(e.target.files)} />
+
+        <div className={styles.buttonGroup}>
+          <button type="submit" className={styles.saveBtn}>Update Product</button>
+          <button type="button" className={styles.cancelBtn} onClick={handleCancel}>Cancel</button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default EditProduct;
+
+
+------------------------------------------------------------------------
+
+// // // // // src/pages/product/ProductList.jsx
+// // // // import React, { useEffect, useState } from "react";
+// // // // import { getAllProducts, deleteProduct } from "../../services/productService.js";
+// // // // import { useNavigate } from "react-router-dom";
+// // // // import styles from "./product.module.css";
+
+// // // // const ProductList = () => {
+// // // //   const [products, setProducts] = useState([]);
+// // // //   const [viewMode, setViewMode] = useState("card");
+// // // //   const navigate = useNavigate();
+
+// // // //   useEffect(() => {
+// // // //     loadProducts();
+// // // //   }, []);
+
+// // // //   const loadProducts = async () => {
+// // // //     try {
+// // // //       const data = await getAllProducts();
+// // // //       setProducts(data.data || []);
+// // // //     } catch (err) {
+// // // //       console.error(err);
+// // // //     }
+// // // //   };
+
+// // // //   const handleDelete = async (id) => {
+// // // //     if (!window.confirm("Are you sure you want to delete this product?")) return;
+// // // //     try {
+// // // //       await deleteProduct(id);
+// // // //       loadProducts();
+// // // //     } catch (err) {
+// // // //       console.error("Delete failed", err);
+// // // //     }
+// // // //   };
+
+// // // //   return (
+// // // //     <div className={styles.container}>
+// // // //       <div className={styles.header}>
+// // // //         <h2>Products</h2>
+// // // //         <div>
+// // // //           <button
+// // // //             className={styles.addBtn}
+// // // //             onClick={() => navigate("/add-product")}
+// // // //           >
+// // // //             ➕ Add Product
+// // // //           </button>
+// // // //           <button
+// // // //             className={styles.toggleBtn}
+// // // //             onClick={() =>
+// // // //               setViewMode(viewMode === "card" ? "table" : "card")
+// // // //             }
+// // // //           >
+// // // //             {viewMode === "card" ? "📋 Table View" : "🗂️ Card View"}
+// // // //           </button>
+// // // //         </div>
+// // // //       </div>
+
+// // // //       {viewMode === "card" ? (
+// // // //         <div className={styles.cardContainer}>
+// // // //           {products.map((p) => (
+// // // //             <div key={p.id} className={styles.card}>
+// // // //               <div className={styles.imgContainer}>
+// // // //                 {p.images?.length ? (
+// // // //                   <img
+// // // //                     src={p.images[0].url}
+// // // //                     alt={p.name}
+// // // //                     className={styles.productImg}
+// // // //                   />
+// // // //                 ) : (
+// // // //                   <div className={styles.noImg}>No Image</div>
+// // // //                 )}
+// // // //               </div>
+// // // //               <div className={styles.cardBody}>
+// // // //                 <h3>{p.name}</h3>
+// // // //                 <p>Category: {p.category?.name || "N/A"}</p>
+// // // //                 <p>Rate: ₹{p.price}</p>
+// // // //                 <p>Discount: {p.discount || 0}%</p>
+// // // //                 <p>Total: ₹{(p.price - (p.price * p.discount) / 100).toFixed(2)}</p>
+// // // //                 <p>Rating: ⭐ {p.rating || 0}</p>
+// // // //                 <p>Stock: {p.stock || 0}</p>
+// // // //               </div>
+// // // //               <div className={styles.cardActions}>
+// // // //                 <button onClick={() => navigate(`/edit-product/${p.id}`)}>✏️</button>
+// // // //                 <button onClick={() => handleDelete(p.id)}>🗑️</button>
+// // // //               </div>
+// // // //             </div>
+// // // //           ))}
+// // // //         </div>
+// // // //       ) : (
+// // // //         <table className={styles.table}>
+// // // //           <thead>
+// // // //             <tr>
+// // // //               <th>Image</th>
+// // // //               <th>Name</th>
+// // // //               <th>Category</th>
+// // // //               <th>Rate</th>
+// // // //               <th>Discount</th>
+// // // //               <th>Total Price</th>
+// // // //               <th>Rating</th>
+// // // //               <th>Stock</th>
+// // // //               <th>Action</th>
+// // // //             </tr>
+// // // //           </thead>
+// // // //           <tbody>
+// // // //             {products.map((p) => (
+// // // //               <tr key={p.id}>
+// // // //                 <td>
+// // // //                   {p.images?.length ? (
+// // // //                     <img
+// // // //                       src={p.images[0].url}
+// // // //                       alt={p.name}
+// // // //                       className={styles.tableImg}
+// // // //                     />
+// // // //                   ) : (
+// // // //                     "No Img"
+// // // //                   )}
+// // // //                 </td>
+// // // //                 <td>{p.name}</td>
+// // // //                 <td>{p.category?.name || "N/A"}</td>
+// // // //                 <td>₹{p.price}</td>
+// // // //                 <td>{p.discount || 0}%</td>
+// // // //                 <td>₹{(p.price - (p.price * p.discount) / 100).toFixed(2)}</td>
+// // // //                 <td>⭐ {p.rating || 0}</td>
+// // // //                 <td>{p.stock}</td>
+// // // //                 <td>
+// // // //                   <button onClick={() => navigate(`/edit-product/${p.id}`)}>✏️</button>
+// // // //                   <button onClick={() => handleDelete(p.id)}>🗑️</button>
+// // // //                 </td>
+// // // //               </tr>
+// // // //             ))}
+// // // //           </tbody>
+// // // //         </table>
+// // // //       )}
+// // // //     </div>
+// // // //   );
+// // // // };
+
+// // // // export default ProductList;
+
+
+// // // import React, { useEffect, useState } from "react";
+// // // import { getAllProducts, deleteProduct } from "../../services/productService";
+// // // import { useNavigate } from "react-router-dom";
+// // // import styles from "./product.module.css";
+
+// // // const ProductList = () => {
+// // //   const [products, setProducts] = useState([]);
+// // //   const [viewMode, setViewMode] = useState("card");
+// // //   const navigate = useNavigate();
+
+// // //   useEffect(() => {
+// // //     loadProducts();
+// // //   }, []);
+
+// // //   const loadProducts = async () => {
+// // //     try {
+// // //       const res = await getAllProducts();
+// // //       // 🟢 Adjust according to your API shape
+// // //       // Check if your backend returns { data: [...] } or just [...]
+// // //       const allProducts = res.data || res; 
+// // //       setProducts(allProducts);
+// // //     } catch (err) {
+// // //       console.error("❌ Failed to load products:", err);
+// // //     }
+// // //   };
+
+// // //   const handleDelete = async (id) => {
+// // //     if (!window.confirm("Are you sure you want to delete this product?")) return;
+// // //     try {
+// // //       await deleteProduct(id);
+// // //       loadProducts();
+// // //     } catch (err) {
+// // //       console.error("❌ Delete failed:", err);
+// // //     }
+// // //   };
+
+// // //   return (
+// // //     <div className={styles.container}>
+// // //       <div className={styles.header}>
+// // //         <h2>Products</h2>
+// // //         <div>
+// // //           <button className={styles.addBtn} onClick={() => navigate("/add-product")}>
+// // //             ➕ Add Product
+// // //           </button>
+// // //           <button
+// // //             className={styles.toggleBtn}
+// // //             onClick={() => setViewMode(viewMode === "card" ? "table" : "card")}
+// // //           >
+// // //             {viewMode === "card" ? "📋 Table View" : "🗂️ Card View"}
+// // //           </button>
+// // //         </div>
+// // //       </div>
+
+// // //       {viewMode === "card" ? (
+// // //         <div className={styles.cardContainer}>
+// // //           {products.length === 0 ? (
+// // //             <p>No products found.</p>
+// // //           ) : (
+// // //             products.map((p) => (
+// // //               <div key={p.id} className={styles.card}>
+// // //                 <div className={styles.imgContainer}>
+// // //                   {p.images?.length ? (
+// // //                     <img src={p.images[0].url} alt={p.name} className={styles.productImg} />
+// // //                   ) : (
+// // //                     <div className={styles.noImg}>No Image</div>
+// // //                   )}
+// // //                 </div>
+// // //                 <div className={styles.cardBody}>
+// // //                   <h3>{p.name}</h3>
+// // //                   <p>Category: {p.category?.name || "N/A"}</p>
+// // //                   <p>Rate: ₹{p.price}</p>
+// // //                   <p>Discount: {p.discount || 0}%</p>
+// // //                   <p>Total: ₹{(p.price - (p.price * (p.discount || 0)) / 100).toFixed(2)}</p>
+// // //                   <p>Rating: ⭐ {p.rating || 0}</p>
+// // //                   <p>Stock: {p.stock || 0}</p>
+// // //                 </div>
+// // //                 <div className={styles.cardActions}>
+// // //                   <button onClick={() => navigate(`/edit-product/${p.id}`)}>✏️</button>
+// // //                   <button onClick={() => handleDelete(p.id)}>🗑️</button>
+// // //                 </div>
+// // //               </div>
+// // //             ))
+// // //           )}
+// // //         </div>
+// // //       ) : (
+// // //         <table className={styles.table}>
+// // //           <thead>
+// // //             <tr>
+// // //               <th>Image</th>
+// // //               <th>Name</th>
+// // //               <th>Category</th>
+// // //               <th>Rate</th>
+// // //               <th>Discount</th>
+// // //               <th>Total Price</th>
+// // //               <th>Rating</th>
+// // //               <th>Stock</th>
+// // //               <th>Action</th>
+// // //             </tr>
+// // //           </thead>
+// // //           <tbody>
+// // //             {products.map((p) => (
+// // //               <tr key={p.id}>
+// // //                 <td>
+// // //                   {p.images?.length ? (
+// // //                     <img src={p.images[0].url} alt={p.name} className={styles.tableImg} />
+// // //                   ) : (
+// // //                     "No Img"
+// // //                   )}
+// // //                 </td>
+// // //                 <td>{p.name}</td>
+// // //                 <td>{p.category?.name || "N/A"}</td>
+// // //                 <td>₹{p.price}</td>
+// // //                 <td>{p.discount || 0}%</td>
+// // //                 <td>₹{(p.price - (p.price * (p.discount || 0)) / 100).toFixed(2)}</td>
+// // //                 <td>⭐ {p.rating || 0}</td>
+// // //                 <td>{p.stock}</td>
+// // //                 <td>
+// // //                   <button onClick={() => navigate(`/edit-product/${p.id}`)}>✏️</button>
+// // //                   <button onClick={() => handleDelete(p.id)}>🗑️</button>
+// // //                 </td>
+// // //               </tr>
+// // //             ))}
+// // //           </tbody>
+// // //         </table>
+// // //       )}
+// // //     </div>
+// // //   );
+// // // };
+
+// // // export default ProductList;
+
+
+// // import React, { useEffect, useState } from "react";
+// // import { getAllProducts, deleteProduct } from "../../services/productService";
+// // import { useNavigate } from "react-router-dom";
+// // import { FiEdit, FiTrash2 } from "react-icons/fi";
+// // import styles from "./product.module.css";
+
+// // const ProductList = () => {
+// //   const [products, setProducts] = useState([]);
+// //   const navigate = useNavigate();
+
+// //   useEffect(() => {
+// //     loadProducts();
+// //   }, []);
+
+// //   const loadProducts = async () => {
+// //     try {
+// //       const res = await getAllProducts();
+// //       const allProducts = res.data || res;
+// //       setProducts(allProducts);
+// //     } catch (err) {
+// //       console.error("❌ Failed to load products:", err);
+// //     }
+// //   };
+
+// //   const handleDelete = async (id) => {
+// //     if (!window.confirm("Are you sure you want to delete this product?")) return;
+// //     try {
+// //       await deleteProduct(id);
+// //       loadProducts();
+// //     } catch (err) {
+// //       console.error("❌ Delete failed:", err);
+// //     }
+// //   };
+
+// //   return (
+// //     <div className={styles.container}>
+// //       <div className={styles.header}>
+// //         <h2>Products</h2>
+// //         <button className={styles.addBtn} onClick={() => navigate("/add-product")}>
+// //           ➕ Add Product
+// //         </button>
+// //       </div>
+
+// //       <table className={styles.table}>
+// //         <thead>
+// //           <tr>
+// //             <th>Image</th>
+// //             <th>Name</th>
+// //             <th>Category</th>
+// //             <th>Rate</th>
+// //             <th>Discount</th>
+// //             <th>Total Price</th>
+// //             <th>Rating</th>
+// //             <th>Stock</th>
+// //             <th>Action</th>
+// //           </tr>
+// //         </thead>
+// //         <tbody>
+// //           {products.map((p) => (
+// //             <tr key={p.id}>
+// //               <td>
+// //                 {p.images?.length ? (
+// //                   <img src={p.images[0].url} alt={p.name} className={styles.tableImg} />
+// //                 ) : (
+// //                   "No Img"
+// //                 )}
+// //               </td>
+// //               <td>{p.name}</td>
+// //               <td>{p.category?.name || "N/A"}</td>
+// //               <td>₹{p.price}</td>
+// //               <td>{p.discount || 0}%</td>
+// //               <td>₹{(p.price - (p.price * (p.discount || 0)) / 100).toFixed(2)}</td>
+// //               <td>⭐ {p.rating || 0}</td>
+// //               <td>{p.stock}</td>
+// //               <td>
+// //                 <FiEdit
+// //                   style={{ cursor: "pointer", marginRight: "10px" }}
+// //                   onClick={() => navigate(`/edit-product/${p.id}`)}
+// //                 />
+// //                 <FiTrash2
+// //                   style={{ cursor: "pointer", color: "red" }}
+// //                   onClick={() => handleDelete(p.id)}
+// //                 />
+// //               </td>
+// //             </tr>
+// //           ))}
+// //         </tbody>
+// //       </table>
+// //     </div>
+// //   );
+// // };
+
+// // export default ProductList;
+
+
+// import React, { useEffect, useState } from "react";
+// import { getAllProducts, deleteProduct } from "../../services/productService";
+// import { useNavigate } from "react-router-dom";
+// import { FiEdit, FiTrash2 } from "react-icons/fi";
+// import styles from "./product.module.css";
+
+// const ProductList = () => {
+//   const [products, setProducts] = useState([]);
+//   const [viewMode, setViewMode] = useState("card"); // "card" or "table"
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     loadProducts();
+//   }, []);
+
+//   const loadProducts = async () => {
+//     try {
+//       const res = await getAllProducts();
+//       const allProducts = res.data || res;
+//       setProducts(allProducts);
+//     } catch (err) {
+//       console.error("❌ Failed to load products:", err);
+//     }
+//   };
+
+//   const handleDelete = async (id) => {
+//     if (!window.confirm("Are you sure you want to delete this product?")) return;
+//     try {
+//       await deleteProduct(id);
+//       loadProducts();
+//     } catch (err) {
+//       console.error("❌ Delete failed:", err);
+//     }
+//   };
+
+//   return (
+//     <div className={styles.container}>
+//       <div className={styles.header}>
+//         <h2>Products</h2>
+//         <div>
+//           <button className={styles.addBtn} onClick={() => navigate("/add-product")}>
+//             ➕ Add Product
+//           </button>
+//           <button
+//             className={styles.toggleBtn}
+//             onClick={() => setViewMode(viewMode === "card" ? "table" : "card")}
+//           >
+//             {viewMode === "card" ? "📋 Table View" : "🗂️ Card View"}
+//           </button>
+//         </div>
+//       </div>
+
+//       {viewMode === "card" ? (
+//         <div className={styles.cardContainer}>
+//           {products.length === 0 ? (
+//             <p>No products found.</p>
+//           ) : (
+//             products.map((p) => (
+//               <div key={p.id} className={styles.card}>
+//                 <div className={styles.imgContainer}>
+//                   {p.images?.length ? (
+//                     <img src={p.images[0].url} alt={p.name} className={styles.productImg} />
+//                   ) : (
+//                     <div className={styles.noImg}>No Image</div>
+//                   )}
+//                 </div>
+//                 <div className={styles.cardBody}>
+//                   <h3>{p.name}</h3>
+//                   <p>Category: {p.category?.name || "N/A"}</p>
+//                   <p>Price: ₹{p.price}</p>
+//                   <p>Discount: {p.discount || 0}%</p>
+//                   <p>Total: ₹{(p.price - (p.price * (p.discount || 0)) / 100).toFixed(2)}</p>
+//                   <p>Rating: ⭐ {p.rating || 0}</p>
+//                   <p>Stock: {p.stock || 0}</p>
+//                 </div>
+//                 <div className={styles.cardActions}>
+//                   <FiEdit
+//                     style={{ cursor: "pointer", marginRight: "10px" }}
+//                     onClick={() => navigate(`/edit-product/${p.id}`)}
+//                   />
+//                   <FiTrash2
+//                     style={{ cursor: "pointer", color: "red" }}
+//                     onClick={() => handleDelete(p.id)}
+//                   />
+//                 </div>
+//               </div>
+//             ))
+//           )}
+//         </div>
+//       ) : (
+//         <table className={styles.table}>
+//           <thead>
+//             <tr>
+//               <th>Image</th>
+//               <th>Name</th>
+//               <th>Category</th>
+//               <th>Price</th>
+//               <th>Discount</th>
+//               <th>Total</th>
+//               <th>Rating</th>
+//               <th>Stock</th>
+//               <th>Action</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {products.map((p) => (
+//               <tr key={p.id}>
+//                 <td>
+//                   {p.images?.length ? (
+//                     <img src={p.images[0].url} alt={p.name} className={styles.tableImg} />
+//                   ) : (
+//                     "No Img"
+//                   )}
+//                 </td>
+//                 <td>{p.name}</td>
+//                 <td>{p.category?.name || "N/A"}</td>
+//                 <td>₹{p.price}</td>
+//                 <td>{p.discount || 0}%</td>
+//                 <td>₹{(p.price - (p.price * (p.discount || 0)) / 100).toFixed(2)}</td>
+//                 <td>⭐ {p.rating || 0}</td>
+//                 <td>{p.stock}</td>
+//                 <td>
+//                   <FiEdit
+//                     style={{ cursor: "pointer", marginRight: "10px" }}
+//                     onClick={() => navigate(`/edit-product/${p.id}`)}
+//                   />
+//                   <FiTrash2
+//                     style={{ cursor: "pointer", color: "red" }}
+//                     onClick={() => handleDelete(p.id)}
+//                   />
+//                 </td>
+//               </tr>
+//             ))}
+//           </tbody>
+//         </table>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default ProductList;
+============================================================================================================================================================================================================================
+
+
+
+// import React, { useState, useEffect } from "react";
+// import { createProduct, getAllCategories, getAllSizes, getAllColors } from "../../services/productService";
+// import { useNavigate } from "react-router-dom";
+// import styles from "./product.module.css";
+
+// const AddProduct = () => {
+//   const [form, setForm] = useState({
+//     category_id: "",
+//     brand: "",
+//     name: "",
+//     color: "",
+//     pattern: "",
+//     style: "",
+//     material: "",
+//     threadCount: "",
+//     size: "",
+//     dimensions: "",
+//     pocketDepth: "",
+//     weight: "",
+//     countryOfOrigin: "",
+//     price: "",
+//     mrp: "",
+//     discountPercent: "",
+//     description: "",
+//     includedComponents: "",
+//     rating: "",
+//     reviewsCount: "",
+//     link: "",
+//     stock: ""  });
+
+//   const [images, setImages] = useState([]);
+//   const [imagePreviews, setImagePreviews] = useState([]);
+//   const [categories, setCategories] = useState([]);
+//   const [sizes, setSizes] = useState([]);
+//   const [colors, setColors] = useState([]);
+//   const [loading, setLoading] = useState(false);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     loadCategories();
+//     loadSizes();
+//     loadColors();
+//   }, []);
+
+//   const loadCategories = async () => {
+//     try {
+//       const res = await getAllCategories();
+//       const cats = Array.isArray(res)
+//         ? res
+//         : Array.isArray(res.categories)
+//         ? res.categories
+//         : [];
+//       setCategories(cats);
+//     } catch (err) {
+//       console.error("❌ Failed to load categories:", err);
+//       setCategories([]);
+//     }
+//   };
+
+//     const loadSizes = async () => {
+//     try {
+//       const res = await getAllSizes();
+//       const sizes = Array.isArray(res)
+//         ? res
+//         : Array.isArray(res.sizes)
+//         ? res.sizes
+//         : [];
+//       setSizes(sizes);
+//     } catch (err) {
+//       console.error("❌ Failed to load sizes:", err);
+//       setSizes([]);
+//     }
+//   };
+
+//   const loadColors = async () => {
+//     try {
+//       const res = await getAllColors();
+//       const colorsData = Array.isArray(res)
+//         ? res
+//         : Array.isArray(res.data)
+//         ? res.data
+//         : Array.isArray(res.colors)
+//         ? res.colors
+//         : [];
+//       setColors(colorsData);
+//     } catch (err) {
+//       console.error("❌ Failed to load colors:", err);
+//       setColors([]);
+//     }
+//   };
+
+//   const handleChange = (e) => {
+//     const { name, value, type, checked } = e.target;
+//     setForm({
+//       ...form,
+//       [name]: type === "checkbox" ? checked : value,
+//     });
+//   };
+
+//   const handleImageChange = (e) => {
+//     const files = Array.from(e.target.files);
+//     if (files.length > 5) {
+//       alert("Maximum 5 images allowed");
+//       return;
+//     }
+//     setImages(files);
+    
+//     // Create previews
+//     const previews = files.map((file) => URL.createObjectURL(file));
+//     setImagePreviews(previews);
+//   };
+
+//   const removeImage = (index) => {
+//     const newImages = images.filter((_, i) => i !== index);
+//     const newPreviews = imagePreviews.filter((_, i) => i !== index);
+//     setImages(newImages);
+//     setImagePreviews(newPreviews);
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
+//     try {
+//       await createProduct(form, images);
+//       alert("✅ Product added successfully!");
+//       navigate("/products");
+//     } catch (err) {
+//       console.error("❌ Failed to add product:", err);
+//       alert(err.message || "Failed to add product");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleCancel = () => navigate("/products");
+
+//   return (
+//     <div className={styles.formContainer}>
+//      <div className={styles.hearderContainer}>
+//       <h2>Add Product</h2>
+//       </div> 
+     
+//       <form onSubmit={handleSubmit} className={styles.form}>
+
+//         {/* --- Basic Info --- */}
+//         <div className={styles.formGroup}>
+//           <label>Category</label>
+         
+//               <select name="category_id" value={form.category_id} onChange={handleChange} required>
+//             <option value="">Select Category</option>
+//             {categories.map((c) => (
+//               <option key={c.id} value={c.id}>{c.category_name}</option>
+//             ))}
+//           </select>  
+         
+//         </div>
+
+//         <div className={styles.formGroup}>
+//           <label>Brand</label>
+//           <input name="brand" value={form.brand} onChange={handleChange} placeholder="Brand" required />
+//         </div>
+
+//         <div className={styles.formGroup}>
+//           <label>Product Name</label>
+//           <input name="name" value={form.name} onChange={handleChange} placeholder="Product Name" required />
+//         </div>
+
+//         {/* --- Appearance & Material --- */}
+//         <div className={styles.formGroup}>
+//           <label>Color</label>
+//           <select name="color" value={form.color} onChange={handleChange}>
+//             <option value="">Select Color</option>
+//             {colors.map((c) => (
+//               <option key={c.color_id} value={c.color_id}>
+//                 {c.color_name}
+//               </option>
+//             ))}
+//           </select>
+//         </div>
+
+//         <div className={styles.formGroup}>
+//           <label>Pattern</label>
+//           <input name="pattern" value={form.pattern} onChange={handleChange} placeholder="Pattern" />
+//         </div>
+
+//         <div className={styles.formGroup}>
+//           <label>Style</label>
+//           <input name="style" value={form.style} onChange={handleChange} placeholder="Style" />
+//         </div>
+
+//         <div className={styles.formGroup}>
+//           <label>Material</label>
+//           <input name="material" value={form.material} onChange={handleChange} placeholder="Material" />
+//         </div>
+
+//         <div className={styles.formGroup}>
+//           <label>Thread Count</label>
+//           <input name="threadCount" type="number" value={form.threadCount} onChange={handleChange} placeholder="Thread Count" />
+//         </div>
+
+//         {/* --- Dimensions --- */}
+//         <div className={styles.formGroup}>
+//           <label>Size</label>
+//            <select name="size" value={form.size} onChange={handleChange} required>
+//             <option value="">Select Size</option>
+//             {sizes.map((s) => (
+//               <option key={s.id} value={s.id}>{s.size_name}</option>
+//             ))}
+//           </select>
+
+//           {/* <input name="size" value={form.size} onChange={handleChange} placeholder="Size" /> */}
+//         </div>
+      
+
+//         <div className={styles.formGroup}>
+//           <label>Dimensions</label>
+//           <input name="dimensions" value={form.dimensions} onChange={handleChange} placeholder="Dimensions" />
+//         </div>
+
+//         <div className={styles.formGroup}>
+//           <label>Pocket Depth</label>
+//           <input name="pocketDepth" value={form.pocketDepth} onChange={handleChange} placeholder="Pocket Depth" />
+//         </div>
+
+//         <div className={styles.formGroup}>
+//           <label>Weight</label>
+//           <input name="weight" value={form.weight} onChange={handleChange} placeholder="Weight" />
+//         </div>
+
+//         {/* --- Price --- */}
+//         <div className={styles.formGroup}>
+//           <label>Price</label>
+//           <input name="price" type="number" value={form.price} onChange={handleChange} placeholder="Price" required />
+//         </div>
+
+//         <div className={styles.formGroup}>
+//           <label>MRP</label>
+//           <input name="mrp" type="number" value={form.mrp} onChange={handleChange} placeholder="MRP" />
+//         </div>
+
+//         <div className={styles.formGroup}>
+//           <label>Discount (%)</label>
+//           <input name="discountPercent" type="number" value={form.discountPercent} onChange={handleChange} placeholder="Discount (%)" />
+//         </div>
+
+//         {/* --- Additional Info --- */}
+//         <div className={styles.formGroup}>
+//           <label>Country of Origin</label>
+//           <input name="countryOfOrigin" value={form.countryOfOrigin} onChange={handleChange} placeholder="Country of Origin" />
+//         </div>
+
+//         <div className={styles.formGroup}>
+//           <label>Included Components</label>
+//           <input name="includedComponents" value={form.includedComponents} onChange={handleChange} placeholder="Included Components" />
+//         </div>
+
+//         <div className={styles.formGroup}>
+//           <label>Product Link</label>
+//           <input name="link" value={form.link} onChange={handleChange} placeholder="Product Link" />
+//         </div>
+
+//         {/* --- Ratings & Stock --- */}
+//         <div className={styles.formGroup}>
+//           <label>Rating</label>
+//           <input name="rating" type="number" step="0.1" value={form.rating} onChange={handleChange} placeholder="Rating" />
+//         </div>
+
+//         <div className={styles.formGroup}>
+//           <label>Reviews Count</label>
+//           <input name="reviewsCount" type="number" value={form.reviewsCount} onChange={handleChange} placeholder="Reviews Count" />
+//         </div>
+
+//         <div className={styles.formGroup}>
+//           <label>Stock</label>
+//           <input name="stock" type="number" value={form.stock} onChange={handleChange} placeholder="Stock" />
+//         </div>
+
+//         {/* --- Active Checkbox --- */}
+//         {/* <div className={styles.formGroup}>
+//           <label>
+//             <input type="checkbox" name="is_active" checked={form.is_active} onChange={handleChange} /> Active
+//           </label>
+//         </div> */}
+
+//         {/* --- Description --- */}
+//         <div className={styles.formGroup}>
+//           <label>Description</label>
+//           <textarea name="description" value={form.description} onChange={handleChange} placeholder="Description" rows={3} />
+//         </div>
+
+//         {/* --- Images --- */}
+//         <div className={styles.formGroup}>
+//           <label>Upload Images (Max 5)</label>
+//           <input 
+//             type="file" 
+//             multiple 
+//             accept="image/*"
+//             onChange={handleImageChange}
+//             disabled={loading}
+//           />
+//           {imagePreviews.length > 0 && (
+//             <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "10px" }}>
+//               {imagePreviews.map((preview, index) => (
+//                 <div key={index} style={{ position: "relative", width: "100px", height: "100px" }}>
+//                   <img 
+//                     src={preview} 
+//                     alt={`Preview ${index + 1}`}
+//                     style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "4px" }}
+//                   />
+//                   <button
+//                     type="button"
+//                     onClick={() => removeImage(index)}
+//                     style={{
+//                       position: "absolute",
+//                       top: "-5px",
+//                       right: "-5px",
+//                       background: "red",
+//                       color: "white",
+//                       border: "none",
+//                       borderRadius: "50%",
+//                       width: "20px",
+//                       height: "20px",
+//                       cursor: "pointer",
+//                       fontSize: "12px"
+//                     }}
+//                   >
+//                     ×
+//                   </button>
+//                 </div>
+//               ))}
+//             </div>
+//           )}
+//         </div>
+
+//         {/* --- Buttons --- */}
+//         <br/>
+//         <div className={styles.buttonGroup}>
+//           <button type="submit" className={styles.saveBtn} disabled={loading}>
+//             {loading ? "Saving..." : "Save Product"}
+//           </button>
+//           <button type="button" className={styles.cancelBtn} onClick={handleCancel} disabled={loading}>
+//             Cancel
+//           </button>
+//         </div>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default AddProduct;
+
+=============================================================================================================================================================================================================================================
+
+
+// import React, { useEffect, useState } from "react";
+// import { getAllProducts, deleteProduct } from "../../services/productService";
+// import { useNavigate } from "react-router-dom";
+// import { FiEdit, FiTrash2 } from "react-icons/fi";
+// import styles from "./product.module.css";
+
+// const ProductList = () => {
+//   const [products, setProducts] = useState([]);
+//   const [viewMode, setViewMode] = useState("card"); // "card" or "table"
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     loadProducts();
+//   }, []);
+
+//   const loadProducts = async () => {
+//     try {
+//       const res = await getAllProducts();
+//       const allProducts = res.data || res;
+//       setProducts(allProducts);
+//     } catch (err) {
+//       console.error("❌ Failed to load products:", err);
+//     }
+//   };
+
+//   const handleDelete = async (id) => {
+//     if (!window.confirm("Are you sure you want to delete this product?")) return;
+//     try {
+//       await deleteProduct(id);
+//       loadProducts();
+//     } catch (err) {
+//       console.error("❌ Delete failed:", err);
+//     }
+//   };
+
+//   return (
+//     <div className={styles.container}>
+//       <div className={styles.header}>
+//         <h2>Products</h2>
+//         <div className={styles.headerBtn}>
+//           <button className={styles.addBtn} onClick={() => navigate("/add-product")}>
+//             ➕ Add Product
+//           </button>
+//           <button
+//             className={styles.toggleBtn}
+//             onClick={() => setViewMode(viewMode === "card" ? "table" : "card")}
+//           >
+//             {viewMode === "card" ? "📋 Table View" : "🗂️ Card View"}
+//           </button>
+//         </div>
+//       </div>
+
+//       {viewMode === "card" ? (
+//         <div className={styles.cardContainer}>
+//           {products.length === 0 ? (
+//             <p>No products found.</p>
+//           ) : (
+//             products.map((p) => (
+//               <div key={p.id} className={styles.card}>
+//                 <div className={styles.imgContainer}>
+//                   {p.images?.length ? (
+//                     <img src={p.images[0].url} alt={p.name} className={styles.productImg} />
+//                   ) : (
+//                     <div className={styles.noImg}>No Image</div>
+//                   )}
+//                 </div>
+//                 <div className={styles.cardBody}>
+//                   <h3>{p.name}</h3>
+//                   <p>Category: {p.category?.category_name || "N/A"}</p>
+//                   <p>Price: ₹{p.price}</p>
+//                   <p>Discount: {p.discount || 0}%</p>
+//                   <p>Total: ₹{(p.price - (p.price * (p.discount || 0)) / 100).toFixed(2)}</p>
+//                   <p>Rating: ⭐ {p.rating || 0}</p>
+//                   <p>Stock: {p.stock || 0}</p>
+//                 </div>
+//                 <div className={styles.cardActions}>
+//                   <FiEdit
+//                     style={{ cursor: "pointer", marginRight: "10px" }}
+//                     onClick={() => navigate(`/edit-product/${p.id}`)}
+//                   />
+//                   <FiTrash2
+//                     style={{ cursor: "pointer", color: "red" }}
+//                     onClick={() => handleDelete(p.id)}
+//                   />
+//                 </div>
+//               </div>
+//             ))
+//           )}
+//         </div>
+//       ) : (
+//         <table className={styles.table}>
+//           <thead>
+//             <tr>
+//               <th>Image</th>
+//               <th>Name</th>
+//               <th>Category</th>
+//               <th>Price</th>
+//               <th>Discount</th>
+//               <th>Total</th>
+//               <th>Rating</th>
+//               <th>Stock</th>
+//               <th>Action</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {products.map((p) => (
+//               <tr key={p.id}>
+//                 <td>
+//                   {p.images?.length ? (
+//                     <img src={p.images[0].url} alt={p.name} className={styles.tableImg} />
+//                   ) : (
+//                     "No Img"
+//                   )}
+//                 </td>
+//                 <td>{p.name}</td>
+//                 <td>{p.category?.category_name || "N/A"}</td>
+//                 <td>₹{p.price}</td>
+//                 <td>{p.discount || 0}%</td>
+//                 <td>₹{(p.price - (p.price * (p.discount || 0)) / 100).toFixed(2)}</td>
+//                 <td>⭐ {p.rating || 0}</td>
+//                 <td>{p.stock}</td>
+//                 <td>
+//                   <FiEdit
+//                     style={{ cursor: "pointer", marginRight: "10px" }}
+//                     onClick={() => navigate(`/edit-product/${p.id}`)}
+//                   />
+//                   <FiTrash2
+//                     style={{ cursor: "pointer", color: "red" }}
+//                     onClick={() => handleDelete(p.id)}
+//                   />
+//                 </td>
+//               </tr>
+//             ))}
+//           </tbody>
+//         </table>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default ProductList;
+
+
+========================================================================================================================================================================================================
+
+
+card View
+
+in list 
+
+
+      // <div className={styles.cardContainer}>
+        //   {products.length === 0 ? (
+        //     <p>No products found.</p>
+        //   ) : (
+        //     products.map((p) => {
+        //       const discount = p.discountPercent || 0;
+        //       const total = (p.price - (p.price * discount) / 100).toFixed(2);
+        //       return (
+        //         <div key={p.id} className={styles.card}>
+        //           <div className={styles.imgContainer}>
+        //             {p.images?.length ? (
+        //               <img
+        //                 src={p.images[0].imageUrl}
+        //                 alt={p.name}
+        //                 className={styles.productImg}
+        //               />
+        //             ) : (
+        //               <div className={styles.noImg}>No Image</div>
+        //             )}
+        //           </div>
+
+        //           <div className={styles.cardBody}>
+        //             <h3>{p.name}</h3>
+        //             <p>Category: {p.category?.category_name || "N/A"}</p>
+        //             <p>Color: {p.colorData?.color_name || "N/A"}</p>
+        //             <p>Size: {p.sizeData?.size_name || "N/A"}</p>
+        //             <p>Price: ₹{p.price}</p>
+        //             <p>Discount: {discount}%</p>
+        //             <p>Total: ₹{total}</p>
+        //             <p>Rating: ⭐ {p.rating || 0}</p>
+        //             <p>Stock: {p.stock || 0}</p>
+        //           </div>
+
+        //           <div className={styles.cardActions}>
+        //             <FiEdit
+        //               style={{ cursor: "pointer", marginRight: "10px" }}
+        //               onClick={() => navigate(`/edit-product/${p.id}`)}
+        //             />
+        //             <FiTrash2
+        //               style={{ cursor: "pointer", color: "red" }}
+        //               onClick={() => handleDelete(p.id)}
+        //             />
+        //           </div>
+        //         </div>
+        //       );
+        //     })
+        //   )}
+        // </div>
+
+//         <div className={styles.cardContainer}>
+//   {products.length === 0 ? (
+//     <p>No products found.</p>
+//   ) : (
+//     products.map((p) => {
+//       const discount = p.discountPercent || 0;
+//       const total = (p.price - (p.price * discount) / 100).toFixed(2);
+
+//       return (
+//         <div key={p.id} className={styles.cardNew}>
+//           <div className={styles.cardImgWrapper}>
+//             {p.images?.length ? (
+//               <img src={p.images[0].imageUrl} alt={p.name} />
+//             ) : (
+//               <div className={styles.noImg}>No Image</div>
+//             )}
+//           </div>
+
+//           <div className={styles.cardInfo}>
+//             <h3>{p.name}</h3>
+
+//             <div className={styles.row}>
+//               <span>Category:</span> <p>{p.category?.category_name || "N/A"}</p>
+//             </div>
+//             <div className={styles.row}>
+//               <span>Color:</span> <p>{p.colorData?.color_name || "N/A"}</p>
+//             </div>
+//             <div className={styles.row}>
+//               <span>Size:</span> <p>{p.sizeData?.size_name || "N/A"}</p>
+//             </div>
+
+//             <div className={styles.priceBox}>
+//               <p className={styles.oldPrice}>₹{p.price}</p>
+//               <p className={styles.discount}>{discount}% OFF</p>
+//               <p className={styles.finalPrice}>₹{total}</p>
+//             </div>
+
+//             <div className={styles.stockRow}>
+//               <span>⭐ {p.rating || 0}</span>
+//               <span>Stock: {p.stock || 0}</span>
+//             </div>
+//           </div>
+
+//           <div className={styles.cardActionsNew}>
+//             <FiEdit onClick={() => navigate(`/edit-product/${p.id}`)} />
+//             <FiTrash2 onClick={() => handleDelete(p.id)} />
+//           </div>
+//         </div>
+//       );
+//     })
+//   )}
+// </div>

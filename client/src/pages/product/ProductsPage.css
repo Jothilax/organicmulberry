@@ -1,0 +1,129 @@
+.products-page {
+  padding: 3rem 0;
+  background-color: #fafafa;
+  min-height: 100vh;
+  margin-top: 12vh;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ---------- Header ---------- */
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.header p {
+  color: #666;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+/* ---------- Filters ---------- */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.filters input,
+.filters select {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.2s ease;
+  flex: 1;
+  min-width: 200px;
+}
+
+.filters input:focus,
+.filters select:focus {
+  border-color: #000;
+}
+
+.filters .count {
+  color: #666;
+  font-size: 0.95rem;
+  margin-left: auto;
+}
+
+/* ---------- Product Grid ---------- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+/* ---------- Skeleton Loading ---------- */
+.product-skeleton {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.image-skeleton {
+  width: 100%;
+  height: 240px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  animation: pulse 1.5s infinite;
+}
+
+.line-skeleton {
+  background: #e0e0e0;
+  border-radius: 5px;
+  height: 12px;
+  animation: pulse 1.5s infinite;
+}
+
+.line-skeleton.short {
+  width: 40%;
+}
+.line-skeleton.medium {
+  width: 70%;
+}
+.line-skeleton.long {
+  width: 100%;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+/* ---------- Empty State ---------- */
+.empty-state {
+  text-align: center;
+  padding: 4rem 0;
+  color: #888;
+  font-size: 1.1rem;
+}

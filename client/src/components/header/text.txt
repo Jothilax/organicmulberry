@@ -1,0 +1,520 @@
+/* .ecom-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(221, 159, 108, 0.75);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #eee;
+  transition: all 0.3s ease;
+  z-index: 100;
+} */
+.ecom-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #f5e2b1;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  z-index: 100;
+}
+
+.ecom-header.scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.ecom-header-inner {
+  max-width: 1200px;
+  margin: auto;
+  padding: 15px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  font-style: italic;
+  font-weight: 500;
+  text-decoration: none;
+  color: #222;
+}
+
+.header-logo img {
+  width: 90%;
+  height: 80px;
+  /* border-radius: 50%; */
+  /* border: 1px solid #ccc; */
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  color: #b08a57;
+}
+
+.nav-links a.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #d4af37, transparent);
+}
+
+/* Actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.categories-dropdown {
+  position: relative;
+}
+
+.categories-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  font-weight: 500;
+  color: #333;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.categories-btn:hover {
+  border-color: #eab308;
+  color: #eab308;
+}
+
+.categories-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  z-index: 1000;
+  padding: 8px 0;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.category-item {
+  display: block;
+  padding: 12px 20px;
+  color: #333;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.category-item:hover {
+  background: #f9fafb;
+  color: #eab308;
+}
+
+.icon-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.icon-wrapper {
+  position: relative;
+}
+
+.icon-wrapper i {
+  font-size: 18px;
+  cursor: pointer;
+  color: #333;
+  transition: 0.3s;
+}
+
+.icon-wrapper i:hover {
+  color: #b08a57;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -7px;
+  background: #d4af37;
+  color: #111;
+  font-size: 10px;
+  padding: 2px 5px;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.logout-btn {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background: #333;
+}
+
+.mobile-menu {
+  display: none;
+}
+
+/* Mobile Drawer */
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 280px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.3s ease;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.drawer-links {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 15px;
+}
+
+.drawer-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  border-bottom: 1px solid #f1f1f1;
+  padding-bottom: 8px;
+}
+
+.drawer-links a.active {
+  color: #b08a57;
+}
+
+.drawer-footer {
+  padding: 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.drawer-footer button,
+.drawer-footer a {
+  background: #000;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.drawer-footer a:nth-child(2) {
+  background: #fff;
+  color: #000;
+  border: 1px solid #ccc;
+}
+
+@media (max-width: 992px) {
+  .nav-links {
+    display: none;
+  }
+  .mobile-menu {
+    display: block;
+    font-size: 20px;
+    cursor: pointer;
+  }
+}
+
+
+==============new===============
+
+
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import logo from "../../assets/image.png";
+import "./EcommerceHeader.css";
+
+import { cartService } from "../../services/cartService";
+import { authService } from "../../services/authService";
+import { wishlistService } from "../../services/wishlistService";
+import { categoryService } from "../../services/categoryService";
+
+const EcommerceHeader = () => {
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [user, setUser] = useState(null);
+  const [cartCount, setCartCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const [categories, setCategories] = useState([]);
+  const [showCategories, setShowCategories] = useState(false);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isHome = location.pathname === "/";
+
+  const menuItems = [
+    { key: "home", label: "Home", path: "/" },
+    { key: "products", label: "Collections", path: "/collection" },
+    { key: "about", label: "About", path: "/about" },
+    { key: "contact", label: "Contact", path: "/contact" },
+  ];
+
+  /* ---------------- SCROLL EFFECT ---------------- */
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  /* ---------------- AUTH + COUNTS ---------------- */
+  useEffect(() => {
+    const token = localStorage.getItem("customerToken");
+    if (token) {
+      setUser(true);
+      loadCounts();
+    } else {
+      setUser(null);
+      setCartCount(0);
+      setWishlistCount(0);
+    }
+
+    fetchCategories();
+
+    const interval = setInterval(() => {
+      if (localStorage.getItem("customerToken")) loadCounts();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [location.pathname]);
+
+  /* ---------------- FETCH DATA ---------------- */
+  const loadCounts = async () => {
+    try {
+      const cartRes = await cartService.getCart();
+      const items = cartRes.items || [];
+      setCartCount(items.reduce((sum, i) => sum + i.quantity, 0));
+    } catch {
+      setCartCount(0);
+    }
+
+    try {
+      const wishlistRes = await wishlistService.getWishlist();
+      setWishlistCount(wishlistRes.items?.length || 0);
+    } catch {
+      setWishlistCount(0);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await categoryService.getAllCategories();
+      if (response?.categories) {
+        setCategories(response.categories.filter((c) => c.is_active !== false));
+      }
+    } catch {}
+  };
+
+  /* ---------------- LOGOUT ---------------- */
+  const handleLogout = () => {
+    authService.logout();
+  };
+
+  return (
+    <>
+      <header
+        className={`ecom-header ${scrolled ? "scrolled" : ""} ${
+          isHome ? "home-header" : "small-header"
+        }`}
+      >
+        <div className="ecom-header-inner">
+          {/* Logo */}
+          <Link to="/" className="header-logo">
+            <img src={logo} alt="logo" />
+          </Link>
+
+          {/* Navigation */}
+          <nav className="nav-links">
+            {menuItems.map((item) => (
+              <Link
+                key={item.key}
+                to={item.path}
+                className={location.pathname === item.path ? "active" : ""}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Right Actions */}
+          <div className="header-actions">
+            {/* Categories Dropdown */}
+            <div
+              className="categories-dropdown"
+              onMouseEnter={() => setShowCategories(true)}
+              onMouseLeave={() => setShowCategories(false)}
+            >
+              <button className="categories-btn">
+                Categories <i className="fa fa-chevron-down"></i>
+              </button>
+
+              {showCategories && categories.length > 0 && (
+                <div className="categories-menu">
+                  {categories.map((cat) => (
+                    <Link
+                      key={cat.id}
+                      to={`/collection?category=${cat.category_name}`}
+                      onClick={() => setShowCategories(false)}
+                      className="category-item"
+                    >
+                      {cat.category_name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Icons */}
+            <div className="icon-group">
+              <div className="icon-wrapper">
+                <i
+                  className="fa fa-heart"
+                  onClick={() => navigate("/wishlist")}
+                ></i>
+                {wishlistCount > 0 && (
+                  <span className="badge">{wishlistCount}</span>
+                )}
+              </div>
+
+              <div className="icon-wrapper">
+                <i
+                  className="fa fa-shopping-cart"
+                  onClick={() => navigate("/cart")}
+                ></i>
+                {cartCount > 0 && <span className="badge">{cartCount}</span>}
+              </div>
+
+              <i
+                className="fa fa-user"
+                onClick={() =>
+                  user ? navigate("/profile") : navigate("/login")
+                }
+              ></i>
+
+              {user && (
+                <button className="logout-btn" onClick={handleLogout}>
+                  Logout
+                </button>
+              )}
+
+              <i
+                className="fa fa-bars mobile-menu"
+                onClick={() => setDrawerVisible(true)}
+              ></i>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Drawer */}
+      {drawerVisible && (
+        <div className="mobile-drawer">
+          <div className="drawer-header">
+            <h3>Cartier</h3>
+            <button onClick={() => setDrawerVisible(false)}>✕</button>
+          </div>
+
+          <div className="drawer-links">
+            {menuItems.map((item) => (
+              <Link
+                key={item.key}
+                to={item.path}
+                onClick={() => setDrawerVisible(false)}
+                className={location.pathname === item.path ? "active" : ""}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="drawer-footer">
+            {user ? (
+              <>
+                <Link to="/profile" onClick={() => setDrawerVisible(false)}>
+                  My Profile
+                </Link>
+                <button onClick={handleLogout}>Logout</button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" onClick={() => setDrawerVisible(false)}>
+                  Login
+                </Link>
+                <Link to="/register" onClick={() => setDrawerVisible(false)}>
+                  Register
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default EcommerceHeader;
+
