@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import styles from "./login.module.css";
 import { loginUser, forgotPassword } from "../../services/authService.js";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/image.png";
+import logo from "../../../public/organicmulberrylogo.png";
+
 
 export default function Login({ onLoginSuccess }) { // ✅ receive callback
   const [username, setUsername] = useState("");

@@ -79,7 +79,7 @@
 
 import React, { useState } from "react";
 import styles from "./header.module.css";
-import logo from "../../assets/image.png";
+import logo from "../../../public/organicmulberrylogo.png";
 import { FaBars, FaUserCircle } from "react-icons/fa";
 import Sidebar from "../sidebar/Sidebar";
 import { logout, changePassword } from "../../services/authService";

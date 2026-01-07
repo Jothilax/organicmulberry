@@ -1,0 +1,516 @@
+===========================
+   🔹 Main Container
+=========================== */
+.container {
+  padding: 30px 40px;
+  background-color: #faf7f0;
+  min-height: 85vh;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===========================
+   🔹 Header & Add Button
+=========================== */
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.headerRow h2 {
+  color: #2f2f2f;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+/* Long, Stylish Add Button */
+.addBtn {
+  background-color: #1a73e8;
+  color: #fff;
+  border: none;
+  padding: 12px 80px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(26, 115, 232, 0.3);
+}
+
+.addBtn:hover {
+  background-color: #155fc0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(26, 115, 232, 0.4);
+}
+
+/* ===========================
+   🔹 Centered Table
+=========================== */
+.tableWrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.table {
+  width: 70%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-top: 25px;
+}
+
+.table th,
+.table td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.table th {
+  background-color: #f8e9c4;
+  color: #333;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.table td {
+  text-align: center;
+}
+
+.table tbody tr:hover {
+  background-color: #f9f9f9;
+  transition: background-color 0.2s ease-in;
+}
+
+/* ===========================
+   🔹 Icons
+=========================== */
+.iconEdit,
+.iconDelete {
+  cursor: pointer;
+  font-size: 1.2rem;
+  margin: 0 8px;
+  transition: transform 0.2s, color 0.3s;
+}
+
+.iconEdit:hover {
+  color: #1a73e8;
+  transform: scale(1.1);
+}
+
+.iconDelete:hover {
+  color: #dc3545;
+  transform: scale(1.1);
+}
+
+/* ===========================
+   🔹 Modal Overlay
+=========================== */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+  backdrop-filter: blur(3px);
+}
+
+/* ===========================
+   🔹 Modal Box
+=========================== */
+.modal {
+  background: #fff;
+  padding: 30px 25px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  animation: popUp 0.3s ease-out;
+}
+
+@keyframes popUp {
+  from {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal h3 {
+  text-align: center;
+  color: #222;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* ===========================
+   🔹 Form Styles
+=========================== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form label {
+  font-weight: 500;
+  color: #333;
+}
+
+.form input,
+.form textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form input:focus,
+.form textarea:focus {
+  border-color: #1a73e8;
+  box-shadow: 0 0 4px rgba(26, 115, 232, 0.2);
+}
+
+/* ===========================
+   🔹 Modal Buttons
+=========================== */
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.cancelBtn {
+  background: #ccc;
+  color: #333;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.cancelBtn:hover {
+  background: #bbb;
+}
+
+.saveBtn {
+  background: #1a73e8;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.saveBtn:hover {
+  background: #155fc0;
+  transform: translateY(-2px);
+}
+
+/* ===========================
+   🔹 Responsive
+=========================== */
+@media (max-width: 992px) {
+  .table {
+    width: 85%;
+  }
+}
+
+@media (max-width: 600px) {
+  .table {
+    width: 95%;
+  }
+
+  .addBtn {
+    width: 100%;
+    padding: 12px 0;
+  }
+
+  .modal {
+    width: 90%;
+  }
+}
+=======================color css-=======================================
+
+
+/* ===========================
+   🔹 Main Container
+=========================== */
+.container {
+  padding: 30px 40px;
+  background-color: #faf7f0;
+  min-height: 85vh;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===========================
+   🔹 Header & Add Button
+=========================== */
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.headerRow h2 {
+  color: #2f2f2f;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+/* Long, Stylish Add Button */
+.addBtn {
+  background-color: #1a73e8;
+  color: #fff;
+  border: none;
+  padding: 12px 80px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(26, 115, 232, 0.3);
+}
+
+.addBtn:hover {
+  background-color: #155fc0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(26, 115, 232, 0.4);
+}
+
+/* ===========================
+   🔹 Centered Table
+=========================== */
+.tableWrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.table {
+  width: 70%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-top: 25px;
+}
+
+.table th,
+.table td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.table th {
+  background-color: #f8e9c4;
+  color: #333;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.table td {
+  text-align: center;
+}
+
+.table tbody tr:hover {
+  background-color: #f9f9f9;
+  transition: background-color 0.2s ease-in;
+}
+
+/* ===========================
+   🔹 Icons
+=========================== */
+.iconEdit,
+.iconDelete {
+  cursor: pointer;
+  font-size: 1.2rem;
+  margin: 0 8px;
+  transition: transform 0.2s, color 0.3s;
+}
+
+.iconEdit:hover {
+  color: #1a73e8;
+  transform: scale(1.1);
+}
+
+.iconDelete:hover {
+  color: #dc3545;
+  transform: scale(1.1);
+}
+
+/* ===========================
+   🔹 Modal Overlay
+=========================== */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+  backdrop-filter: blur(3px);
+}
+
+/* ===========================
+   🔹 Modal Box
+=========================== */
+.modal {
+  background: #fff;
+  padding: 30px 25px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  animation: popUp 0.3s ease-out;
+}
+
+@keyframes popUp {
+  from {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal h3 {
+  text-align: center;
+  color: #222;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* ===========================
+   🔹 Form Styles
+=========================== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form label {
+  font-weight: 500;
+  color: #333;
+}
+
+.form input,
+.form textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form input:focus,
+.form textarea:focus {
+  border-color: #1a73e8;
+  box-shadow: 0 0 4px rgba(26, 115, 232, 0.2);
+}
+
+/* ===========================
+   🔹 Modal Buttons
+=========================== */
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.cancelBtn {
+  background: #ccc;
+  color: #333;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.cancelBtn:hover {
+  background: #bbb;
+}
+
+.saveBtn {
+  background: #1a73e8;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.saveBtn:hover {
+  background: #155fc0;
+  transform: translateY(-2px);
+}
+
+/* ===========================
+   🔹 Responsive
+=========================== */
+@media (max-width: 992px) {
+  .table {
+    width: 85%;
+  }
+}
+
+@media (max-width: 600px) {
+  .table {
+    width: 95%;
+  }
+
+  .addBtn {
+    width: 100%;
+    padding: 12px 0;
+  }
+
+  .modal {
+    width: 90%;
+  }
+}
+
+
+============================

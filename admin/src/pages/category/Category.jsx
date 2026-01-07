@@ -108,7 +108,7 @@ export default function Category() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>#</th>
+            <th>S.No</th>
             <th>Category Name</th>
             <th>Description</th>
             <th>Actions</th>

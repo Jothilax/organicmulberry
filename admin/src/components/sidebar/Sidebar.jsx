@@ -281,6 +281,23 @@ export default function Sidebar({ closeSidebar }) {
             </Link>
           </li>
 
+          {/* Masters */}
+          <li className={styles.menuItem} onClick={() => toggleMenu("masters")}>
+            <div className={styles.menuLink}>
+              <SettingOutlined className={styles.icon} />
+              <span>Masters</span>
+              <span className={styles.arrow}>{openMenu === "masters" ? "▲" : "▼"}</span>
+            </div>
+
+            {openMenu === "masters" && (
+              <ul className={styles.subMenuList}>
+                <li><Link to="/size">Size</Link></li>
+                <li><Link to="/color">Color</Link></li>
+                <li><Link to="/coupon">Coupon</Link></li>
+              </ul>
+            )}
+          </li>
+
           {/* Products */}
           <li>
             <Link to="/products" className={styles.menuLink}>
@@ -301,23 +318,6 @@ export default function Sidebar({ closeSidebar }) {
               <ul className={styles.subMenuList}>
                 <li><Link to="/users">Users</Link></li>
                 <li><Link to="/role">Role</Link></li>
-              </ul>
-            )}
-          </li>
-
-          {/* Masters */}
-          <li className={styles.menuItem} onClick={() => toggleMenu("masters")}>
-            <div className={styles.menuLink}>
-              <SettingOutlined className={styles.icon} />
-              <span>Masters</span>
-              <span className={styles.arrow}>{openMenu === "masters" ? "▲" : "▼"}</span>
-            </div>
-
-            {openMenu === "masters" && (
-              <ul className={styles.subMenuList}>
-                <li><Link to="/size">Size</Link></li>
-                <li><Link to="/color">Color</Link></li>
-                <li><Link to="/coupon">Coupon</Link></li>
               </ul>
             )}
           </li>

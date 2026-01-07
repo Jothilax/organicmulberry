@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import logo from "../../assets/image.png";
+import logo from "../../../public/organicmulberrylogo.png";
 import "./EcommerceHeader.css";
 import { cartService } from "../../services/cartService";
 import { authService } from "../../services/authService";
@@ -130,6 +130,9 @@ const EcommerceHeader = () => {
           </nav>
 
           {/* Categories Dropdown + Actions */}
+          <div>
+            
+          </div>
           <div className="header-actions">
             <div 
               className="categories-dropdown"
@@ -194,7 +197,9 @@ const EcommerceHeader = () => {
       {drawerVisible && (
         <div className="mobile-drawer">
           <div className="drawer-header">
-            <h3>Cartier</h3>
+             <Link to="/" className="header-logo">
+            <img src={logo} alt="logo" />
+          </Link>
             <button onClick={() => setDrawerVisible(false)}>✕</button>
           </div>
           <div className="drawer-links">
@@ -222,9 +227,9 @@ const EcommerceHeader = () => {
                 <Link to="/login" onClick={() => setDrawerVisible(false)}>
                   Login
                 </Link>
-                <Link to="/register" onClick={() => setDrawerVisible(false)}>
+                {/* <Link to="/register" onClick={() => setDrawerVisible(false)}>
                   Register
-                </Link>
+                </Link> */}
               </>
             )}
           </div>

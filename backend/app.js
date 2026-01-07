@@ -79,7 +79,8 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
   console.log(`✅ Server is running on port ${PORT}`);
   try {
-    await sequelize.sync({alter : true});
+    // await sequelize.sync({alter : true});
+     await sequelize.sync();
     console.log("✅ Database synchronized");
      await seedDatabase(); // seed admin only if needed
   } catch (error) {

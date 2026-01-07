@@ -131,7 +131,7 @@ export default function Coupon() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>#</th>
+            <th>S.No</th>
             <th>Code</th>
             <th>Description</th>
             <th>Discount Type</th>
@@ -178,7 +178,7 @@ export default function Coupon() {
                   {coupon.is_active ? "Active" : "Inactive"}
                 </span>
               </td>
-              <td>
+              <td className={styles.actionbtn}>
                 <FaEdit
                   className={styles.iconEdit}
                   onClick={() => handleEdit(coupon)}
@@ -296,7 +296,7 @@ export default function Coupon() {
                 />
               </div>
 
-              <div className={styles.checkboxLabel}>
+              {/* <div className={styles.checkboxLabel}>
                 <input
                   type="checkbox"
                   name="is_active"
@@ -304,7 +304,7 @@ export default function Coupon() {
                   onChange={handleChange}
                 />
                 <label>Active</label>
-              </div>
+              </div> */}
 
               <div className={styles.modalActions}>
                 <button

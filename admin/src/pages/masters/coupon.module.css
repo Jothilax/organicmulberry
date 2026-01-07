@@ -7,6 +7,38 @@
   min-height: 100vh;
 }
 
+
+
+/* ===========================
+   🔹 Header Row
+=========================== */
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  background: white;
+  padding: 20px 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.headerRow h2 {
+  color: #2c3e50;
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerRow h2::before {
+ content: "🏷️";
+  font-size: 30px;
+}
+
+/* 
 .headerRow {
   display: flex;
   justify-content: space-between;
@@ -28,10 +60,11 @@ h2 {
   gap: 10px;
 }
 
-h2::before {
-  content: "🎫";
+headerRow h2::before {
+  content: "🏷️";
   font-size: 32px;
-}
+} */
+
 
 .table {
   width: 100%;
@@ -63,6 +96,15 @@ h2::before {
   font-size: 14px;
 }
 
+.actionbtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  gap: 0px;
+  white-space: nowrap;
+}
+
 .table tbody tr:last-child td {
   border-bottom: none;
 }
@@ -78,7 +120,9 @@ h2::before {
 }
 
 .addBtn {
-  padding: 10px 20px;
+  padding: 10px 10px;
+  width: 10%;
+  text-align: center;
   border: none;
   background: linear-gradient(135deg, #eab308 0%, #f59e0b 100%);
   color: white;
@@ -89,8 +133,11 @@ h2::before {
   transition: all 0.3s ease;
   white-space: nowrap;
   box-shadow: 0 2px 4px rgba(234, 179, 8, 0.3);
+
+  /* 🔥 FIX */
   display: flex;
   align-items: center;
+  justify-content: center; /* 👈 THIS */
   gap: 8px;
 }
 

@@ -1,227 +1,110 @@
-/* ---------------------------- */
-/* Add Product – Page Layout    */
-/* ---------------------------- */
-
+/* Page Background */
 .container {
-  width: 100%;
-  padding: 30px 50px;
-  background: #f4f2ef;
+  padding: 30px 40px;
+  background: #f6f5f2;
   min-height: 100vh;
 }
 
-/* Title Row */
+/* Header */
 .titleRow {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 .titleRow h2 {
   font-size: 28px;
-  color: #333;
-  margin: 0;
   font-weight: 600;
+  color: #2c2c2c;
 }
 
-/* ---------------------------- */
-/* Form Grid Layout             */
-/* ---------------------------- */
-
+.titleRow h2::before {
+  content: "📦";
+  font-size: 32px;
+}
+/* Card Form */
 .form {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columns */
-  gap: 25px;
-  margin-top: 20px;
-}
-
-/* Column span helpers */
-.col1 {
-  grid-column: span 1;
-}
-
-.col2 {
-  grid-column: span 2;
-}
-
-.col3 {
-  grid-column: span 3;
-}
-
-/* ---------------------------- */
-/* Labels & Inputs              */
-/* ---------------------------- */
-
-.form label {
-  font-size: 15px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 6px;
-  display: block;
-}
-
-.form input,
-.form select,
-.form textarea {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #d0cfcf;
-  border-radius: 6px;
-  font-size: 14px;
-  background: white;
-  transition: all 0.2s ease-in-out;
-}
-
-.form input:focus,
-.form select:focus,
-.form textarea:focus {
-  border-color: #f0b429;
-  outline: none;
-  box-shadow: 0 0 4px rgba(240, 180, 41, 0.4);
-}
-
-/* Textarea styling */
-.form textarea {
-  resize: none;
-  height: 110px;
-}
-
-/* ---------------------------- */
-/* Submit Button                */
-/* ---------------------------- */
-
-.submitBtn {
-  grid-column: span 3;
-  padding: 12px 20px;
-  background: linear-gradient(135deg, #eab308 0%, #f59e0b 100%);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  font-weight: 600;
-  text-align: center;
-  transition: 0.3s ease;
-}
-
-.submitBtn:hover {
-  background: linear-gradient(135deg, #d19a07 0%, #ec8f06 100%);
-}
-
-/* ---------------------------- */
-/* Responsive Breakpoints       */
-/* ---------------------------- */
-
-@media (max-width: 900px) {
-  .form {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 600px) {
-  .form {
-    grid-template-columns: 1fr;
-  }
-
-  .submitBtn {
-    grid-column: span 1;
-  }
-}
-.container {
-  padding: 30px 50px;
-  background: #f7f5f2;
-  min-height: 100vh;
-}
-
-.titleRow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.titleRow h2 {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 600;
-}
-
-/* Grid layout */
-.form {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 30px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 22px;
 }
 
-/* Column spans */
+/* Column helpers */
 .col1 {
   grid-column: span 1;
-}
-
-.col2 {
-  grid-column: span 2;
 }
 
 .col3 {
   grid-column: span 3;
 }
 
-/* Input styling */
-label {
-  font-weight: 600;
-  margin-bottom: 5px;
+/* For old formGroup compatibility */
+.formGroup {
+  grid-column: span 1;
+}
+
+/* Labels */
+.form label {
   display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #444;
 }
 
-input,
-select,
-textarea {
+/* Inputs */
+.form input,
+.form textarea {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background: white;
+  padding: 11px 12px;
+  border-radius: 8px;
+  border: 1px solid #d0d0d0;
   font-size: 14px;
-}
-/* Button row */
-.buttonRow {
-  grid-column: span 1;          /* full row */
-  display: flex;
-  justify-content: flex-start; /* LEFT aligned */
-  margin-top: 20px;
-}
-
-/* Cute & Simple Button */
-.submitBtn {
-  padding: 8px 18px;
-  background: #d4a437;
-  color: #fff;
-  border: none;
-  font-size: 14px;
-  font-weight: 500;
-  border-radius: 6px;
-  cursor: pointer;
-  min-width: 130px;
+  background: #fff;
   transition: all 0.2s ease;
 }
 
-.submitBtn:hover {
-  background: #b7892d;
-  transform: translateY(-1px);
+
+.form select{
+  width: 100%;
+  margin-top: 12px;
+  padding: 11px 12px;
+  border-radius: 8px;
+  border: 1px solid #d0d0d0;
+  font-size: 14px;
+  background: #fff;
+  transition: all 0.2s ease;
+}
+.form input:focus,
+.form select:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: #d4a437;
+  box-shadow: 0 0 0 2px rgba(212, 164, 55, 0.2);
 }
 
+/* Textarea */
+.form textarea {
+  resize: none;
+  min-height: 110px;
+}
 
-/* Image preview */
+/* Image Upload */
 .imagePreviewContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
-  margin-top: 10px;
+  gap: 14px;
+  margin-top: 12px;
 }
 
 .imageBox {
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   position: relative;
 }
 
@@ -229,19 +112,106 @@ textarea {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
 }
 
 .imageBox button {
   position: absolute;
   top: -6px;
   right: -6px;
-  background: red;
-  color: white;
-  border: none;
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  cursor: pointer;
+  border: none;
+  background: #e53935;
+  color: #fff;
   font-size: 14px;
+  cursor: pointer;
+}
+/* ===============================
+   Buttons
+================================ */
+.buttonGroup {
+  grid-column: span 3;          /* full row */
+  display: flex;
+  gap: 14px;
+  margin-top: 24px;
+
+  justify-content: flex-start;  /* left */
+  align-items: center;
+}
+.saveBtn,
+.cancelBtn {
+  width: auto;          /* 🔑 KEY FIX */
+  min-width: 160px;     /* clean admin size */
+}
+
+
+
+.saveBtn {
+  padding: 12px 26px;
+  background: linear-gradient(135deg, #d4a437, #b7892d);
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.saveBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.cancelBtn {
+  padding: 12px 26px;
+  background: #e5e5e5;
+  color: #333;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.cancelBtn:hover {
+  background: #d4d4d4;
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+
+@media (max-width: 1000px) {
+  .form {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .col3,
+  .buttonRow {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 20px;
+  }
+
+  .form {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .col1,
+  .col3,
+  .formGroup,
+  .buttonRow {
+    grid-column: span 1;
+  }
+
+  .buttonRow {
+    justify-content: center;
+  }
 }

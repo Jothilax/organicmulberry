@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import "./HomePage.css";
 import { productService } from "../../services/productService";
 import { categoryService } from "../../services/categoryService";
+import img1 from "./assets/2.jpg";
+import img2 from "./assets/48.jpg";
+import img3 from "./assets/3.jpg";
 
 const HomePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -16,7 +19,7 @@ const HomePage = () => {
       subtitle: "The essence of natural fiber",
       description:
         "Crafting comfort and elegance through high-quality textiles for homes and hospitality.",
-      image: "https://via.placeholder.com/1200x600?text=Linen+and+More",
+      image: img1,
       btnText: "LEARN MORE",
     },
     {
@@ -24,7 +27,7 @@ const HomePage = () => {
       subtitle: "Textile Solutions for Hospitality",
       description:
         "Delivering premium linen and textile products tailored for resorts, hotels, hospitals, and more.",
-      image: "https://via.placeholder.com/1200x600?text=HoReCa+Solutions",
+      image: img2,
       btnText: "OUR APPROACH",
     },
     {
@@ -32,8 +35,8 @@ const HomePage = () => {
       subtitle: "Luxury Textile Products",
       description:
         "Experience the finest in bed linen, duvets, towels, and more – crafted for comfort and durability.",
-      image: "https://via.placeholder.com/1200x600?text=Premium+Comfort",
-      btnpText: "EXPLORE PRODUCTS",
+      image: img3,
+      btnText: "EXPLORE PRODUCTS",
     },
   ];
 
@@ -108,52 +111,23 @@ const HomePage = () => {
                 <h1>{slide.title}</h1>
                 <h2>{slide.subtitle}</h2>
                 <p>{slide.description}</p>
-                {/* <div className="hero-buttons">
-                 {slide.btnText ? (
-  <Link to="/about" className="btn btn-dark">
-    {slide.btnText}
-  </Link>
-) : (
-  <Link to="/collection" className="btn btn-dark">
-    {slide.btnpText}
-  </Link>
-)}
- 
-                  {/* if(slide.btnText){
-                    <Link to="/about" className="btn btn-dark">
-                    {slide.btnText}
-                  </Link>
-
-                  }else{
-                    <Link to="/collection" className="btn btn-dark">
-                    {slide.btnpText}
-                  </Link>
-
-                  } */}
-                  
-                  {/* <button className="btn btn-light"> *
-                     <Link to="/contact" className="btn btn-dark">
-                    CONTACT US
-                  </Link>
-                  
-                  {/* </button> 
-                </div> */}
+              
 
                 <div className="hero-buttons">
-  {slide.btnText ? (
-    <Link to="/about" className="btn btn-dark">
-      {slide.btnText}
-    </Link>
-  ) : (
-    <Link to="/collection" className="btn btn-dark">
-      {slide.btnpText}
-    </Link>
-  )}
+                   {slide.btnText ? (
+                    <Link to="/about" className="btn btn-dark">
+                      {slide.btnText}
+                    </Link>
+                     ) : (
+                   <Link to="/collection" className="btn btn-dark">
+                 {slide.btnpText}
+                   </Link>
+                    )}
 
-  <Link to="/contact" className="btn btn-dark">
-    CONTACT US
-  </Link>
-</div>
+                 <Link to="/contact" className="btn btn-dark">
+                 CONTACT US
+                 </Link>
+                  </div>
 
                 <div className="hero-dots">
                   {heroSlides.map((_, i) => (

@@ -4,6 +4,11 @@ import { authService } from "../../services/authService";
 import { orderService } from "../../services/orderService";
 import { couponService } from "../../services/couponService";
 import { useNavigate } from "react-router-dom";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import { useRef } from "react";
+import logo from "../../../public/organicmulberrylogo.png";
+import signature from "../../../public/signature.png";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -172,6 +177,186 @@ const ProfilePage = () => {
       return `₹${coupon.discount_value} OFF`;
     }
   };
+
+//   const downloadInvoice = async (order) => {
+//   const invoice = document.getElementById(`invoice-${order.id}`);
+
+//   const canvas = await html2canvas(invoice, {
+//     scale: 2,
+//     useCORS: true,
+//     backgroundColor: "#ffffff",
+//   });
+
+//   const imgData = canvas.toDataURL("image/png");
+//   const pdf = new jsPDF("p", "mm", "a4");
+
+//   const pdfWidth = pdf.internal.pageSize.getWidth();
+//   const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+//   pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+//   pdf.save(`Invoice-${order.order_code || order.id}.pdf`);
+// };
+
+// const downloadInvoice = async (order) => {
+//   try {
+//     const response = await fetch(
+//       `http://localhost:3000/api/order/generateOrderPDF/${order.id}`,
+//       {
+//         method: "GET",
+//         headers: {
+//           Authorization: `Bearer ${localStorage.getItem("token")}`,
+//         },
+//       }
+//     );
+
+//     if (!response.ok) {
+//       throw new Error("Invoice download failed");
+//     }
+
+//     const blob = await response.blob();
+//     const url = window.URL.createObjectURL(blob);
+
+//     const link = document.createElement("a");
+//     link.href = url;
+//     link.download = `Invoice-${order.order_code || order.id}.pdf`;
+//     document.body.appendChild(link);
+//     link.click();
+
+//     link.remove();
+//     window.URL.revokeObjectURL(url);
+//   } catch (error) {
+//     console.error("Invoice download error:", error);
+//     alert("Failed to download invoice");
+//   }
+// };
+
+// const downloadInvoice = async (order) => {
+//   try {
+//     const token = localStorage.getItem("token");
+
+//     if (!token) {
+//       alert("Session expired. Please login again.");
+//       return;
+//     }
+
+//     const response = await fetch(
+//       `http://localhost:3000/api/order/generateOrderPDF/${order.id}`,
+//       {
+//         method: "GET",
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       }
+//     );
+
+//     if (response.status === 401) {
+//       alert("Session expired. Please login again.");
+//       localStorage.clear();
+//       window.location.href = "/login";
+//       return;
+//     }
+
+//     if (!response.ok) {
+//       throw new Error("Invoice download failed");
+//     }
+
+//     const blob = await response.blob();
+//     const url = window.URL.createObjectURL(blob);
+
+//     const link = document.createElement("a");
+//     link.href = url;
+//     link.download = `Invoice-${order.order_code}.pdf`;
+//     document.body.appendChild(link);
+//     link.click();
+
+//     link.remove();
+//     window.URL.revokeObjectURL(url);
+//   } catch (error) {
+//     console.error("Invoice download error:", error);
+//     alert("Failed to download invoice");
+//   }
+// };
+
+
+// const downloadInvoice = async (order) => {
+//   try {
+//     const response = await fetch(
+//       `http://localhost:3000/api/order/generateOrderPDF/${order.id}`,
+//       {
+//         method: "GET",
+//       }
+//     );
+
+//     if (!response.ok) {
+//       throw new Error("Invoice download failed");
+//     }
+
+//     const blob = await response.blob();
+//     const url = window.URL.createObjectURL(blob);
+
+//     const link = document.createElement("a");
+//     link.href = url;
+//     link.download = `Invoice-${order.order_code || order.id}.pdf`;
+//     document.body.appendChild(link);
+//     link.click();
+
+//     link.remove();
+//     window.URL.revokeObjectURL(url);
+//   } catch (error) {
+//     console.error("Invoice download error:", error);
+//     alert("Failed to download invoice");
+//   }
+// };
+
+
+const downloadInvoice = async (order) => {
+  try {
+    const token = localStorage.getItem("customerToken");
+
+    if (!token) {
+      alert("Session expired. Please login again.");
+      navigate("/login");
+      return;
+    }
+
+    const response = await fetch(
+      `http://localhost:3000/api/order/generateOrderPDF/${order.id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`, // ✅ CORRECT TOKEN
+        },
+      }
+    );
+
+    if (response.status === 401) {
+      alert("Session expired. Please login again.");
+      localStorage.removeItem("customerToken");
+      navigate("/login");
+      return;
+    }
+
+    if (!response.ok) {
+      throw new Error("Invoice download failed");
+    }
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `Invoice-${order.order_code || order.id}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+
+    link.remove();
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Invoice download error:", error);
+    alert("Failed to download invoice");
+  }
+};
+
 
   return (
     <div className="profile-container">
@@ -569,113 +754,108 @@ const ProfilePage = () => {
           </div>
         )}
 
-        {activeTab === "orders" && (
-          <div className="info-box">
-            <h3>Order History</h3>
-            {loading ? (
-              <p>Loading orders...</p>
-            ) : orders.length === 0 ? (
-              <p>No orders yet.</p>
-            ) : (
-              <div className="orders-list">
-                {orders.map((order) => (
-                  <div key={order.id} className="order-card" style={{ 
-                    border: '1px solid #ddd', 
-                    padding: '15px', 
-                    marginBottom: '15px',
-                    borderRadius: '5px'
-                  }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                      <div>
-                        <h4 
-                          style={{ cursor: 'pointer', color: '#eab308' }}
-                          onClick={() => navigate(`/order/${order.id}`)}
-                        >
-                          Order {order.order_code || `#${order.id?.substring(0, 8)}`}
-                        </h4>
-                        <p style={{ color: '#666', fontSize: '0.9em' }}>
-                          Date: {new Date(order.createdAt).toLocaleDateString()}
-                        </p>
-                        {order.order_code && (
-                          <p style={{ color: '#eab308', fontSize: '0.85em', fontWeight: '500', marginTop: '5px' }}>
-                            Order Code: {order.order_code}
-                          </p>
-                        )}
-                      </div>
-                      <div style={{ textAlign: 'right' }}>
-                        <p style={{ fontWeight: 'bold', fontSize: '1.1em' }}>
-                          ₹{order.total_amount?.toLocaleString() || '0'}
-                        </p>
-                        <p style={{ 
-                          color: order.status === 'completed' ? 'green' : 
-                                 order.status === 'pending' ? 'orange' : 'gray',
-                          fontSize: '0.9em'
-                        }}>
-                          {order.status || 'Pending'}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    {/* QR Code Display */}
-                    {order.qr_code && (
-                      <div style={{ 
-                        marginTop: '15px', 
-                        marginBottom: '15px',
-                        padding: '10px',
-                        backgroundColor: '#f9f9f9',
-                        borderRadius: '5px',
-                        textAlign: 'center'
-                      }}>
-                        <p style={{ fontWeight: 'bold', marginBottom: '10px', fontSize: '0.9em' }}>Order QR Code</p>
-                        <img 
-                          src={order.qr_code} 
-                          alt="Order QR Code" 
-                          style={{ 
-                            maxWidth: '200px', 
-                            height: 'auto',
-                            border: '2px solid #ddd',
-                            borderRadius: '5px',
-                            padding: '5px',
-                            backgroundColor: 'white'
-                          }} 
-                        />
-                        <p style={{ marginTop: '8px', fontSize: '0.8em', color: '#666' }}>
-                          Scan to view order details
-                        </p>
-                      </div>
-                    )}
-                    
-                    {order.items && order.items.length > 0 && (
-                      <div style={{ marginTop: '10px' }}>
-                        <p style={{ fontWeight: 'bold', marginBottom: '5px' }}>Items:</p>
-                        <ul style={{ listStyle: 'none', padding: 0 }}>
-                          {order.items.map((item, index) => (
-                            <li key={index} style={{ 
-                              padding: '5px 0',
-                              borderBottom: index < order.items.length - 1 ? '1px solid #eee' : 'none'
-                            }}>
-                              {item.product?.name || 'Unknown Product'} - 
-                              Qty: {item.quantity} - 
-                              ₹{item.price?.toLocaleString() || '0'} each
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                    {order.address && (
-                      <p style={{ marginTop: '10px', color: '#666', fontSize: '0.9em' }}>
-                        Address: {order.address}
-                      </p>
-                    )}
-                    <p style={{ marginTop: '10px', color: '#666', fontSize: '0.9em' }}>
-                      Payment: {order.payment_method || 'COD'}
-                    </p>
-                  </div>
+{activeTab === "orders" && (
+  <div className="info-box">
+    <h3>Order History</h3>
+
+    {loading ? (
+      <p>Loading orders...</p>
+    ) : orders.length === 0 ? (
+      <p>No orders yet.</p>
+    ) : (
+      <div className="orders-list">
+        {orders.map((order) => (
+          <div
+            key={order.id}
+            className="order-card"
+            style={{
+              border: "1px solid #ddd",
+              padding: "15px",
+              marginBottom: "15px",
+              borderRadius: "5px"
+            }}
+          >
+            {/* HEADER */}
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div>
+                <h4
+                  style={{ cursor: "pointer", color: "#eab308" }}
+                  onClick={() => navigate(`/order/${order.id}`)}
+                >
+                  Order {order.order_code || `#${order.id?.substring(0, 8)}`}
+                </h4>
+                <p style={{ color: "#666", fontSize: "0.9em" }}>
+                  Date: {new Date(order.createdAt).toLocaleDateString()}
+                </p>
+              </div>
+
+              <div style={{ textAlign: "right" }}>
+                <p style={{ fontWeight: "bold" }}>
+                  ₹{order.total_amount?.toLocaleString()}
+                </p>
+                <p
+                  style={{
+                    color:
+                      order.status === "completed"
+                        ? "green"
+                        : order.status === "pending"
+                        ? "orange"
+                        : "gray"
+                  }}
+                >
+                  {order.status || "Pending"}
+                </p>
+              </div>
+            </div>
+
+            {/* QR CODE */}
+            {order.qr_code && (
+              <div style={{ textAlign: "center", marginTop: "15px" }}>
+                <p><b>Order QR Code</b></p>
+                <img src={order.qr_code} alt="QR" style={{ maxWidth: "200px" }} />
+              </div>
+            )}
+
+            {/* ITEMS */}
+            {order.items?.length > 0 && (
+              <div style={{ marginTop: "10px" }}>
+                <b>Items:</b>
+                {order.items.map((item, index) => (
+                  <p key={index}>
+                    {item.product?.name} × {item.quantity} — ₹{item.price}
+                  </p>
                 ))}
               </div>
             )}
+
+            {/* ADDRESS & PAYMENT */}
+            {order.address && <p><b>Address:</b> {order.address}</p>}
+            <p><b>Payment:</b> {order.payment_method || "COD"}</p>
+
+            {/* DOWNLOAD BUTTON */}
+            <button
+              onClick={() => downloadInvoice(order)}
+              style={{
+                marginTop: "10px",
+                padding: "0.5rem 1rem",
+                backgroundColor: "#3b82f6",
+                color: "#fff",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer"
+              }}
+            >
+              Download Invoice
+            </button>
+
+       
           </div>
-        )}
+        ))}
+      </div>
+    )}
+  </div>
+)}
+
 
         {activeTab === "settings" && (
           <div className="info-box">

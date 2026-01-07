@@ -118,7 +118,14 @@
 .footer-socials a:hover {
   color: #000;
 }
-
+.linkssec{
+  text-align: center;
+}
+.footer-section {
+ /* border: 2px solid #0c0909; */
+  padding: 1rem;
+  border-radius: 8px;
+}
 .footer-section ul {
   list-style: none;
   padding: 0;

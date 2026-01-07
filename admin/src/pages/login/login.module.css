@@ -34,8 +34,8 @@ body {
 }
 
 .logo {
-  width: 70;
-  height: 10vh;
+  width: 100%;
+  height: 20vh;
   object-fit: contain;
 }
 

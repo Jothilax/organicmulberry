@@ -265,3 +265,25 @@
 .info-box button.logout:hover {
   background: #e43d3d;
 }
+
+.header-logo {
+  display: flex;
+  flex-direction: row;
+  /* align-items: center; */
+  gap: 10px;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  text-decoration: none;
+  color: #222;
+}
+.header-logo img {
+  width: 50%;
+  height: 50vh;
+  /* border-radius: 50%; */
+  /* border: 1px solid #ccc; */
+}
+.header-name{
+  margin: 0;
+  align-self: left;
+}

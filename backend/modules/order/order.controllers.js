@@ -7,6 +7,11 @@ import sequelize from "../../config/db.js";
 import { Customer, Order, OrderItem, Product} from '../associations/index.js'
 import { generateOrderCode } from "../../utils/generateOrderCode.js";
 import { generateOrderQRCode } from "../../utils/generateQRCode.js";
+// controllers/report.controller.js
+import PDFDocument from "pdfkit";
+import path from "path";
+import ExcelJS from "exceljs";
+
 
 /**
  * Create an order from the logged-in user's cart.
@@ -182,6 +187,204 @@ export const getUserOrders = async (req, res) => {
   }
 };
 
+export const generateOrderPDF = async (req, res) => {
+  try {
+    const userId = req.customer.id;
+    const { order_id } = req.params;
+
+    const order = await Order.findOne({
+      where: { id: order_id, user_id: userId },
+      include: [
+        {
+          model: OrderItem,
+          as: "items",
+          include: [{ model: Product, as: "product" }],
+        },
+      ],
+    });
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    const orderData = order.toJSON();
+
+    const doc = new PDFDocument({ size: "A4", margin: 40 });
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=Invoice-${orderData.order_code}.pdf`
+    );
+
+    doc.pipe(res);
+
+    /* ================= HEADER ================= */
+
+    const logoPath = path.join(process.cwd(), "assets/organicmulberrylogo.png");
+    doc.image(logoPath, 40, 40, { width: 180 });
+
+    doc
+      .font("Helvetica-Bold")
+      .fontSize(26)
+      .text("Invoice", 0, 55, { align: "right" });
+
+    doc.moveTo(40, 120).lineTo(555, 120).stroke();
+
+    /* ================= ADDRESS BLOCK ================= */
+
+    const startY = 140;
+    const lineGap = 12;
+
+    // /* -------- SHIP TO -------- */
+    let shipY = startY;
+    doc.font("Helvetica-Bold").fontSize(9).text("SHIP TO", 40, shipY);
+    doc.font("Helvetica").fontSize(8);
+    shipY += lineGap;
+
+    doc.font("Helvetica").fontSize(8);
+ 
+const shipToDetails = [
+  req.customer.name,
+  req.customer.email,
+  req.customer.phone,
+  orderData.address,
+  `${req.customer.city}, ${req.customer.state}`,
+  req.customer.country,
+  req.customer.pincode,
+];
+
+shipToDetails.forEach((text) => {
+  if (!text) return;
+
+  const textHeight = doc.heightOfString(text, {
+    width: 180,
+  });
+
+  doc.text(text, 40, shipY, {
+    width: 180,
+    lineGap: 2, // 🔹 space between wrapped lines
+  });
+
+  shipY += textHeight + 6; // 🔹 space between fields
+});
+
+/* -------- BILL TO -------- */
+let billY = startY;
+
+doc.font("Helvetica-Bold")
+   .fontSize(9)
+   .text("BILL TO", 280, billY);
+
+billY += lineGap;
+
+doc.font("Helvetica").fontSize(8);
+
+const billToDetails = [
+  "LINEN & MORE INDIA PRIVATE LIMITED",
+  "senthil@lamlinen.com",
+  "+91 95663 80568",
+  "5/405 Kamanayakanpalayam Road",
+  "Karadivavi, Palladam",
+  "Tirupur, Tamil Nadu",
+  "India - 641658",
+];
+
+billToDetails.forEach((text) => {
+  doc.text(text, 280, billY, { width: 180 });
+  billY += lineGap;
+});
+
+    /* -------- QR CODE -------- */
+    if (orderData.qr_code) {
+      const base64 = orderData.qr_code.replace(
+        /^data:image\/png;base64,/,
+        ""
+      );
+      const qrBuffer = Buffer.from(base64, "base64");
+
+      doc
+        .font("Helvetica-Bold")
+        .fontSize(9)
+        .text("QR FOR TRACKING", 450, startY);
+
+      doc.image(qrBuffer, 450, startY + 15, { width: 100 });
+    }
+
+    /* ================= ORDER INFO ================= */
+
+    const infoY = Math.max(shipY, billY) + 15;
+
+    doc.font("Helvetica").fontSize(10);
+    doc.text(`Payment Method: ${orderData.payment_method}`, 40, infoY);
+    doc.text(`Order Code: ${orderData.order_code}`, 40, infoY + 15);
+    doc.text(
+      `Order Date: ${new Date(orderData.createdAt).toLocaleDateString()}`,
+      280,
+      infoY
+    );
+
+    /* ================= TABLE HEADER ================= */
+
+    let tableY = infoY + 45;
+
+    doc.rect(40, tableY, 515, 28).fill("#f3d9a5");
+
+    doc
+      .fillColor("#000")
+      .font("Helvetica-Bold")
+      .fontSize(11);
+
+    doc.text("Product", 50, tableY + 8);
+    doc.text("Price", 300, tableY + 8);
+    doc.text("Qty", 390, tableY + 8);
+    doc.text("Total", 460, tableY + 8);
+
+    /* ================= TABLE ROWS ================= */
+
+    doc.font("Helvetica").fontSize(10);
+    let rowY = tableY + 38;
+
+    orderData.items.forEach((item) => {
+      doc.text(item.product.name, 50, rowY, { width: 230 });
+      doc.text(`₹${item.price}`, 300, rowY);
+      doc.text(item.quantity, 390, rowY);
+      doc.text(`₹${item.price * item.quantity}`, 460, rowY);
+      rowY += 22;
+    });
+
+    /* ================= GRAND TOTAL ================= */
+
+    doc.rect(40, rowY + 5, 515, 35).fill("#f3d9a5");
+
+    doc
+      .fillColor("#000")
+      .font("Helvetica-Bold")
+      .fontSize(12)
+      .text(`Grand Total: ₹${orderData.total_amount}`, 380, rowY + 17);
+
+    /* ================= SIGNATURE ================= */
+
+    const signPath = path.join(process.cwd(), "assets/signature.png");
+
+    doc.image(signPath, 430, rowY + 60, { width: 100 });
+
+    doc
+      .font("Helvetica")
+      .fontSize(10)
+      .text("Authorised Sign", 430, rowY + 95);
+
+    doc.end();
+  } catch (err) {
+    console.error("Invoice PDF Error:", err);
+    res.status(500).json({
+      message: "Invoice PDF generation failed",
+      error: err.message,
+    });
+  }
+};
+
+
 /**
  * Get all orders (Admin only)
  */
@@ -229,5 +432,91 @@ export const getAllOrders = async (req, res) => {
   } catch (err) {
     console.error('Error in getAllOrders:', err);
     return res.status(500).json({ message: "Failed to fetch orders", error: err.message });
+  }
+};
+
+export const downloadOrdersExcel = async (req, res) => {
+  try {
+    const orders = await Order.findAll({
+      include: [
+        {
+          model: Customer,
+          as: "customer",
+          attributes: ["name", "email", "phone"],
+        },
+        {
+          model: OrderItem,
+          as: "items",
+          include: [
+            {
+              model: Product,
+              as: "product",
+              attributes: ["name", "price"],
+            },
+          ],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    });
+
+    // ✅ Create Workbook & Sheet
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("Orders");
+
+    // ✅ Excel Columns
+    sheet.columns = [
+      { header: "Order Code", key: "order_code", width: 25 },
+      { header: "Customer Name", key: "customer_name", width: 20 },
+      { header: "Email", key: "email", width: 25 },
+      { header: "Phone", key: "phone", width: 15 },
+      { header: "Product Name", key: "product", width: 25 },
+      { header: "Quantity", key: "quantity", width: 10 },
+      { header: "Price", key: "price", width: 12 },
+      { header: "Total Amount", key: "total", width: 15 },
+      { header: "Payment Method", key: "payment", width: 15 },
+      { header: "Status", key: "status", width: 15 },
+      { header: "Address", key: "address", width: 40 },
+      { header: "Order Date", key: "date", width: 20 },
+    ];
+
+    // ✅ Add Rows
+    orders.forEach(order => {
+      order.items.forEach(item => {
+        sheet.addRow({
+          order_code: order.order_code,
+          customer_name: order.customer?.name,
+          email: order.customer?.email,
+          phone: order.customer?.phone,
+          product: item.product?.name,
+          quantity: item.quantity,
+          price: item.price,
+          total: order.total_amount,
+          payment: order.payment_method,
+          status: order.status,
+          address: order.address,
+          date: new Date(order.createdAt).toLocaleString(),
+        });
+      });
+    });
+
+    // ✅ Header Styling
+    sheet.getRow(1).font = { bold: true };
+
+    // ✅ Response Headers
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=orders.xlsx"
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
+
+  } catch (err) {
+    console.error("Excel Download Error:", err);
+    res.status(500).json({ message: "Failed to download Excel" });
   }
 };

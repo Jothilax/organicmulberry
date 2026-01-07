@@ -128,7 +128,7 @@
 
 import React from "react";
 import "./AboutPage.css";
-
+import image from "./about-image.jpg";
 const AboutPage = () => {
   return (
     <div className="about-page">
@@ -150,7 +150,7 @@ const AboutPage = () => {
         <div className="about-heritage">
           <div className="heritage-image">
             <img
-              src="https://images.unsplash.com/photo-1595433707802-260c4c0b09aa?w=800"
+              src={image}
               alt="Luxury textiles and linen"
             />
           </div>
@@ -241,14 +241,25 @@ const AboutPage = () => {
             <div className="visit-info">
               <h3>Head Office</h3>
               <p>
-                <strong>Address:</strong> Linen and More Ltd., B&E Group, Israel
-                & India
+              <strong>Address:</strong> Itzhako Industrial Zone, Mishmarot, Pardes Hanna-Karkur 3711101, Israel
               </p>
               <p>
-                <strong>Email:</strong> info@linenandmore.com
+                <strong>Email:</strong> support@lamlinen.com
               </p>
               <p>
-                <strong>Phone:</strong> +91 22 1234 5678
+                <strong>Phone:</strong> +972 53-832-2449
+              </p>
+            </div>
+             <div className="visit-info">
+              <h3>Branch</h3>
+              <p>
+                <strong>Address:</strong> 5/405 Kamanayakanpalayam Road Karadivavi, Palladam Tirupur – 641658, Tamil Nadu, India
+              </p>
+              <p>
+                <strong>Email:</strong> senthil@lamlinen.com | robinson@lamlinen.com
+              </p>
+              <p>
+                <strong>Phone:</strong> +91 95663 80568 | +91 95663 80568
               </p>
             </div>
             <div className="visit-why">
@@ -261,6 +272,9 @@ const AboutPage = () => {
               </ul>
             </div>
           </div>
+
+
+
           <div className="visit-button">
             <a href="/contact" className="btn-yellow">
               Contact Us

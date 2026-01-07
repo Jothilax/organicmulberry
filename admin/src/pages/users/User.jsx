@@ -32,7 +32,7 @@ export default function User() {
 
   const token = localStorage.getItem("token");
 
-  // ✅ Fetch all users
+  // Fetch all users
   const fetchUsers = async () => {
     try {
       const res = await getAllUsers(token);
@@ -43,7 +43,7 @@ export default function User() {
     }
   };
 
-  // ✅ Fetch all roles
+  // Fetch all roles
   const fetchRoles = async () => {
     try {
       const res = await getAllRoles(token);
@@ -59,21 +59,35 @@ export default function User() {
     fetchRoles();
   }, []);
 
-  // ✅ Handle input
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ Add or Update user
+  const resetForm = () => {
+    setFormData({
+      id: "",
+      username: "",
+      password: "",
+      user_role: "",
+      email: "",
+      phoneNo: "",
+      address: "",
+      country: "",
+      state: "",
+      city: "",
+      pincode: "",
+    });
+    setIsEditing(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const payload = {
         username: formData.username,
-        ...(isEditing ? {} : { password: formData.password }), // only include password on create
-        user_role: formData.user_role, // This will be the UUID now
+        ...(isEditing ? {} : { password: formData.password }),
+        user_role: formData.user_role,
         email: formData.email,
         phoneNo: formData.phoneNo,
         address: formData.address,
@@ -94,49 +108,19 @@ export default function User() {
       fetchUsers();
       setShowModal(false);
       resetForm();
-    } catch (error) {
-      // const msg = err.response?.data?.message || "Error saving user!";
-      // toast.error(msg);
-      // console.error("❌ API Error:", err.response?.data || err.message);
-
-      // 💥 Handle backend validation message
-      const msg = error.response.data.message;
-
-      // You can either show it as toast
+    } catch (err) {
+      const msg = err.response?.data?.message || "Error saving user!";
       toast.error(msg);
-
-      // OR show inline error if you have per-field validation
-      // Example: setFieldError("email", msg);
+      console.error(err);
     }
   };
 
-  const resetForm = () => {
-    setFormData({
-      id: "",
-      username: "",
-      password: "",
-      user_role: "",
-      email: "",
-      phoneNo: "",
-      address: "",
-      country: "",
-      state: "",
-      city: "",
-      pincode: "",
-    });
-    setIsEditing(false);
-  };
-
-  // ✅ Edit user
   const handleEdit = (usr) => {
     setFormData({
       id: usr.id,
       username: usr.username || "",
       password: "",
-      user_role:
-        typeof usr.user_role === "object"
-          ? usr.user_role.role_id
-          : usr.user_role || "",
+      user_role: typeof usr.user_role === "object" ? usr.user_role.role_id : usr.user_role || "",
       email: usr.email || "",
       phoneNo: usr.phoneNo || "",
       address: usr.address || "",
@@ -149,7 +133,6 @@ export default function User() {
     setShowModal(true);
   };
 
-  // ✅ Delete user
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
@@ -168,7 +151,7 @@ export default function User() {
       <ToastContainer position="top-right" autoClose={2500} />
 
       <div className={styles.headerRow}>
-        <h2>Users</h2>
+        <h2 className={styles.pageTitle}>Users</h2>
         <button className={styles.addBtn} onClick={() => setShowModal(true)}>
           <FaPlus /> Add User
         </button>
@@ -177,7 +160,7 @@ export default function User() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>#</th>
+            <th>S.No</th>
             <th>Username</th>
             <th>Email</th>
             <th>Phone</th>
@@ -193,28 +176,17 @@ export default function User() {
               <td>{usr.username}</td>
               <td>{usr.email}</td>
               <td>{usr.phoneNo}</td>
-              <td>
-                {usr.rolename ||
-                  roles.find((r) => r.role_id === usr.user_role)?.name ||
-                  usr.user_role}
-              </td>
+              <td>{roles.find((r) => r.role_id === usr.user_role)?.rolename || usr.rolename}</td>
               <td>{usr.city}</td>
               <td>
-                <FaEdit
-                  className={styles.iconEdit}
-                  onClick={() => handleEdit(usr)}
-                />
-                <FaTrash
-                  className={styles.iconDelete}
-                  onClick={() => handleDelete(usr.id)}
-                />
+                <FaEdit className={styles.iconEdit} onClick={() => handleEdit(usr)} />
+                <FaTrash className={styles.iconDelete} onClick={() => handleDelete(usr.id)} />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {/* ✅ Modal */}
       {showModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
@@ -223,131 +195,66 @@ export default function User() {
             <form onSubmit={handleSubmit} className={styles.gridForm}>
               <div>
                 <label>Username</label>
-                <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  required
-                />
+                <input type="text" name="username" value={formData.username} onChange={handleChange} required />
               </div>
 
               {!isEditing && (
                 <div>
                   <label>Password</label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                  />
+                  <input type="password" name="password" value={formData.password} onChange={handleChange} required />
                 </div>
               )}
 
               <div>
                 <label>Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
+                <input type="email" name="email" value={formData.email} onChange={handleChange} required />
               </div>
 
               <div>
                 <label>Phone</label>
-                <input
-                  type="text"
-                  name="phoneNo"
-                  value={formData.phoneNo}
-                  onChange={handleChange}
-                  required
-                />
+                <input type="text" name="phoneNo" value={formData.phoneNo} onChange={handleChange} required />
               </div>
 
               <div>
                 <label>Role</label>
-                <select
-                  name="user_role"
-                  value={formData.user_role}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">-- Select Role --</option>
+                <select name="user_role" value={formData.user_role} onChange={handleChange} required>
+                  <option value="">Select Role</option>
                   {roles.map((role) => (
-                    <option key={role.id} value={role.id}>
-                      {role.name}
-                    </option>
+                    <option key={role.id} value={role.id}>{role.name}</option>
                   ))}
                 </select>
               </div>
 
               <div>
                 <label>Address</label>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                />
+                <input type="text" name="address" value={formData.address} onChange={handleChange} />
               </div>
 
               <div>
                 <label>Country</label>
-                <input
-                  type="text"
-                  name="country"
-                  value={formData.country}
-                  onChange={handleChange}
-                />
+                <input type="text" name="country" value={formData.country} onChange={handleChange} />
               </div>
 
               <div>
                 <label>State</label>
-                <input
-                  type="text"
-                  name="state"
-                  value={formData.state}
-                  onChange={handleChange}
-                />
+                <input type="text" name="state" value={formData.state} onChange={handleChange} />
               </div>
 
               <div>
                 <label>City</label>
-                <input
-                  type="text"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleChange}
-                />
+                <input type="text" name="city" value={formData.city} onChange={handleChange} />
               </div>
 
               <div>
                 <label>Pincode</label>
-                <input
-                  type="text"
-                  name="pincode"
-                  value={formData.pincode}
-                  onChange={handleChange}
-                />
+                <input type="text" name="pincode" value={formData.pincode} onChange={handleChange} />
               </div>
 
               <div className={styles.modalActions}>
-                <button
-                  type="button"
-                  className={styles.cancelBtn}
-                  onClick={() => {
-                    setShowModal(false);
-                    resetForm();
-                  }}
-                >
+                <button type="button" className={styles.cancelBtn} onClick={() => { setShowModal(false); resetForm(); }}>
                   Cancel
                 </button>
-                <button type="submit" className={styles.saveBtn}>
-                  {isEditing ? "Update" : "Save"}
-                </button>
+                <button type="submit" className={styles.saveBtn}>{isEditing ? "Update" : "Save"}</button>
               </div>
             </form>
           </div>

@@ -2,9 +2,8 @@
    Page Container
 ================================ */
 .formContainer {
-  width: 100%;
-  padding: 30px 50px;
-  background: #f7f5f2;
+  padding: 30px 40px;
+  background: #f6f5f2;
   min-height: 100vh;
 }
 
@@ -12,22 +11,28 @@
    Header
 ================================ */
 .hearderContainer {
-  display: flex;
-  align-items: center;
   margin-bottom: 25px;
 }
 
 .hearderContainer h2 {
-  margin: 0;
   font-size: 28px;
   font-weight: 600;
-  color: #333;
+  color: #2c2c2c;
+}
+.hearderContainer h2::before {
+  content: "📦";
+  font-size: 32px;
 }
 
 /* ===============================
-   Form Grid Layout
+   Card Form
 ================================ */
 .form {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 22px;
@@ -47,7 +52,7 @@
 }
 
 /* ===============================
-   Form Groups
+   Form Group
 ================================ */
 .formGroup {
   display: flex;
@@ -58,35 +63,43 @@
    Labels & Inputs
 ================================ */
 .form label {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
-  color: #333;
   margin-bottom: 6px;
+  color: #444;
 }
 
 .form input,
-.form select,
 .form textarea {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #d0cfcf;
-  border-radius: 6px;
+  padding: 11px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #d0d0d0;
+  background: #fff;
+  transition: all 0.2s ease;
+}
+.form select{
+  width: 100%;
+  margin-top: 12px;
+  padding: 11px 12px;
+  border-radius: 8px;
+  border: 1px solid #d0d0d0;
   font-size: 14px;
   background: #fff;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease;
 }
-
 .form input:focus,
 .form select:focus,
 .form textarea:focus {
-  border-color: #f0b429;
   outline: none;
-  box-shadow: 0 0 4px rgba(240, 180, 41, 0.4);
+  border-color: #d4a437;
+  box-shadow: 0 0 0 2px rgba(212, 164, 55, 0.2);
 }
 
 .form textarea {
   resize: none;
-  height: 110px;
+  min-height: 110px;
 }
 
 /* ===============================
@@ -94,14 +107,14 @@
 ================================ */
 .imagePreviewContainer {
   display: flex;
+  gap: 14px;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .imageBox {
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   position: relative;
 }
 
@@ -109,7 +122,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 10px;
   border: 1px solid #ddd;
 }
 
@@ -117,51 +130,61 @@
   position: absolute;
   top: -6px;
   right: -6px;
-  background: red;
-  color: white;
-  border: none;
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  cursor: pointer;
+  background: #e53935;
+  color: #fff;
+  border: none;
   font-size: 14px;
-  line-height: 22px;
+  cursor: pointer;
 }
 
 /* ===============================
    Buttons
 ================================ */
 .buttonGroup {
-  grid-column: span 3;
+  grid-column: span 3;          /* full row */
   display: flex;
-  gap: 15px;
-  margin-top: 20px;
+  gap: 14px;
+  margin-top: 24px;
+
+  justify-content: flex-start;  /* left */
+  align-items: center;
+}
+.saveBtn,
+.cancelBtn {
+  width: auto;          /* 🔑 KEY FIX */
+  min-width: 160px;     /* clean admin size */
 }
 
+
+
 .saveBtn {
-  padding: 12px 22px;
-  background: linear-gradient(135deg, #eab308 0%, #f59e0b 100%);
+  padding: 12px 26px;
+  background: linear-gradient(135deg, #d4a437, #b7892d);
   color: white;
-  border: none;
-  border-radius: 8px;
   font-size: 15px;
   font-weight: 600;
+  border: none;
+  border-radius: 10px;
   cursor: pointer;
   transition: 0.3s ease;
 }
 
 .saveBtn:hover {
-  background: linear-gradient(135deg, #d19a07 0%, #ec8f06 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .cancelBtn {
-  padding: 12px 22px;
+  padding: 12px 26px;
   background: #e5e5e5;
   color: #333;
-  border: none;
-  border-radius: 8px;
   font-size: 15px;
   font-weight: 600;
+  border: none;
+  border-radius: 10px;
   cursor: pointer;
 }
 
@@ -172,23 +195,37 @@
 /* ===============================
    Responsive
 ================================ */
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .form {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .col3,
   .buttonGroup {
     grid-column: span 2;
   }
 }
 
 @media (max-width: 600px) {
+  .formContainer {
+    padding: 20px;
+  }
+
   .form {
     grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .col1,
+  .col2,
+  .col3,
+  .formGroup,
+  .buttonGroup {
+    grid-column: span 1;
   }
 
   .buttonGroup {
-    grid-column: span 1;
     flex-direction: column;
+    align-items: stretch;
   }
 }

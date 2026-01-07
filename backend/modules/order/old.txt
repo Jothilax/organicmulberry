@@ -1,0 +1,368 @@
+
+
+// export const generateOrderPDF = async (req, res) => {
+//   try {
+//     const userId = req.customer.id;
+
+//     const orders = await Order.findAll({
+//       where: { user_id: userId },
+//       include: [
+//         {
+//           model: OrderItem,
+//           as: "items",
+//           include: [{ model: Product, as: "product" }],
+//         },
+//       ],
+//       order: [["createdAt", "DESC"]],
+//       limit: 1, // latest order invoice
+//     });
+
+//     if (!orders.length) {
+//       return res.status(404).json({ message: "No orders found" });
+//     }
+
+//     const order = orders[0].toJSON();
+
+//     const doc = new PDFDocument({ size: "A4", margin: 40 });
+
+//     res.setHeader("Content-Type", "application/pdf");
+//     res.setHeader(
+//       "Content-Disposition",
+//       `attachment; filename=Invoice-${order.order_code}.pdf`
+//     );
+
+//     doc.pipe(res);
+
+//     /* ================= HEADER ================= */
+
+//     const logoPath = path.join(
+//       process.cwd(),
+//       "assets/organicmulberrylogo.png"
+//     );
+//     doc.image(logoPath, 40, 40, { width: 150 });
+
+//     doc
+//       .font("Helvetica-Bold")
+//       .fontSize(22)
+//       .text("Invoice", 420, 50);
+
+//     doc.moveTo(40, 110).lineTo(550, 110).stroke();
+
+//     /* ================= ADDRESS BLOCK ================= */
+
+//     const addressTop = 130;
+//     const lineGap = 15;
+
+//     /* SHIP TO */
+//     let shipToY = addressTop;
+//     doc.font("Helvetica-Bold").fontSize(8).text("SHIP TO", 40, shipToY);
+//     doc.font("Helvetica");
+//     shipToY += lineGap;
+
+//     [
+//       req.customer.name,
+//       req.customer.email,
+//       req.customer.phone,
+//       order.address,
+//       `${req.customer.city}, ${req.customer.state}`,
+//       `${req.customer.country} - ${req.customer.pincode}`,
+//     ].forEach(line => {
+//       if (line) {
+//         doc.text(line, 40, shipToY, { width: 150 });
+//         shipToY += lineGap;
+//       }
+//     });
+
+//     /* BILL TO */
+//     let billToY = addressTop;
+//     doc.font("Helvetica-Bold").text("BILL TO", 300, billToY);
+//     doc.font("Helvetica");
+//     billToY += lineGap;
+
+//     [
+//       "LINEN & MORE INDIA PRIVATE LIMITED",
+//       "senthil@lamlinen.com",
+//       "+91 95663 80568",
+//       "5/405 Kamanayakanpalayam Road",
+//       "Karadivavi, Palladam",
+//       "Tirupur, Tamil Nadu",
+//       "India - 641658",
+//     ].forEach(line => {
+//       doc.text(line, 300, billToY, { width: 150 });
+//       billToY += lineGap;
+//     });
+
+//     /* ================= ORDER INFO ================= */
+
+//     const orderInfoY = Math.max(shipToY, billToY) + 10;
+
+//     doc.fontSize(10);
+//     doc.text(`Payment Method: ${order.payment_method}`, 40, orderInfoY);
+//     doc.text(`Order Code: ${order.order_code}`, 40, orderInfoY + 15);
+//     doc.text(
+//       `Order Date: ${new Date(order.createdAt).toLocaleDateString()}`,
+//       300,
+//       orderInfoY
+//     );
+
+//     /* ================= QR CODE ================= */
+
+//     if (order.qr_code) {
+//       const base64 = order.qr_code.replace(/^data:image\/png;base64,/, "");
+//       const qrBuffer = Buffer.from(base64, "base64");
+
+//       doc
+//         .font("Helvetica-Bold")
+//         .fontSize(9)
+//         .text("QR FOR TRACKING", 420, orderInfoY + 35);
+
+//       doc.image(qrBuffer, 420, orderInfoY + 50, { width: 120 });
+//     }
+  
+//     /* ================= TABLE HEADER ================= */
+
+//     let tableTop = orderInfoY + 200;
+
+//     doc.rect(40, tableTop, 520, 30).fill("#f3d9a5");
+
+//     doc
+//       .fillColor("#000")
+//       .font("Helvetica-Bold")
+//       .fontSize(11);
+
+//     doc.text("Product", 50, tableTop + 10);
+//     doc.text("Price", 300, tableTop + 10);
+//     doc.text("Qty", 380, tableTop + 10);
+//     doc.text("Total", 460, tableTop + 10);
+
+//     /* ================= TABLE ROWS ================= */
+
+//     doc.font("Helvetica").fontSize(10);
+//     let rowY = tableTop + 45;
+
+//     order.items.forEach(item => {
+//       doc.text(item.product.name, 50, rowY, { width: 230 });
+//       doc.text(`₹${item.price}`, 300, rowY);
+//       doc.text(item.quantity.toString(), 380, rowY);
+//       doc.text(`₹${item.price * item.quantity}`, 460, rowY);
+//       rowY += 25;
+//     });
+
+//     /* ================= GRAND TOTAL ================= */
+
+//     doc.rect(40, rowY + 10, 520, 40).fill("#f3d9a5");
+
+//     doc
+//       .fillColor("#000")
+//       .font("Helvetica-Bold")
+//       .fontSize(12)
+//       .text(`Grand Total: ₹${order.total_amount}`, 380, rowY + 22);
+
+//     /* ================= SIGNATURE ================= */
+
+//     const signPath = path.join(process.cwd(), "assets/signature.png");
+
+//     doc.image(signPath, 420, rowY + 80, { width: 100 });
+
+//     doc
+//       .font("Helvetica")
+//       .fontSize(10)
+//       .text("Authorised Sign", 420, rowY + 110);
+
+//     doc.end();
+//   } catch (err) {
+//     console.error("Invoice PDF Error:", err);
+//     res.status(500).json({
+//       message: "Invoice PDF generation failed",
+//       error: err.message,
+//     });
+//   }
+// };
+
+
+
+// export const generateOrderPDF = async (req, res) => {
+//   try {
+//     const userId = req.customer.id;
+//     const { order_id } = req.params;
+
+//     // ✅ Fetch specific order
+//     const order = await Order.findOne({
+//       where: {
+//         id: order_id,
+//         user_id: userId, // security
+//       },
+//       include: [
+//         {
+//           model: OrderItem,
+//           as: "items",
+//           include: [{ model: Product, as: "product" }],
+//         },
+//       ],
+//     });
+
+//     if (!order) {
+//       return res.status(404).json({ message: "Order not found" });
+//     }
+
+//     const orderData = order.toJSON();
+
+//     const doc = new PDFDocument({ size: "A4", margin: 40 });
+
+//     res.setHeader("Content-Type", "application/pdf");
+//     res.setHeader(
+//       "Content-Disposition",
+//       `attachment; filename=Invoice-${orderData.order_code}.pdf`
+//     );
+
+//     doc.pipe(res);
+
+//     /* ================= HEADER ================= */
+
+//     const logoPath = path.join(
+//       process.cwd(),
+//       "assets/organicmulberrylogo.png"
+//     );
+//     doc.image(logoPath, 40, 40, { width: 150 });
+
+//     doc
+//       .font("Helvetica-Bold")
+//       .fontSize(22)
+//       .text("Invoice", 420, 50);
+
+//     doc.moveTo(40, 110).lineTo(550, 110).stroke();
+
+//     /* ================= ADDRESS BLOCK ================= */
+
+//     const addressTop = 130;
+//     const lineGap = 15;
+
+//     /* SHIP TO */
+//     let shipToY = addressTop;
+//     doc.font("Helvetica-Bold").fontSize(8).text("SHIP TO", 40, shipToY);
+//     doc.font("Helvetica");
+//     shipToY += lineGap;
+
+//     [
+//       req.customer.name,
+//       req.customer.email,
+//       req.customer.phone,
+//       orderData.address,
+//       `${req.customer.city}, ${req.customer.state}`,
+//       `${req.customer.country} - ${req.customer.pincode}`,
+//     ].forEach((line) => {
+//       if (line) {
+//         doc.text(line, 40, shipToY, { width: 150 });
+//         shipToY += lineGap;
+//       }
+//     });
+
+//     /* BILL TO */
+//     let billToY = addressTop;
+//     doc.font("Helvetica-Bold").text("BILL TO", 300, billToY);
+//     doc.font("Helvetica");
+//     billToY += lineGap;
+
+//     [
+//       "LINEN & MORE INDIA PRIVATE LIMITED",
+//       "senthil@lamlinen.com",
+//       "+91 95663 80568",
+//       "5/405 Kamanayakanpalayam Road",
+//       "Karadivavi, Palladam",
+//       "Tirupur, Tamil Nadu",
+//       "India - 641658",
+//     ].forEach((line) => {
+//       doc.text(line, 300, billToY, { width: 180 });
+//       billToY += lineGap;
+//     });
+
+//     /* ================= ORDER INFO ================= */
+
+//     const orderInfoY = Math.max(shipToY, billToY) + 10;
+
+//     doc.fontSize(10);
+//     doc.text(`Payment Method: ${orderData.payment_method}`, 40, orderInfoY);
+//     doc.text(`Order Code: ${orderData.order_code}`, 40, orderInfoY + 15);
+//     doc.text(
+//       `Order Date: ${new Date(orderData.createdAt).toLocaleDateString()}`,
+//       300,
+//       orderInfoY
+//     );
+
+//     /* ================= QR CODE ================= */
+
+//     if (orderData.qr_code) {
+//       const base64 = orderData.qr_code.replace(
+//         /^data:image\/png;base64,/,
+//         ""
+//       );
+//       const qrBuffer = Buffer.from(base64, "base64");
+
+//       doc
+//         .font("Helvetica-Bold")
+//         .fontSize(9)
+//         .text("QR FOR TRACKING", 420, orderInfoY + 35);
+
+//       doc.image(qrBuffer, 420, orderInfoY + 50, { width: 120 });
+//     }
+
+//     /* ================= TABLE HEADER ================= */
+
+//     let tableTop = orderInfoY + 200;
+
+//     doc.rect(40, tableTop, 520, 30).fill("#f3d9a5");
+
+//     doc
+//       .fillColor("#000")
+//       .font("Helvetica-Bold")
+//       .fontSize(11);
+
+//     doc.text("Product", 50, tableTop + 10);
+//     doc.text("Price", 300, tableTop + 10);
+//     doc.text("Qty", 380, tableTop + 10);
+//     doc.text("Total", 460, tableTop + 10);
+
+//     /* ================= TABLE ROWS ================= */
+
+//     doc.font("Helvetica").fontSize(10);
+//     let rowY = tableTop + 45;
+
+//     orderData.items.forEach((item) => {
+//       doc.text(item.product.name, 50, rowY, { width: 230 });
+//       doc.text(`₹${item.price}`, 300, rowY);
+//       doc.text(item.quantity.toString(), 380, rowY);
+//       doc.text(`₹${item.price * item.quantity}`, 460, rowY);
+//       rowY += 25;
+//     });
+
+//     /* ================= GRAND TOTAL ================= */
+
+//     doc.rect(40, rowY + 10, 520, 40).fill("#f3d9a5");
+
+//     doc
+//       .fillColor("#000")
+//       .font("Helvetica-Bold")
+//       .fontSize(12)
+//       .text(`Grand Total: ₹${orderData.total_amount}`, 380, rowY + 22);
+
+//     /* ================= SIGNATURE ================= */
+
+//     const signPath = path.join(process.cwd(), "assets/signature.png");
+
+//     doc.image(signPath, 420, rowY + 80, { width: 100 });
+
+//     doc
+//       .font("Helvetica")
+//       .fontSize(10)
+//       .text("Authorised Sign", 420, rowY + 110);
+
+//     doc.end();
+//   } catch (err) {
+//     console.error("Invoice PDF Error:", err);
+//     res.status(500).json({
+//       message: "Invoice PDF generation failed",
+//       error: err.message,
+//     });
+//   }
+// };
+

@@ -109,13 +109,15 @@
 
 
 // src/components/EcommerceFooter.jsx
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./EcommerceFooter.css";
 import { categoryService } from "../../services/categoryService.js"; // adjust path if needed
+ 
 
 const EcommerceFooter = () => {
   const [categories, setCategories] = useState([]);
+ const navigate = useNavigate();
 
   // Fetch categories from backend
   useEffect(() => {
@@ -142,7 +144,7 @@ const EcommerceFooter = () => {
       <div className="footer-container">
 
         {/* Newsletter */}
-        <div className="newsletter">
+        {/* <div className="newsletter">
           <div className="newsletter-content">
             <div>
               <h3>Join our Insider List</h3>
@@ -150,10 +152,12 @@ const EcommerceFooter = () => {
             </div>
             <form className="newsletter-form">
               <input type="email" placeholder="Enter your email" />
-              <button>Subscribe</button>
+              <button 
+              onClick={() => navigate("/login")}
+              >Subscribe</button>
             </form>
           </div>
-        </div>
+        </div> */}
 
         {/* Main sections */}
         <div className="footer-grid">
@@ -165,19 +169,18 @@ const EcommerceFooter = () => {
               Crafting comfort and elegance through high-quality textiles for homes and hospitality.
             </p>
             <div className="footer-socials">
-              <a href="#">Facebook</a>
-              <a href="#">Instagram</a>
-              <a href="#">Twitter</a>
-              {/* <a href="UCioE6iNm22Sa5h4OMpVuQaQ">YouTube</a> */}
-              <a href="https://www.youtube.com/channel/UCioE6iNm22Sa5h4OMpVuQaQ" target="_blank" rel="noopener noreferrer">
-  YouTube
-</a>
+              <a href="https://www.youtube.com/@TheOrganicMulberry" target="_blank" rel="noopener noreferrer">Facebook</a>
+              <a href="https://www.youtube.com/@TheOrganicMulberry" target="_blank" rel="noopener noreferrer">Instagram</a>
+              <a href="https://www.youtube.com/@TheOrganicMulberry" target="_blank" rel="noopener noreferrer">Twitter</a>
+              <a href="https://www.youtube.com/@TheOrganicMulberry" target="_blank" rel="noopener noreferrer">YouTube</a>
 
             </div>
           </div>
 
+
           {/* Quick Links */}
-          <div className="footer-section">
+          <div className="linkssec">
+            <div className="footer-section">
             <h3 className="footer-title">Quick Links</h3>
             <ul>
               <li><Link to="/">Home</Link></li>
@@ -186,9 +189,12 @@ const EcommerceFooter = () => {
               <li><Link to="/contact">Contact</Link></li>  {/* corrected route */}
             </ul>
           </div>
+          </div>
+          
 
           {/* Dynamic Categories */}
-          <div className="footer-section">
+          <div className="linkssec">
+            <div className="footer-section">
             <h3 className="footer-title">Categories</h3>
             <ul>
               {categories.length > 0 ? (
@@ -202,6 +208,8 @@ const EcommerceFooter = () => {
               )}
             </ul>
           </div>
+          </div>
+         
 
           {/* Contact Info */}
           <div className="footer-section">

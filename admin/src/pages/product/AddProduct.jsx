@@ -103,7 +103,6 @@ const AddProduct = () => {
   return (
     <div className={styles.container}>
       <div className={styles.titleRow}>
-        <span>📋</span>
         <h2>Add Product</h2>
       </div>
 
@@ -245,7 +244,7 @@ const AddProduct = () => {
         </div>
 
         {/* Images */}
-        <div className={styles.col3}>
+        <div className={styles.formGroup}>
           <label>Upload Images</label>
           <input type="file" multiple onChange={handleImageChange} />
 
@@ -262,12 +261,37 @@ const AddProduct = () => {
         </div>
 
         {/* Submit */}
-        <div className={styles.buttonRow}>
+        {/* <div className={styles.buttonRow}>
             <button className={styles.submitBtn} disabled={loading}>
           {loading ? "Saving..." : "Add Product"}
         </button>
-        </div>
+        <button></button>
+        </div> */}
        
+       {/* <div className={styles.modalActions}>
+                       <button
+                         type="button"
+                         className={styles.cancelBtn}
+                         onClick={() => {
+                            navigate("/products");
+                         }}
+                       >
+                         Cancel
+                       </button>
+                       <button type="submit" className={styles.saveBtn}>
+                         {loading ? "Saving..." : "Add Product"}
+                       </button>
+                     </div> */}
+
+                     <div className={styles.buttonGroup}>
+  <button className={styles.saveBtn} disabled={loading}>
+    {loading ? "Saving..." : "Add Product"}
+  </button>
+  <button className={styles.cancelBtn} onClick={() => {
+                            navigate("/products");
+                         }}>Cancel</button>
+</div>
+
       </form>
     </div>
   );

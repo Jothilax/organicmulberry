@@ -27,11 +27,48 @@ const Orders = () => {
     setProducts(order.items || []);
   };
 
+  const handleExcelExport = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:3000/api/order/downloadOrdersExcel",
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Download failed");
+    }
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "orders.xlsx";
+    document.body.appendChild(link);
+    link.click();
+
+    link.remove();
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Excel export error:", error);
+  }
+};
+
+
   if (loading) return <div className={styles.loader}>Loading...</div>;
 
   return (
     <div className={styles.container}>
+      <div className={styles.headcontainer}>
       <h2>Orders</h2>
+      <button className={styles.exportbtn} onClick={handleExcelExport}>Excel Export</button>
+      </div>
+     
       <table className={styles.table}>
         <thead>
           <tr>
