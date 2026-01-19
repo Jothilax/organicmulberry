@@ -12,7 +12,6 @@ import PDFDocument from "pdfkit";
 import path from "path";
 import ExcelJS from "exceljs";
 
-
 /**
  * Create an order from the logged-in user's cart.
  * Steps:
@@ -222,7 +221,7 @@ export const generateOrderPDF = async (req, res) => {
     /* ================= HEADER ================= */
 
     const logoPath = path.join(process.cwd(), "assets/organicmulberrylogo.png");
-    doc.image(logoPath, 40, 40, { width: 180 });
+    doc.image(logoPath, 40, 40, { width: 150 });
 
     doc
       .font("Helvetica-Bold")
@@ -342,14 +341,24 @@ billToDetails.forEach((text) => {
 
     /* ================= TABLE ROWS ================= */
 
+
+const fontPath = path.join(process.cwd(), "/assets/fonts/Roboto-Regular.ttf");
+
+
+doc.font(fontPath).fontSize(10);
+
+
     doc.font("Helvetica").fontSize(10);
     let rowY = tableY + 38;
+const formatINR = (amount) =>
+  `₹ ${amount.toLocaleString("en-IN")}`;
 
     orderData.items.forEach((item) => {
       doc.text(item.product.name, 50, rowY, { width: 230 });
-      doc.text(`₹${item.price}`, 300, rowY);
+       doc.text(item.price, 300, rowY);
+      // doc.text(formatINR(item.price), 300, rowY);
       doc.text(item.quantity, 390, rowY);
-      doc.text(`₹${item.price * item.quantity}`, 460, rowY);
+      doc.text(item.price * item.quantity, 460, rowY);
       rowY += 22;
     });
 
@@ -361,7 +370,7 @@ billToDetails.forEach((text) => {
       .fillColor("#000")
       .font("Helvetica-Bold")
       .fontSize(12)
-      .text(`Grand Total: ₹${orderData.total_amount}`, 380, rowY + 17);
+      .text(`Grand Total: Rs ${orderData.total_amount}/-`, 380, rowY + 17);
 
     /* ================= SIGNATURE ================= */
 
