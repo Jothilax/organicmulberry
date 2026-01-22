@@ -1,7 +1,7 @@
 // src/services/categoryService.js
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000/api/categories";
+const BASE_URL = "http://16.171.20.13:5000/api/categories";
 
 // ✅ Get all categories
 export const getAllCategories = async (token) => {

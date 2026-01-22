@@ -62,7 +62,7 @@ const ProductDetailPage = () => {
                   return {
                     id: p.id,
                     name: p.name,
-                    image: primaryImage?.imageUrl || (primaryImage?.images ? `http://localhost:3000/uploads/products/${primaryImage.images}` : null),
+                    image: primaryImage?.imageUrl || (primaryImage?.images ? `http://16.171.20.13:5000/uploads/products/${primaryImage.images}` : null),
                     price: p.price || 0,
                   };
                 });

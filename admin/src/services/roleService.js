@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000/api/roles";
+const BASE_URL = "http://16.171.20.13:5000/api/roles";
 
 // ✅ Get all roles
 export const getAllRoles = async (token) => {

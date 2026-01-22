@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE = "http://localhost:3000/api/coupon";
+const API_BASE = "http://16.171.20.13:5000/api/coupon";
 
 export const getAllCoupons = async () => {
   try {

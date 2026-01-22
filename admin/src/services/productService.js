@@ -1,8 +1,8 @@
 // src/services/product.service.js
-const API_BASE = "http://localhost:3000/api/products";
-const API_CATBASE = "http://localhost:3000/api/categories";
-const API_SIZEBASE = "http://localhost:3000/api/sizes";
-const API_COLORBASE = "http://localhost:3000/api/colors";
+const API_BASE = "http://16.171.20.13:5000/api/products";
+const API_CATBASE = "http://16.171.20.13:5000/api/categories";
+const API_SIZEBASE = "http://16.171.20.13:5000/api/sizes";
+const API_COLORBASE = "http://16.171.20.13:5000/api/colors";
 function authHeaders() {
   const token = localStorage.getItem("token");
   return token ? { Authorization: `Bearer ${token}` } : {};

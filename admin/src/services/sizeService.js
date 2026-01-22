@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000/api/sizes";
+const BASE_URL = "http://16.171.20.13:5000/api/sizes";
 
 // ✅ Get all sizes
 export const getAllSizes = async (token) => {

@@ -27,7 +27,7 @@ const CartPage = () => {
             // Get primary image or first available image
             const primaryImage = item.product?.images?.find(img => img.is_primary) || item.product?.images?.[0];
             const imageUrl = primaryImage?.imageUrl || 
-              (primaryImage?.images ? `http://localhost:3000/uploads/products/${primaryImage.images}` : null) ||
+              (primaryImage?.images ? `http://16.171.20.13:5000/uploads/products/${primaryImage.images}` : null) ||
               "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Crect fill='%23f0f0f0' width='150' height='150'/%3E%3Ctext fill='%23999' font-family='Arial' font-size='12' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3ENo Image%3C/text%3E%3C/svg%3E";
             
             return {

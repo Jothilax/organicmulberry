@@ -17,8 +17,8 @@
 // src/services/customerService.js
 import axios from "axios";
 
-const API_BASE = "http://localhost:3000/api/customer";
-const API_PBASE = "http://localhost:3000/api/products";
+const API_BASE = "http://16.171.20.13:5000/api/customer";
+const API_PBASE = "http://16.171.20.13:5000/api/products";
 
 export const getAllCustomers = async () => {
   try {

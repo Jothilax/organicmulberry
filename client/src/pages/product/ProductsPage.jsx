@@ -39,7 +39,7 @@ const ProductsPage = () => {
                 id: product.id,
                 name: product.name,
                 price: product.price || 0,
-                image: primaryImage?.imageUrl || (primaryImage?.images ? `http://localhost:3000/uploads/products/${primaryImage.images}` : null),
+                image: primaryImage?.imageUrl || (primaryImage?.images ? `http://16.171.20.13:5000/uploads/products/${primaryImage.images}` : null),
                 category: product.category?.category_name || "General",
                 brand: product.brand,
                 stock: product.stock,
