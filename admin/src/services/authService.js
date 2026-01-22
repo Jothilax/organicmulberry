@@ -1,6 +1,9 @@
 import axios from "axios";
 
-const API_URL = "http://16.171.20.13:5000/api/users";
+// const API_URL = "http://16.171.20.13:5000/api/users";
+
+const API_URL = "https://organicmulberry.onrender.com/api/users";
+
 
 export const loginUser = (userData) => {
   return axios.post(`${API_URL}/login`, userData);

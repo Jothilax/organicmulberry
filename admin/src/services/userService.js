@@ -1,5 +1,5 @@
 import axios from "axios";
-const API = "http://16.171.20.13:5000/api/users";
+const API = "https://organicmulberry.onrender.com/api/users";
 
 export const getAllUsers = (token) =>
   axios.get(`${API}/getAllUsers`, {

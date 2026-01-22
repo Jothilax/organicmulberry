@@ -1,8 +1,8 @@
 // src/services/product.service.js
-const API_BASE = "http://16.171.20.13:5000/api/products";
-const API_CATBASE = "http://16.171.20.13:5000/api/categories";
-const API_SIZEBASE = "http://16.171.20.13:5000/api/sizes";
-const API_COLORBASE = "http://16.171.20.13:5000/api/colors";
+const API_BASE = "https://organicmulberry.onrender.com/api/products";
+const API_CATBASE = "https://organicmulberry.onrender.com/api/categories";
+const API_SIZEBASE = "https://organicmulberry.onrender.com/api/sizes";
+const API_COLORBASE = "https://organicmulberry.onrender.com/api/colors";
 function authHeaders() {
   const token = localStorage.getItem("token");
   return token ? { Authorization: `Bearer ${token}` } : {};

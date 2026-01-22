@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://16.171.20.13:5000/api/colors";
+const BASE_URL = "https://organicmulberry.onrender.com/api/colors";
 
 // ✅ Get all colors
 export const getAllColors = async (token) => {
