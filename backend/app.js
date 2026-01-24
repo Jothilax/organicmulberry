@@ -14,7 +14,7 @@ const app = express();
 // ✅ Proper CORS setup (only once)
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175", "https://organicmulberry-za3t.vercel.app/"], // React app URLs (both ports)
+    origin: ["https://organicmulberry-za3t-9ajdvp9uy-jothilakshmis-projects.vercel.app"], // React app URLs (both ports)
     credentials: true,
   })
 );
