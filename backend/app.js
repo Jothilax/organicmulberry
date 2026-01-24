@@ -12,12 +12,34 @@ dotenv.config();
 const app = express();
 
 // ✅ Proper CORS setup (only once)
+// app.use(
+//   cors({
+//     origin: ["https://organicmulberry-za3t-9ajdvp9uy-jothilakshmis-projects.vercel.app"], // React app URLs (both ports)
+//     credentials: true,
+//   })
+// );
+
+const allowedOrigins = [
+  "https://organicmulberry-za3t-9ajdvp9uy-jothilakshmis-projects.vercel.app"
+];
+
 app.use(
   cors({
-    origin: ["https://organicmulberry-za3t-9ajdvp9uy-jothilakshmis-projects.vercel.app"], // React app URLs (both ports)
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
 );
+
+// ✅ IMPORTANT: handle preflight
+app.options("*", cors());
+
 
 // ✅ Middleware
 app.use(bodyParser.json());
