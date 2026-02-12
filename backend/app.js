@@ -269,7 +269,8 @@ const app = express();
 const allowedOrigins = [
   "https://organicmulberry-za3t-9ajdvp9uy-jothilakshmis-projects.vercel.app",
   "https://organicmulberry-l8im.vercel.app/login",
-  "https://organicmulberry-admin.vercel.app/"
+  "https://organicmulberry-admin.vercel.app",
+  "http://localhost:5173"
 ];
 
 app.use(
@@ -287,7 +288,7 @@ app.use(
 );
 
 // ✅ Preflight support
-app.options("*", cors());
+app.options('*', cors());
 
 /* ======================================================
    ✅ BODY PARSER
