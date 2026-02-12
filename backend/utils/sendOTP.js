@@ -21,9 +21,18 @@ export const sendEmailOTP = async (to, otp) => {
 };
 
 export const sendSMSOTP = async (to, otp) => {
-  await client.messages.create({
-    body: `Your OTP code is: ${otp}. Valid for 5 minutes.`,
-    from: process.env.TWILIO_PHONE,
-    to,
+  // await client.messages.create({
+  //   body: `Your OTP code is: ${otp}. Valid for 5 minutes.`,
+  //   from: process.env.TWILIO_PHONE,
+  //   to,
+  // });
+
+
+await client.verify.v2
+  .services(process.env.TWILIO_VERIFY_SERVICE_SID)
+  .verifications.create({
+    to: "+916383061117",
+    channel: "sms",
   });
 };
+
