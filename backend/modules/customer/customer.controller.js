@@ -39,7 +39,7 @@ export const requestOTP = async (req, res) => {
 
     // Send OTP
     if (email) await sendEmailOTP(email, otp);
-    if (phone) await sendSMSOTP(phone, otp);
+    if (phone) await sendSMSOTP(phone);
 
     res.json({ message: "OTP sent successfully" });
   } catch (err) {
@@ -70,7 +70,7 @@ export const verifyOTP = async (req, res) => {
 
     // check OTP
     if (customer.otp !== otp)
-      return res.status(400).json({ message: "Invalid OTP" });
+      return res.status(400).json({ message: "Invaliad OTP" });
 
     // check OTP expiry
     if (customer.otpExpiry && new Date() > customer.otpExpiry)
