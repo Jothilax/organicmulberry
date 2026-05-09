@@ -58,7 +58,9 @@ const ProductList = () => {
   ) : (
     products.map((p) => {
       const discount = p.discountPercent || 0;
-      const total = (p.price - (p.price * discount) / 100).toFixed(2);
+      // const total = (p.price - (p.price * discount) / 100).toFixed(2);
+
+      const total = p.mrp;
 
       return (
         <div key={p.id} className={styles.productCard}>
@@ -77,9 +79,9 @@ const ProductList = () => {
             <p><strong>Color:</strong> {p.colorData?.color_name || "N/A"}</p>
             <p><strong>Size:</strong> {p.sizeData?.size_name || "N/A"}</p>
 
-            <p><strong>Price:</strong> ₹{p.price}</p>
-            <p><strong>Discount:</strong> {discount}%</p>
-            <p><strong>Total:</strong> ₹{total}</p>
+             <p><strong>MRP:</strong> ₹{total}</p>
+              <p><strong>Discount:</strong> {discount}%</p>
+             <p><strong>Price:</strong> ₹{p.price}</p>
 
             <p><strong>Rating:</strong> ⭐ {p.rating || 0}</p>
             <p><strong>Stock:</strong> {p.stock}</p>
@@ -108,9 +110,9 @@ const ProductList = () => {
               <th>Category</th>
               <th>Color</th>
               <th>Size</th>
-              <th>Price</th>
+              <th>MRP</th>
               <th>Discount</th>
-              <th>Total</th>
+              <th>Price</th>
               <th>Rating</th>
               <th>Stock</th>
               <th>Action</th>
@@ -119,7 +121,7 @@ const ProductList = () => {
           <tbody>
             {products.map((p) => {
               const discount = p.discountPercent || 0;
-              const total = (p.price - (p.price * discount) / 100).toFixed(2);
+              const total = p.mrp;
               return (
                 <tr key={p.id}>
                   <td>
@@ -137,9 +139,9 @@ const ProductList = () => {
                   <td>{p.category?.category_name || "N/A"}</td>
                   <td>{p.colorData?.color_name || "N/A"}</td>
                   <td>{p.sizeData?.size_name || "N/A"}</td>
-                  <td>₹{p.price}</td>
-                  <td>{discount}%</td>
                   <td>₹{total}</td>
+                   <td>{discount}%</td>
+                   <td>₹{p.price}</td>
                   <td>⭐ {p.rating || 0}</td>
                   <td>{p.stock}</td>
                   <td>
