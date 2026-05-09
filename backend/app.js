@@ -267,15 +267,15 @@ const app = express();
    ✅ CORS (MUST BE FIRST)
 ====================================================== */
 const allowedOrigins = [
-  "https://organic-mulberry-admin.netlify.app/",
-  "https://organic-mulberry-client.netlify.app/",
+  "https://organic-mulberry-admin.netlify.app",
+  "https://organic-mulberry-client.netlify.app",
   "http://localhost:5173",
   "http://localhost:5174"
 ];
 
 app.use(
   cors({
-    origin: (origin, callback) => {
+    origin: function (origin, callback) {
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -284,11 +284,11 @@ app.use(
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// ✅ Preflight support
-app.options('*', cors());
+app.options("*", cors());
 
 /* ======================================================
    ✅ BODY PARSER

@@ -6,7 +6,10 @@ const API_URL = "https://organicmulberry.onrender.com/api/users";
 
 
 export const loginUser = (userData) => {
-  return axios.post(`${API_URL}/login`, userData);
+  return axios.post(`${API_URL}/login`, userData,
+    {
+      withCredentials: true
+    });
 };
 
 // ✅ Change password API
@@ -16,6 +19,9 @@ export const changePassword = async (username, oldPassword, newPassword) => {
       username,
       oldPassword,
       newPassword,
+    },
+    {
+      withCredentials: true
     });
     return response.data;
   } catch (error) {
@@ -27,7 +33,10 @@ export const changePassword = async (username, oldPassword, newPassword) => {
 // ✅ Logout API
 export const logout = async () => {
   try {
-    const response = await axios.post(`${API_URL}/logout`);
+    const response = await axios.post(`${API_URL}/logout`,{},
+    {
+      withCredentials: true
+    });
     return response.data;
   } catch (error) {
     console.error("Logout Error:", error);
@@ -40,6 +49,9 @@ export const forgotPassword = async (username) => {
   try {
     const response = await axios.post(`${API_URL}/forgotPassword`, {
       username,
+    },
+    {
+      withCredentials: true
     });
     return response.data;
   } catch (error) {
