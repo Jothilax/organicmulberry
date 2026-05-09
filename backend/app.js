@@ -267,9 +267,8 @@ const app = express();
    ✅ CORS (MUST BE FIRST)
 ====================================================== */
 const allowedOrigins = [
-  "https://organicmulberry-za3t-9ajdvp9uy-jothilakshmis-projects.vercel.app",
-  "https://organicmulberry-l8im.vercel.app/login",
-  "https://organicmulberry-admin.vercel.app",
+  "https://organic-mulberry-admin.netlify.app/",
+  "https://organic-mulberry-client.netlify.app/",
   "http://localhost:5173",
   "http://localhost:5174"
 ];
