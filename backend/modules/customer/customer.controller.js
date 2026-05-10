@@ -1,6 +1,7 @@
 // import Customer from "./customer.model.js";
 import { generateOTP, hashPassword } from "../../utils/auth.js";
-import { sendEmailOTP, sendSMSOTP } from "../../utils/sendOTP.js";
+import { sendSMSOTP } from "../../utils/sendOTP.js";
+import { sendEmail } from "../../utils/sendEmail.js";
 import { generateToken } from "../../utils/jwt.js";
 import { Op } from "sequelize";
 // import Order from '../order/order.model.js'
@@ -38,7 +39,7 @@ export const requestOTP = async (req, res) => {
     await customer.update({ otp, otpExpiry: expiry, isVerified: false });
 
     // Send OTP
-    if (email) await sendEmailOTP(email, otp);
+    if (email) await sendEmail(email, otp);
     if (phone) await sendSMSOTP(phone);
 
     res.json({ message: "OTP sent successfully" });

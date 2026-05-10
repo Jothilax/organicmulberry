@@ -1,27 +1,27 @@
-import nodemailer from "nodemailer";
+// import nodemailer from "nodemailer";
 import twilio from "twilio";
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+// const transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   auth: {
+//     user: process.env.EMAIL_USER,
+//     pass: process.env.EMAIL_PASS,
+//   },
+// });
 
 const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
 if (!process.env.TWILIO_VERIFY_SERVICE_SID) {
   throw new Error("Twilio Verify Service SID missing");
 }
 
-export const sendEmailOTP = async (to, otp) => {
-  await transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to,
-    subject: "Your OTP Code",
-    text: `Your OTP code is: ${otp}. Valid for 5 minutes.`,
-  });
-};
+// export const sendEmailOTP = async (to, otp) => {
+//   await transporter.sendMail({
+//     from: process.env.EMAIL_USER,
+//     to,
+//     subject: "Your OTP Code",
+//     text: `Your OTP code is: ${otp}. Valid for 5 minutes.`,
+//   });
+// };
 
 export const sendSMSOTP = async (to) => {
   // await client.messages.create({
