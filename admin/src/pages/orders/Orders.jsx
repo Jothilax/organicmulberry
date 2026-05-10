@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllOrders } from "../../services/orderService";
+import { getAllOrders , downloadOrdersExcel } from "../../services/orderService";
 import styles from "./orders.module.css";
 
 const Orders = () => {

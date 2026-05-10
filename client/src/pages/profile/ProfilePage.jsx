@@ -853,7 +853,7 @@ const handleDownloadInvoice = async (order) => {
 
             {/* DOWNLOAD BUTTON */}
             <button
-              onClick={() => downloadInvoice(order)}
+              onClick={() => handleDownloadInvoice(order)}
               style={{
                 marginTop: "10px",
                 padding: "0.5rem 1rem",
