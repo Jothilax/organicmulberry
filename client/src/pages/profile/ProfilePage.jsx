@@ -309,55 +309,74 @@ const ProfilePage = () => {
 // };
 
 
-const downloadInvoice = async (order) => {
+// const downloadInvoice = async (order) => {
+//   try {
+//     const token = localStorage.getItem("customerToken");
+
+//     if (!token) {
+//       alert("Session expired. Please login again.");
+//       navigate("/login");
+//       return;
+//     }
+
+//     const response = await fetch(
+//       `http://16.171.20.13:5000/api/order/generateOrderPDF/${order.id}`,
+//       {
+//         method: "GET",
+//         headers: {
+//           Authorization: `Bearer ${token}`, // ✅ CORRECT TOKEN
+//         },
+//       }
+//     );
+
+//     if (response.status === 401) {
+//       alert("Session expired. Please login again.");
+//       localStorage.removeItem("customerToken");
+//       navigate("/login");
+//       return;
+//     }
+
+//     if (!response.ok) {
+//       throw new Error("Invoice download failed");
+//     }
+
+//     const blob = await response.blob();
+//     const url = window.URL.createObjectURL(blob);
+
+//     const link = document.createElement("a");
+//     link.href = url;
+//     link.download = `Invoice-${order.order_code || order.id}.pdf`;
+//     document.body.appendChild(link);
+//     link.click();
+
+//     link.remove();
+//     window.URL.revokeObjectURL(url);
+//   } catch (error) {
+//     console.error("Invoice download error:", error);
+//     alert("Failed to download invoice");
+//   }
+// };
+
+const handleDownloadInvoice = async (order) => {
   try {
-    const token = localStorage.getItem("customerToken");
+    const blob = await orderService.downloadInvoice(order.id);
 
-    if (!token) {
-      alert("Session expired. Please login again.");
-      navigate("/login");
-      return;
-    }
-
-    const response = await fetch(
-      `http://16.171.20.13:5000/api/order/generateOrderPDF/${order.id}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`, // ✅ CORRECT TOKEN
-        },
-      }
-    );
-
-    if (response.status === 401) {
-      alert("Session expired. Please login again.");
-      localStorage.removeItem("customerToken");
-      navigate("/login");
-      return;
-    }
-
-    if (!response.ok) {
-      throw new Error("Invoice download failed");
-    }
-
-    const blob = await response.blob();
     const url = window.URL.createObjectURL(blob);
 
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = url;
     link.download = `Invoice-${order.order_code || order.id}.pdf`;
+
     document.body.appendChild(link);
     link.click();
 
     link.remove();
     window.URL.revokeObjectURL(url);
   } catch (error) {
-    console.error("Invoice download error:", error);
-    alert("Failed to download invoice");
+    console.error('Invoice download error:', error);
+    alert('Failed to download invoice');
   }
 };
-
-
   return (
     <div className="profile-container">
       <div className="profile-header">

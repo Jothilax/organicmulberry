@@ -40,5 +40,21 @@ export const orderService = {
       throw error;
     }
   },
+   downloadInvoice: async (id) => {
+    try {
+      const response = await api.get(
+        `/order/generateOrderPDF/${id}`,
+        {
+          responseType: 'blob',
+          withCredentials: true,
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error('Error downloading invoice:', error);
+      throw error;
+    }
+  }
 };
 
