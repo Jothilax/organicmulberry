@@ -7,7 +7,9 @@ export const orderService = {
       const response = await api.post('/order/createOrder', {
         payment_method: paymentMethod,
         address,
-      });
+      },{
+          withCredentials: true,
+        });
       return response.data;
     } catch (error) {
       console.error('Error creating order:', error);
@@ -18,7 +20,9 @@ export const orderService = {
   // Get user orders
   getMyOrders: async () => {
     try {
-      const response = await api.get('/order/myOrders');
+      const response = await api.get('/order/myOrders',{
+          withCredentials: true,
+        });
       return response.data;
     } catch (error) {
       console.error('Error fetching orders:', error);

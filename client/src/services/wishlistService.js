@@ -6,7 +6,9 @@ export const wishlistService = {
     try {
       const response = await api.post('/wishlist/addToWishlist', {
         product_id: productId,
-      });
+      },{
+      withCredentials: true,
+    });
       return response.data;
     } catch (error) {
       console.error('Error adding to wishlist:', error);
@@ -17,7 +19,9 @@ export const wishlistService = {
   // Get wishlist items
   getWishlist: async () => {
     try {
-      const response = await api.get('/wishlist/getWishlist');
+      const response = await api.get('/wishlist/getWishlist',{
+      withCredentials: true,
+    });
       return response.data;
     } catch (error) {
       console.error('Error fetching wishlist:', error);
@@ -28,7 +32,9 @@ export const wishlistService = {
   // Remove item from wishlist
   removeFromWishlist: async (wishlistItemId) => {
     try {
-      const response = await api.delete(`/wishlist/removeFromWishlist/${wishlistItemId}`);
+      const response = await api.delete(`/wishlist/removeFromWishlist/${wishlistItemId}`,{
+      withCredentials: true,
+    });
       return response.data;
     } catch (error) {
       console.error('Error removing from wishlist:', error);
@@ -39,7 +45,9 @@ export const wishlistService = {
   // Check if product is in wishlist
   checkWishlist: async (productId) => {
     try {
-      const response = await api.get(`/wishlist/checkWishlist/${productId}`);
+      const response = await api.get(`/wishlist/checkWishlist/${productId}`,{
+      withCredentials: true,
+    });
       return response.data;
     } catch (error) {
       console.error('Error checking wishlist:', error);

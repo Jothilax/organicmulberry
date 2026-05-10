@@ -6,7 +6,9 @@ export const productService = {
     try {
       const response = await api.get('/products/getAllProducts', {
         params: { search },
-      });
+      },{
+      withCredentials: true,
+    });
       return response.data;
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -17,7 +19,9 @@ export const productService = {
   // Get product by ID
   getProductById: async (id) => {
     try {
-      const response = await api.get(`/products/getProductById/${id}`);
+      const response = await api.get(`/products/getProductById/${id}`,{
+      withCredentials: true,
+    });
       return response.data;
     } catch (error) {
       console.error('Error fetching product:', error);

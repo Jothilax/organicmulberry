@@ -7,7 +7,9 @@ export const authService = {
       const response = await api.post('/customer/requestOtp', {
         email,
         phone,
-      });
+      },{
+          withCredentials: true,
+        });
       return response.data;
     } catch (error) {
       console.error('Error requesting OTP:', error);
@@ -22,7 +24,9 @@ export const authService = {
         email,
         phone,
         otp,
-      });
+      },{
+          withCredentials: true,
+        });
       if (response.data.token) {
         localStorage.setItem('customerToken', response.data.token);
       }
@@ -36,7 +40,9 @@ export const authService = {
   // Get customer profile
   getProfile: async () => {
     try {
-      const response = await api.get('/customer/getProfile');
+      const response = await api.get('/customer/getProfile',{
+          withCredentials: true,
+        });
       return response.data;
     } catch (error) {
       console.error('Error fetching profile:', error);
@@ -47,7 +53,9 @@ export const authService = {
   // Update profile
   updateProfile: async (profileData) => {
     try {
-      const response = await api.put('/customer/updateProfile', profileData);
+      const response = await api.put('/customer/updateProfile', profileData,{
+          withCredentials: true,
+        });
       return response.data;
     } catch (error) {
       console.error('Error updating profile:', error);

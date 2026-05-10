@@ -7,6 +7,7 @@ const API_BASE_URL = "https://organicmulberry.onrender.com/api";
 // Create axios instance with default config
 const api = axios.create({
   baseURL: API_BASE_URL,
+   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },

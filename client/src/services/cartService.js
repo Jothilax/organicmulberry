@@ -7,7 +7,9 @@ export const cartService = {
       const response = await api.post('/cart/addToCart', {
         product_id: productId,
         quantity,
-      });
+      },{
+          withCredentials: true,
+        });
       return response.data;
     } catch (error) {
       console.error('Error adding to cart:', error);
@@ -18,7 +20,9 @@ export const cartService = {
   // Get cart items
   getCart: async () => {
     try {
-      const response = await api.get('/cart/getCart');
+      const response = await api.get('/cart/getCart',{
+          withCredentials: true,
+        });
       return response.data;
     } catch (error) {
       console.error('Error fetching cart:', error);
@@ -29,7 +33,9 @@ export const cartService = {
   // Remove item from cart
   removeFromCart: async (cartItemId) => {
     try {
-      const response = await api.delete(`/cart/removeFromCart/${cartItemId}`);
+      const response = await api.delete(`/cart/removeFromCart/${cartItemId}`,{
+          withCredentials: true,
+        });
       return response.data;
     } catch (error) {
       console.error('Error removing from cart:', error);
