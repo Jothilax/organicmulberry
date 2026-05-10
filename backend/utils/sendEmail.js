@@ -3,12 +3,16 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  // service: "gmail",
+   host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
 });
+
 
 export const sendEmail = async (to, otp) => {
   await transporter.sendMail({
@@ -18,3 +22,11 @@ export const sendEmail = async (to, otp) => {
     text: `Your OTP is ${otp}. It will expire in 5 minutes.`,
   });
 };
+
+transporter.verify((error, success) => {
+  if (error) {
+    console.log("SMTP ERROR:", error);
+  } else {
+    console.log("SMTP SERVER READY");
+  }
+});
