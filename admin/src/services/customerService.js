@@ -22,7 +22,9 @@ const API_PBASE = "https://organicmulberry.onrender.com/api/products";
 
 export const getAllCustomers = async () => {
   try {
-    const response = await axios.get(`${API_BASE}/getAllCustomers`);
+    const response = await axios.get(`${API_BASE}/getAllCustomers`,{
+      withCredentials: true,
+    });
     return response.data.customers;
   } catch (error) {
     console.error("Error fetching customers:", error);
@@ -33,7 +35,9 @@ export const getAllCustomers = async () => {
 // Get orders of a customer
 export const getCustomerOrders = async (customerId) => {
   try {
-    const response = await axios.get(`${API_PBASE}/getCustomerOrders/${customerId}`);
+    const response = await axios.get(`${API_PBASE}/getCustomerOrders/${customerId}`,{
+      withCredentials: true,
+    });
     return response.data.orders;
   } catch (error) {
     console.error("Error fetching customer orders:", error);
@@ -44,7 +48,9 @@ export const getCustomerOrders = async (customerId) => {
 // Get products in an order
 export const getOrderProducts = async (orderId) => {
   try {
-    const response = await axios.get(`${API_PBASE}/getOrderItems/${orderId}`);
+    const response = await axios.get(`${API_PBASE}/getOrderItems/${orderId}`,{
+      withCredentials: true,
+    });
     return response.data.items;
   } catch (error) {
     console.error("Error fetching order products:", error);

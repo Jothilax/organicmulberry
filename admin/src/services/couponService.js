@@ -4,7 +4,9 @@ const API_BASE = "https://organicmulberry.onrender.com/api/coupon";
 
 export const getAllCoupons = async () => {
   try {
-    const response = await axios.get(`${API_BASE}/getAll`);
+    const response = await axios.get(`${API_BASE}/getAll`,{
+      withCredentials: true,
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching coupons:", error);
@@ -14,7 +16,9 @@ export const getAllCoupons = async () => {
 
 export const createCoupon = async (couponData) => {
   try {
-    const response = await axios.post(`${API_BASE}/create`, couponData);
+    const response = await axios.post(`${API_BASE}/create`, couponData, {
+      withCredentials: true,
+    });
     return response.data;
   } catch (error) {
     console.error("Error creating coupon:", error);
@@ -24,7 +28,9 @@ export const createCoupon = async (couponData) => {
 
 export const updateCoupon = async (id, couponData) => {
   try {
-    const response = await axios.put(`${API_BASE}/${id}`, couponData);
+    const response = await axios.put(`${API_BASE}/${id}`, couponData,{
+      withCredentials: true,
+    });
     return response.data;
   } catch (error) {
     console.error("Error updating coupon:", error);
@@ -34,7 +40,9 @@ export const updateCoupon = async (id, couponData) => {
 
 export const deleteCoupon = async (id) => {
   try {
-    const response = await axios.delete(`${API_BASE}/${id}`);
+    const response = await axios.delete(`${API_BASE}/${id}`,{
+      withCredentials: true,
+    });
     return response.data;
   } catch (error) {
     console.error("Error deleting coupon:", error);
@@ -44,7 +52,9 @@ export const deleteCoupon = async (id) => {
 
 export const getCouponById = async (id) => {
   try {
-    const response = await axios.get(`${API_BASE}/${id}`);
+    const response = await axios.get(`${API_BASE}/${id}`,{
+      withCredentials: true,
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching coupon:", error);

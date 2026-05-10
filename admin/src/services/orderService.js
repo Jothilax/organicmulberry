@@ -8,7 +8,7 @@ export const getAllOrders = async () => {
     const response = await axios.get(`${API_BASE}/getAll`, {
       headers: {
         Authorization: `Bearer ${token}`,
-      },
+      },withCredentials: true,
     });
     return response.data;
   } catch (error) {

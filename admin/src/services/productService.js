@@ -47,6 +47,7 @@ export async function createProduct(data, imageFiles = []) {
       ...authHeaders(), // Don't set Content-Type, let browser set it with boundary
     },
     body: formData,
+     credentials: "include",
   });
   
   if (!res.ok) {
@@ -112,6 +113,7 @@ export async function updateProduct(productId, data, imageFiles = [], options = 
       ...authHeaders(), // Don't set Content-Type, let browser set it with boundary
     },
     body: formData,
+     credentials: "include",
   });
   
   if (!res.ok) {
@@ -126,6 +128,7 @@ export async function getAllProducts() {
   const res = await fetch(`${API_BASE}/getAllProducts`, {
     method: "GET",
     headers: { ...authHeaders() },
+     credentials: "include",
   });
   if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
   return res.json();
@@ -136,6 +139,7 @@ export async function getProductById(id) {
   const res = await fetch(`${API_BASE}/getProductById/${id}`, {
     method: "GET",
     headers: { ...authHeaders() },
+     credentials: "include",
   });
   if (!res.ok) throw new Error(`Fetch product failed: ${res.status}`);
   return res.json();
@@ -146,6 +150,7 @@ export async function deleteProduct(productId) {
   const res = await fetch(`${API_BASE}/deleteProduct/${productId}`, {
     method: "DELETE",
     headers: { ...authHeaders() },
+     credentials: "include",
   });
   if (!res.ok) throw new Error(`Delete failed: ${res.status}`);
   return res.json();
@@ -156,6 +161,7 @@ export async function deleteProductImage(imageId) {
   const res = await fetch(`${API_BASE}/deleteProductImage/${imageId}`, {
     method: "DELETE",
     headers: { ...authHeaders() },
+     credentials: "include",
   });
   if (!res.ok) throw new Error(`Delete image failed: ${res.status}`);
   return res.json();
@@ -168,6 +174,7 @@ export async function getAllCategories() {
   const res = await fetch(`${API_CATBASE}/getAllCategories`, {
     method: "GET",
     headers: { ...authHeaders() },
+     credentials: "include",
   });
   if (!res.ok) throw new Error(`Fetch categories failed: ${res.status}`);
   return res.json();
@@ -181,6 +188,7 @@ export async function getAllSizes() {
   const res = await fetch(`${API_SIZEBASE}/getAllSizes`, {
     method: "GET",
     headers: { ...authHeaders() },
+     credentials: "include",
   });
   if (!res.ok) throw new Error(`Fetch sizes failed: ${res.status}`);
   return res.json();
@@ -192,6 +200,7 @@ export async function getAllColors() {
   const res = await fetch(`${API_COLORBASE}/getAllColors`, {
     method: "GET",
     headers: { ...authHeaders() },
+     credentials: "include",
   });
   if (!res.ok) throw new Error(`Fetch colors failed: ${res.status}`);
   return res.json();

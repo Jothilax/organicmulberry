@@ -12,27 +12,27 @@ export const getAllColors = async (token) => {
 // ✅ Create color
 export const createColor = async (data, token) => {
   return await axios.post(`${BASE_URL}/createColor`, data, {
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${token}` }, withCredentials: true,
   });
 };
 
 // ✅ Get color by ID
 export const getColorById = async (id, token) => {
   return await axios.get(`${BASE_URL}/getColorById/${id}`, {
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${token}` }, withCredentials: true,
   });
 };
 
 // ✅ Update color
 export const updateColor = async (id, data, token) => {
   return await axios.put(`${BASE_URL}/updateColor/${id}`, data, {
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${token}` },withCredentials: true,
   });
 };
 
 // ✅ Delete color
 export const deleteColor = async (id, token) => {
   return await axios.delete(`${BASE_URL}/deleteColor/${id}`, {
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${token}` },withCredentials: true,
   });
 };
